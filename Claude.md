@@ -47,8 +47,13 @@ Every query must be scoped to `current_landlord`. No record should ever be acces
 - Test models and controllers; skip view specs
 - At minimum a smoke test for every new controller action
 
+## Workflow
+Before writing any code, always present your analysis and implementation plan and wait for the user's approval. Never jump straight into writing files.
+
 ## Environment
 This project runs in a devcontainer. Claude cannot install packages or system dependencies — never attempt `apt-get`, `gem install`, `brew`, or similar. Instead, clearly state what needs to be installed and the user will do it from the host.
+
+The user runs all Rails commands themselves (server, migrations, seeds, tests, generators, etc.). Claude only writes and edits files — never executes `bin/rails`, `bin/rspec`, or similar commands.
 
 ## Common commands
 ```bash

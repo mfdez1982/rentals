@@ -10,9 +10,7 @@ RSpec.describe "Dashboard", type: :request do
     end
 
     context "when logged in" do
-      let(:user) { create(:user) }
-
-      before { sign_in user }
+      before { sign_in create(:user) }
 
       it "renders the dashboard" do
         get root_path
