@@ -1,0 +1,66 @@
+{
+    "name": "GW CC AI",
+    "image": "artifactory.guidewire.com/ai-coding/claude-code:latest",
+    "mounts": [
+        "source=${localEnv:HOME}/.gradle/caches/modules-2/files-2.1,target=/home/node/.gradle/caches/modules-2/files-2.1,type=bind,consistency=cached",
+        "source=${localEnv:HOME}/.m2,target=/home/node/.m2,type=bind,consistency=cached"
+    ],
+    "customizations": {
+        "vscode": {
+            "extensions": [
+                "ms-vscode-remote.remote-containers",
+                "ms-vscode.vscode-json",
+                "ms-python.python",
+                "ms-vscode.vscode-typescript-next",
+                "vscjava.vscode-java-pack",
+                "golang.go",
+                "dbaeumer.vscode-eslint",
+                "anthropic.claude-code"
+            ],
+            "settings": {
+                "terminal.integrated.defaultProfile.linux": "zsh",
+                "terminal.integrated.profiles.linux": {
+                    "zsh": {
+                        "path": "/bin/zsh"
+                    }
+                }
+            }
+        },
+        "jetbrains": {
+            "plugins": [
+                "com.anthropic.code.plugin"
+            ]
+        }
+    },
+    "forwardPorts": [3000, 8000, 8080, 8081, 8190, 8280, 8580],
+    "containerEnv": {
+        "WORKSPACE_ROOT": "${containerWorkspaceFolder}",
+        "SHELL": "/bin/zsh",
+        "NODE_EXTRA_CA_CERTS": "/etc/ssl/certs/ca-certificates.crt",
+        "DOCKER_BUILDKIT": "1",
+        "PROPERTYSERVICE_CLIENT_SERVER_URI_OVERRIDE": "https://helios.api.omega2-andromeda.guidewire.net"
+    },
+    "remoteEnv": {
+        "INSURANCESUITE_CORE_SNAPSHOT_REPOSITORY_URL": "${localEnv:INSURANCESUITE_CORE_SNAPSHOT_REPOSITORY_URL}",
+        "INSURANCESUITE_CORE_RELEASE_REPOSITORY_URL": "${localEnv:INSURANCESUITE_CORE_RELEASE_REPOSITORY_URL}",
+        "MAVEN_CENTRAL_MIRROR_REPOSITORY_URL": "${localEnv:MAVEN_CENTRAL_MIRROR_REPOSITORY_URL}",
+        "INSURANCESUITE_CORE_DEPENDENCIES_RELEASE_REPOSITORY_URL": "${localEnv:INSURANCESUITE_CORE_DEPENDENCIES_RELEASE_REPOSITORY_URL}",
+        "INSURANCESUITE_CORE_OSGI_3RD_PARTY_SNAPSHOT_REPOSITORY_URL": "${localEnv:INSURANCESUITE_CORE_OSGI_3RD_PARTY_SNAPSHOT_REPOSITORY_URL}",
+        "INSURANCESUITE_CORE_OSGI_3RD_PARTY_RELEASE_REPOSITORY_URL": "${localEnv:INSURANCESUITE_CORE_OSGI_3RD_PARTY_RELEASE_REPOSITORY_URL}",
+        "INSURANCESUITE_CORE_GRADLE_PLUGINS_SNAPSHOT_REPOSITORY_URL": "${localEnv:INSURANCESUITE_CORE_GRADLE_PLUGINS_SNAPSHOT_REPOSITORY_URL}",
+        "INSURANCESUITE_CORE_GRADLE_PLUGINS_PRODUCTION_REPOSITORY_URL": "${localEnv:INSURANCESUITE_CORE_GRADLE_PLUGINS_PRODUCTION_REPOSITORY_URL}",
+        "INSURANCESUITE_CORE_THIRDPARTY_REPOSITORY_URL": "${localEnv:INSURANCESUITE_CORE_THIRDPARTY_REPOSITORY_URL}",
+        "GRADLE_PLUGINS_MIRROR_REPOSITORY_URL": "${localEnv:GRADLE_PLUGINS_MIRROR_REPOSITORY_URL}",
+        "GRADLE_DISTRIBUTION_REPOSITORY_URL": "${localEnv:GRADLE_DISTRIBUTION_REPOSITORY_URL}",
+        "DEPENDENCY_REPOSITORY_USERNAME": "${localEnv:DEPENDENCY_REPOSITORY_USERNAME}",
+        "DEPENDENCY_REPOSITORY_PASSWORD": "${localEnv:DEPENDENCY_REPOSITORY_PASSWORD}",
+        "ARTIFACTORY_URL": "${localEnv:ARTIFACTORY_URL}",
+        "ARTIFACTORY_PASSWORD": "${localEnv:ARTIFACTORY_PASSWORD}",
+        "ARTIFACTORY_USERNAME": "${localEnv:ARTIFACTORY_USERNAME}",
+        "CCA_CLIENT_ID": "${localEnv:CCA_CLIENT_ID}",
+        "CCA_CLIENT_SECRET": "${localEnv:CCA_CLIENT_SECRET}",
+        "GITHUB_PAT": "${localEnv:GITHUB_PAT}"
+    },
+    "postCreateCommand": "git config --global --add safe.directory ${containerWorkspaceFolder} && echo 'GW CC AI: Claude Code development container ready (latest)!'",
+    "remoteUser": "node"
+}

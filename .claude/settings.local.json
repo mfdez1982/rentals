@@ -1,0 +1,21 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(rails new *)",
+      "Bash(ruby --version)",
+      "Bash(gem list *)",
+      "Bash(apt-get list *)",
+      "Read(//usr/local/**)",
+      "Read(//home/node/**)",
+      "Bash(curl -fsSL https://github.com/rbenv/rbenv-installer/raw/HEAD/bin/rbenv-installer)",
+      "Bash(bash)",
+      "Bash(gem --version)",
+      "Bash(rails --version)",
+      "Bash(psql --version)",
+      "Bash(gem install *)",
+      "Bash(sudo apt-get install -y ruby-dev build-essential libpq-dev postgresql postgresql-client)",
+      "Bash(gem env *)",
+      "Bash(/home/node/.local/share/gem/ruby/3.3.0/bin/rails new *)"
+    ]
+  }
+}
