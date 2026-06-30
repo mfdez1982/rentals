@@ -1,0 +1,10 @@
+<tr>
+  <td><%= property.name %></td>
+  <td><%= property.rented? ? "Rented" : "Available" %></td>
+  <td>
+    <%= link_to "Edit", edit_property_path(property),
+        data: { action: "click->properties#openEdit" } %>
+    <%= button_to "Delete", property_path(property), method: :delete,
+        form: { data: { turbo_confirm: "Delete \"#{property.name}\"? This cannot be undone." } } %>
+  </td>
+</tr>

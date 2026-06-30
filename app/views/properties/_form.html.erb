@@ -1,0 +1,21 @@
+<%= form_with model: property, data: local_assigns.fetch(:form_data, {}) do |f| %>
+  <% if property.errors.any? %>
+    <ul>
+      <% property.errors.full_messages.each do |msg| %>
+        <li><%= msg %></li>
+      <% end %>
+    </ul>
+  <% end %>
+
+  <div>
+    <%= f.label :name %>
+    <%= f.text_field :name %>
+  </div>
+
+  <div>
+    <%= f.label :rented, "Currently rented?" %>
+    <%= f.check_box :rented %>
+  </div>
+
+  <%= f.submit %>
+<% end %>

@@ -3,7 +3,9 @@ class User < ApplicationRecord
 
   has_one :landlord, dependent: :destroy
 
-  after_create :create_landlord
+  enum :role, { landlord: 0, admin: 1 }, default: :landlord
+
+  after_create :create_landlord, if: :landlord?
 
   private
 

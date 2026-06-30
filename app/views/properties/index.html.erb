@@ -1,0 +1,29 @@
+<h1>My Properties</h1>
+
+<section>
+  <h2>Add a Property</h2>
+  <%= render "form", property: @new_property %>
+</section>
+
+<% if @properties.any? %>
+  <div data-controller="properties">
+    <table>
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Status</th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody>
+        <% @properties.each do |property| %>
+          <%= turbo_frame_tag dom_id(property), data: { row_url: property_path(property) } do %>
+            <%= render "property", property: property %>
+          <% end %>
+        <% end %>
+      </tbody>
+    </table>
+  </div>
+<% else %>
+  <p>No properties yet. Add your first one above!</p>
+<% end %>
