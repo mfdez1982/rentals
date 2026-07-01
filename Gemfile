@@ -64,3 +64,4 @@ group :development do
 end
 
 gem "tailwindcss-rails", "~> 4.6"
+gem "heroicons-ruby"

@@ -130,6 +130,9 @@ GEM
       raabro (~> 1.4)
     globalid (1.4.0)
       activesupport (>= 6.1)
+    heroicons-ruby (2.1.1)
+      activesupport (>= 6.0)
+      nokogiri (>= 1.6)
     i18n (1.15.2)
       concurrent-ruby (~> 1.0)
     image_processing (1.14.0)
@@ -419,6 +422,7 @@ DEPENDENCIES
   debug
   devise
   factory_bot_rails
+  heroicons-ruby
   image_processing (~> 1.2)
   importmap-rails
   jbuilder

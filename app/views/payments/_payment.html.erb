@@ -11,15 +11,25 @@
   </td>
   <td><%= number_to_currency(payment.amount) %></td>
   <td class="text-right">
-    <%= link_to "Edit", edit_property_rental_agreement_payment_path(property, agreement, payment),
-        class: "btn btn-ghost btn-xs mr-1",
-        data: { action: "click->payments#openEdit" } %>
-    <%= button_to "Delete", property_rental_agreement_payment_path(property, agreement, payment),
-        method: :delete,
-        class: "btn btn-error btn-xs",
-        form: { data: {
-          turbo_confirm: "Delete this payment? This cannot be undone.",
-          turbo_frame: dom_id(agreement, :payments)
-        } } %>
+    <div style="display:inline-flex; align-items:center; gap:8px;">
+      <%= link_to edit_property_rental_agreement_payment_path(property, agreement, payment),
+          class: "icon-btn",
+          title: "Edit",
+          style: "display:inline-flex; color:inherit; cursor:pointer;",
+          data: { action: "click->payments#openEdit" } do %>
+        <%= heroicon "pencil", variant: :outline %>
+      <% end %>
+      <%= button_to property_rental_agreement_payment_path(property, agreement, payment),
+          method: :delete,
+          class: "icon-btn",
+          title: "Delete",
+          style: "display:inline-flex; color:inherit; cursor:pointer; background:none; border:none; padding:0;",
+          form: { data: {
+            turbo_confirm: "Delete this payment? This cannot be undone.",
+            turbo_frame: dom_id(agreement, :payments)
+          } } do %>
+        <%= heroicon "trash", variant: :outline %>
+      <% end %>
+    </div>
   </td>
 </tr>

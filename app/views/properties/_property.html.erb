@@ -15,11 +15,21 @@
     <% end %>
   </td>
   <td class="text-right">
-    <%= link_to "Edit", edit_property_path(property),
-        class: "btn btn-ghost btn-xs mr-1",
-        data: { action: "click->properties#openEdit" } %>
-    <%= button_to "Delete", property_path(property), method: :delete,
-        class: "btn btn-error btn-xs",
-        form: { data: { turbo_confirm: "Delete \"#{property.name}\"? This cannot be undone." } } %>
+    <div style="display:inline-flex; align-items:center; gap:8px;">
+      <%= link_to edit_property_path(property),
+          class: "icon-btn",
+          title: "Edit",
+          style: "display:inline-flex; color:inherit; cursor:pointer;",
+          data: { action: "click->properties#openEdit" } do %>
+        <%= heroicon "pencil", variant: :outline %>
+      <% end %>
+      <%= button_to property_path(property), method: :delete,
+          class: "icon-btn",
+          title: "Delete",
+          style: "display:inline-flex; color:inherit; cursor:pointer; background:none; border:none; padding:0;",
+          form: { data: { turbo_confirm: "Delete \"#{property.name}\"? This cannot be undone." } } do %>
+        <%= heroicon "trash", variant: :outline %>
+      <% end %>
+    </div>
   </td>
 </tr>
