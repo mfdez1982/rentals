@@ -22,13 +22,20 @@ Schema, models, routes, controllers, and view structure are all readable from th
 - Views → `app/views/`
 
 ## Domain model (the shape, not the fields)
-`User` is the auth record (Devise + a `role` enum, default `:landlord`). `Landlord` is a separate profile model belonging to a `User`, created automatically on sign-up **only for landlord-role users** (`after_create :create_landlord, if: :landlord?`). Admins never get a Landlord. A `Landlord` has many `Property` records; a `Property` has many `RentalAgreement` records. A property's "rented" status is derived (true if any agreement is active today), not stored.
+`User` is the auth record (Devise + a `role` enum, default `:landlord`). `Landlord` is a separate profile model belonging to a `User`, created automatically on sign-up **only for landlord-role users** (`after_create :create_landlord, if: :landlord?`). Admins never get a Landlord. A `Landlord` has many `Property` records; a `Property` has many `RentalAgreement` records; a `RentalAgreement` has many `Payment` records.
+
+Derived state (never stored as a column):
+- `property.rented?` — true if any agreement is active today
+- `payment.overdue?` — true when `paid_date` is nil and `due_date < Date.today`
+- `rental_agreement.has_overdue_payments?` — any payment is overdue
+- `property.has_overdue_payments?` — any agreement has overdue payments
 
 ## Multi-tenancy (critical)
-Every query must be scoped to `current_landlord`. Never rely on the view alone. Always scope from `current_landlord` down:
+Every query must be scoped to `current_landlord`. Never rely on the view alone. Always scope from `current_landlord` down the full chain:
 ```ruby
-@property = current_landlord.properties.find(params[:id])
-@agreement = @property.rental_agreements.find(params[:id])
+@property  = current_landlord.properties.find(params[:property_id])
+@agreement = @property.rental_agreements.find(params[:rental_agreement_id])
+@payment   = @agreement.payments.find(params[:id])
 ```
 `current_landlord` is defined in `ApplicationController` as `current_user&.landlord`. In development, it auto-signs-in `dev@example.com` if that user exists.
 
@@ -50,6 +57,15 @@ Each property row is wrapped in `turbo_frame_tag dom_id(property)`:
    - **Renew**: link with `data: { turbo_frame: dom_id(property, :agreements) }` navigates the outer frame to `new_path?source_id=X`. `new.html.erb` wraps its content in the outer frame. The `new` action pre-fills `start_date = source.end_date + 1.day` and `rent_amount` when `params[:source_id]` is given.
    - **Inline edit**: each row is wrapped in `turbo_frame_tag dom_id(agreement), data: { row_url: property_path(@property) }`. Clicking Edit navigates the inner frame to `edit.html.erb`. Success redirect to `property_path` → Turbo finds the inner frame nested inside the outer frame and refreshes it.
    - The `rental-agreements` Stimulus controller (same logic as `properties`) handles closing other open edit rows.
+
+### Agreement show — payments
+`rental_agreements/show.html.erb` uses the same outer/inner frame pattern:
+- **Outer frame** `dom_id(@agreement, :payments)` wraps the payments table + Add Payment form.
+- **Create**: form auto-targets the outer frame; success/failure redirect/render refreshes it.
+- **Delete**: `button_to` with `form: { data: { turbo_frame: dom_id(agreement, :payments) } }` targets outer frame.
+- **Inline edit**: each payment row is wrapped in `turbo_frame_tag dom_id(payment), data: { row_url: property_rental_agreement_path(...) }`. Edit navigates the inner frame; success redirect → Turbo finds the inner frame nested inside the outer frame.
+- The `payments` Stimulus controller (same `openEdit` logic) closes other open edit rows.
+- On `PaymentsController#create` failure: sets `@payments` and `@new_payment`, then `render template: "rental_agreements/show"` so Turbo extracts the outer frame with errors.
 
 ## Coding conventions
 - Standard Rails conventions; thin controllers, logic in models or service objects
@@ -93,12 +109,12 @@ bin/rails s
 ---
 
 ## Future direction — DO NOT IMPLEMENT
-The original vision includes models not yet built. These **do not exist** and the current codebase uses `Property` + `RentalAgreement` instead. Do not reference these models in code or assume they exist. Listed only to show where the project may head:
+The original vision includes models not yet built. These **do not exist** in the codebase. Listed only to show where the project may head:
 ```
 Unit       # belongs_to :property; has_many :leases
 Tenant     # belongs_to :landlord; has_many :leases
 Lease      # belongs_to :unit, :tenant, :landlord
-Payment    # belongs_to :lease
 Task       # belongs_to :landlord; optional polymorphic taskable
 Document   # belongs_to :landlord; polymorphic documentable
 ```
+Note: `Payment` *is* built but belongs to `RentalAgreement`, not `Lease`.

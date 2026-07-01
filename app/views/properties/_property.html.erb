@@ -1,8 +1,11 @@
 <tr>
   <td class="font-medium">
-    <%= link_to property.name, property_path(property),
-        class: "link link-hover",
-        data: { turbo_frame: "_top" } %>
+    <%= link_to property_path(property), class: "link link-hover", data: { turbo_frame: "_top" } do %>
+      <%= property.name %>
+      <% if property.has_overdue_payments? %>
+        <span class="text-error ml-1" title="Has overdue payments">⚠</span>
+      <% end %>
+    <% end %>
   </td>
   <td>
     <% if property.rented? %>

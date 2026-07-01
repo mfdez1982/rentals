@@ -7,4 +7,8 @@ class Property < ApplicationRecord
   def rented?
     rental_agreements.active.exists?
   end
+
+  def has_overdue_payments?
+    rental_agreements.any?(&:has_overdue_payments?)
+  end
 end

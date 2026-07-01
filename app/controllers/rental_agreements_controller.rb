@@ -1,6 +1,10 @@
 class RentalAgreementsController < ApplicationController
   before_action :set_property
-  before_action :set_agreement, only: [:edit, :update, :destroy]
+  before_action :set_agreement, only: [:show, :edit, :update, :destroy]
+
+  def show
+    @payments = @agreement.payments.order(due_date: :asc).to_a
+  end
 
   def new
     @agreement = @property.rental_agreements.build

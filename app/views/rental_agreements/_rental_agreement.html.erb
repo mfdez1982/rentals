@@ -1,5 +1,10 @@
 <tr>
-  <td><%= agreement.start_date.strftime("%b %d, %Y") %></td>
+  <td>
+    <%= link_to agreement.start_date.strftime("%b %d, %Y"),
+        property_rental_agreement_path(property, agreement),
+        class: "link link-hover",
+        data: { turbo_frame: "_top" } %>
+  </td>
   <td><%= agreement.end_date.strftime("%b %d, %Y") %></td>
   <td><%= number_to_currency(agreement.rent_amount) %></td>
   <td>

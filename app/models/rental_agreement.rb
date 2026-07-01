@@ -1,5 +1,6 @@
 class RentalAgreement < ApplicationRecord
   belongs_to :property
+  has_many :payments, dependent: :destroy
 
   validates :start_date, :end_date, :rent_amount, presence: true
   validates :rent_amount, numericality: { greater_than: 0 }, allow_nil: true
@@ -36,6 +37,10 @@ class RentalAgreement < ApplicationRecord
     elsif upcoming? then "badge-info"
     else "badge-ghost"
     end
+  end
+
+  def has_overdue_payments?
+    payments.any?(&:overdue?)
   end
 
   private

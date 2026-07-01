@@ -1,0 +1,25 @@
+<tr>
+  <td><%= payment.due_date.strftime("%b %d, %Y") %></td>
+  <td>
+    <% if payment.paid_date %>
+      <%= payment.paid_date.strftime("%b %d, %Y") %>
+    <% elsif payment.overdue? %>
+      <span class="text-error font-medium">Overdue</span>
+    <% else %>
+      <span class="text-base-content/50">Unpaid</span>
+    <% end %>
+  </td>
+  <td><%= number_to_currency(payment.amount) %></td>
+  <td class="text-right">
+    <%= link_to "Edit", edit_property_rental_agreement_payment_path(property, agreement, payment),
+        class: "btn btn-ghost btn-xs mr-1",
+        data: { action: "click->payments#openEdit" } %>
+    <%= button_to "Delete", property_rental_agreement_payment_path(property, agreement, payment),
+        method: :delete,
+        class: "btn btn-error btn-xs",
+        form: { data: {
+          turbo_confirm: "Delete this payment? This cannot be undone.",
+          turbo_frame: dom_id(agreement, :payments)
+        } } %>
+  </td>
+</tr>
