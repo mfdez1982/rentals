@@ -7,6 +7,8 @@ class PropertiesController < ApplicationController
   end
 
   def show
+    @agreements = @property.rental_agreements.sorted
+    @new_agreement = @property.rental_agreements.build
   end
 
   def create
@@ -42,6 +44,6 @@ class PropertiesController < ApplicationController
   end
 
   def property_params
-    params.require(:property).permit(:name, :rented)
+    params.require(:property).permit(:name)
   end
 end

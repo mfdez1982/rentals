@@ -3,7 +3,9 @@ Rails.application.routes.draw do
 
   get "up" => "rails/health#show", as: :rails_health_check
 
-  resources :properties
+  resources :properties do
+    resources :rental_agreements, only: [:new, :create, :edit, :update, :destroy]
+  end
 
   root "properties#index"
 end

@@ -1,21 +1,26 @@
 <%= form_with model: property, data: local_assigns.fetch(:form_data, {}) do |f| %>
-  <% if property.errors.any? %>
-    <ul>
-      <% property.errors.full_messages.each do |msg| %>
-        <li><%= msg %></li>
+  <div class="space-y-4 max-w-md">
+    <% if property.errors.any? %>
+      <div role="alert" class="alert alert-error">
+        <ul class="list-disc list-inside text-sm">
+          <% property.errors.full_messages.each do |msg| %>
+            <li><%= msg %></li>
+          <% end %>
+        </ul>
+      </div>
+    <% end %>
+
+    <div>
+      <%= f.label :name, class: "label mb-1" %>
+      <%= f.text_field :name, class: "input input-bordered w-full",
+            placeholder: "e.g. 123 Main St" %>
+    </div>
+
+    <div class="flex gap-2 pt-2">
+      <%= f.submit class: "btn btn-primary" %>
+      <% if local_assigns[:cancel_path] %>
+        <%= link_to "Cancel", cancel_path, class: "btn btn-ghost" %>
       <% end %>
-    </ul>
-  <% end %>
-
-  <div>
-    <%= f.label :name %>
-    <%= f.text_field :name %>
+    </div>
   </div>
-
-  <div>
-    <%= f.label :rented, "Currently rented?" %>
-    <%= f.check_box :rented %>
-  </div>
-
-  <%= f.submit %>
 <% end %>

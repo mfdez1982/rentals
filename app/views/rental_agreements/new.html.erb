@@ -1,0 +1,31 @@
+<%= turbo_frame_tag dom_id(@property, :agreements) do %>
+  <% if @agreements.any? %>
+    <div class="overflow-x-auto mb-6">
+      <table class="table table-zebra">
+        <thead>
+          <tr>
+            <th>Start Date</th>
+            <th>End Date</th>
+            <th>Monthly Rent</th>
+            <th>Status</th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody>
+          <% @agreements.each do |agreement| %>
+            <%= turbo_frame_tag dom_id(agreement) do %>
+              <%= render "rental_agreement", property: @property, agreement: agreement %>
+            <% end %>
+          <% end %>
+        </tbody>
+      </table>
+    </div>
+  <% end %>
+
+  <div class="card bg-base-200">
+    <div class="card-body">
+      <h3 class="card-title text-base">New Rental Agreement</h3>
+      <%= render "form", property: @property, agreement: @agreement %>
+    </div>
+  </div>
+<% end %>

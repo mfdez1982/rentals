@@ -1,0 +1,34 @@
+<%= form_with model: [property, agreement], data: local_assigns.fetch(:form_data, {}) do |f| %>
+  <div class="space-y-4 max-w-md">
+    <% if agreement.errors.any? %>
+      <div role="alert" class="alert alert-error">
+        <ul class="list-disc list-inside text-sm">
+          <% agreement.errors.full_messages.each do |msg| %>
+            <li><%= msg %></li>
+          <% end %>
+        </ul>
+      </div>
+    <% end %>
+
+    <div>
+      <%= f.label :start_date, class: "label mb-1" %>
+      <%= f.date_field :start_date, class: "input input-bordered w-full" %>
+    </div>
+
+    <div>
+      <%= f.label :end_date, class: "label mb-1" %>
+      <%= f.date_field :end_date, class: "input input-bordered w-full" %>
+    </div>
+
+    <div>
+      <%= f.label :rent_amount, "Monthly Rent", class: "label mb-1" %>
+      <%= f.number_field :rent_amount, class: "input input-bordered w-full",
+            step: "0.01", min: "0.01", placeholder: "e.g. 1200.00" %>
+    </div>
+
+    <div class="flex gap-2 pt-2">
+      <%= f.submit class: "btn btn-primary" %>
+      <%= link_to "Cancel", property_path(property), class: "btn btn-ghost" %>
+    </div>
+  </div>
+<% end %>

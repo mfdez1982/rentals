@@ -1,0 +1,55 @@
+class RentalAgreement < ApplicationRecord
+  belongs_to :property
+
+  validates :start_date, :end_date, :rent_amount, presence: true
+  validates :rent_amount, numericality: { greater_than: 0 }, allow_nil: true
+  validate :end_date_after_start_date
+  validate :no_overlapping_agreements
+
+  scope :active,   -> { where("start_date <= ? AND end_date >= ?", Date.today, Date.today) }
+  scope :upcoming, -> { where("start_date > ?", Date.today) }
+  scope :expired,  -> { where("end_date < ?", Date.today) }
+  scope :sorted,   -> { order(start_date: :desc) }
+
+  def active?
+    start_date.present? && end_date.present? &&
+      start_date <= Date.today && end_date >= Date.today
+  end
+
+  def upcoming?
+    start_date.present? && start_date > Date.today
+  end
+
+  def expired?
+    end_date.present? && end_date < Date.today
+  end
+
+  def status
+    if active?   then "Active"
+    elsif upcoming? then "Upcoming"
+    else "Expired"
+    end
+  end
+
+  def status_badge_class
+    if active?   then "badge-success"
+    elsif upcoming? then "badge-info"
+    else "badge-ghost"
+    end
+  end
+
+  private
+
+  def end_date_after_start_date
+    return unless start_date && end_date
+    errors.add(:end_date, "must be after start date") if end_date <= start_date
+  end
+
+  def no_overlapping_agreements
+    return unless start_date && end_date && property_id
+    scope = property.rental_agreements
+                    .where("start_date <= ? AND end_date >= ?", end_date, start_date)
+    scope = scope.where.not(id: id) if persisted?
+    errors.add(:base, "overlaps with an existing agreement for this property") if scope.exists?
+  end
+end

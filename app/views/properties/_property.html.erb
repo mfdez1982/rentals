@@ -1,10 +1,22 @@
 <tr>
-  <td><%= property.name %></td>
-  <td><%= property.rented? ? "Rented" : "Available" %></td>
+  <td class="font-medium">
+    <%= link_to property.name, property_path(property),
+        class: "link link-hover",
+        data: { turbo_frame: "_top" } %>
+  </td>
   <td>
+    <% if property.rented? %>
+      <span class="badge badge-warning badge-sm">Rented</span>
+    <% else %>
+      <span class="badge badge-success badge-sm">Available</span>
+    <% end %>
+  </td>
+  <td class="text-right">
     <%= link_to "Edit", edit_property_path(property),
+        class: "btn btn-ghost btn-xs mr-1",
         data: { action: "click->properties#openEdit" } %>
     <%= button_to "Delete", property_path(property), method: :delete,
+        class: "btn btn-error btn-xs",
         form: { data: { turbo_confirm: "Delete \"#{property.name}\"? This cannot be undone." } } %>
   </td>
 </tr>
