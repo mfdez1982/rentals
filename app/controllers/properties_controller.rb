@@ -9,6 +9,8 @@ class PropertiesController < ApplicationController
   def show
     @agreements = @property.rental_agreements.sorted
     @new_agreement = @property.rental_agreements.build
+    @expenses = @property.expenses.order(date: :desc)
+    @new_expense = @property.expenses.build
   end
 
   def create

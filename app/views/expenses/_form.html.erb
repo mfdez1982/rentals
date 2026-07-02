@@ -1,0 +1,49 @@
+<%= form_with model: [property, expense] do |f| %>
+  <div class="space-y-4 max-w-md">
+    <% if expense.errors.any? %>
+      <div role="alert" class="alert alert-error">
+        <ul class="list-disc list-inside text-sm">
+          <% expense.errors.full_messages.each do |msg| %>
+            <li><%= msg %></li>
+          <% end %>
+        </ul>
+      </div>
+    <% end %>
+
+    <div>
+      <%= f.label :date, class: "label mb-1" %>
+      <%= f.date_field :date, class: "input input-bordered w-full" %>
+    </div>
+
+    <div>
+      <%= f.label :category, class: "label mb-1" %>
+      <%= f.select :category,
+            Expense.categories.keys.map { |k| [k.humanize, k] },
+            { include_blank: "Select a category" },
+            class: "select select-bordered w-full" %>
+    </div>
+
+    <div>
+      <%= f.label :amount, class: "label mb-1" %>
+      <%= f.number_field :amount, class: "input input-bordered w-full",
+            step: "0.01", min: "0.01", placeholder: "e.g. 250.00" %>
+    </div>
+
+    <div>
+      <%= f.label :description, "Description (optional)", class: "label mb-1" %>
+      <%= f.text_field :description, class: "input input-bordered w-full",
+            placeholder: "e.g. Annual home insurance renewal" %>
+    </div>
+
+    <div>
+      <%= f.label :invoice_url, "Invoice URL (optional)", class: "label mb-1" %>
+      <%= f.url_field :invoice_url, class: "input input-bordered w-full",
+            placeholder: "https://..." %>
+    </div>
+
+    <div class="flex gap-2 pt-2">
+      <%= f.submit class: "btn btn-primary" %>
+      <%= link_to "Cancel", property_path(property), class: "btn btn-ghost" %>
+    </div>
+  </div>
+<% end %>
