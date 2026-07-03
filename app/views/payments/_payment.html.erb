@@ -16,7 +16,7 @@
           class: "icon-btn",
           title: "Edit",
           style: "display:inline-flex; color:inherit; cursor:pointer;",
-          data: { action: "click->payments#openEdit" } do %>
+          data: { action: "click->payments#openEdit", turbo_frame: dom_id(payment) } do %>
         <%= heroicon "pencil", variant: :outline %>
       <% end %>
       <%= button_to property_rental_agreement_payment_path(property, agreement, payment),
