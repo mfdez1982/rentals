@@ -8,9 +8,16 @@
   <td><%= agreement.end_date.strftime("%b %d, %Y") %></td>
   <td><%= number_to_currency(agreement.rent_amount) %></td>
   <td>
-    <span class="badge badge-sm <%= agreement.status_badge_class %>">
-      <%= agreement.status %>
-    </span>
+    <div class="flex items-center gap-2">
+      <span class="badge badge-sm <%= agreement.status_badge_class %>">
+        <%= agreement.status %>
+      </span>
+      <% if agreement.has_overdue_payments? %>
+        <span class="badge badge-sm badge-error">
+          Overdue Payments
+        </span>
+      <% end %>
+    </div>
   </td>
   <td class="text-right">
     <div style="display:inline-flex; align-items:center; gap:8px;">
