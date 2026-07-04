@@ -20,13 +20,6 @@
   </td>
   <td class="text-right">
     <div style="display:inline-flex; align-items:center; gap:8px;">
-      <%= link_to edit_property_path(property),
-          class: "icon-btn",
-          title: "Edit",
-          style: "display:inline-flex; color:inherit; cursor:pointer;",
-          data: { action: "click->properties#openEdit" } do %>
-        <%= heroicon "pencil", variant: :outline %>
-      <% end %>
       <%= button_to property_path(property), method: :delete,
           class: "icon-btn",
           title: "Delete",

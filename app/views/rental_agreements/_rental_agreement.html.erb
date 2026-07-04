@@ -21,13 +21,6 @@
   </td>
   <td class="text-right">
     <div style="display:inline-flex; align-items:center; gap:8px;">
-      <%= link_to edit_property_rental_agreement_path(property, agreement),
-          class: "icon-btn",
-          title: "Edit",
-          style: "display:inline-flex; color:inherit; cursor:pointer;",
-          data: { action: "click->rental-agreements#openEdit" } do %>
-        <%= heroicon "pencil", variant: :outline %>
-      <% end %>
       <%= button_to property_rental_agreement_path(property, agreement),
           method: :delete,
           class: "icon-btn",

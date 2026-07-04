@@ -1,29 +1,19 @@
-<% if params[:inline] %>
-  <%= turbo_frame_tag dom_id(@property, :name) do %>
-    <%= form_with model: @property, data: { controller: "inline-edit", inline_edit_target: "form", turbo_frame: dom_id(@property, :name) } do |f| %>
-      <input type="hidden" name="inline" value="true">
-      <div class="flex items-center gap-2">
-        <%= f.text_field :name,
-              class: "input input-bordered input-sm bg-base-100 w-96",
-              data: { inline_edit_target: "input", action: "keydown->inline-edit#submit blur->inline-edit#blur" } %>
+<%= turbo_frame_tag dom_id(@property, :name) do %>
+  <%= form_with model: @property, data: { controller: "inline-edit", inline_edit_target: "form", turbo_frame: dom_id(@property, :name) } do |f| %>
+    <input type="hidden" name="inline" value="true">
+    <div class="flex items-center gap-2">
+      <%= f.text_field :name,
+            class: "input input-bordered input-sm bg-base-100 w-96",
+            data: { inline_edit_target: "input", action: "keydown->inline-edit#submit blur->inline-edit#blur" } %>
+    </div>
+    <% if @property.errors.any? %>
+      <div role="alert" class="alert alert-error text-sm mt-2">
+        <ul class="list-disc list-inside">
+          <% @property.errors.full_messages.each do |msg| %>
+            <li><%= msg %></li>
+          <% end %>
+        </ul>
       </div>
-      <% if @property.errors.any? %>
-        <div role="alert" class="alert alert-error text-sm mt-2">
-          <ul class="list-disc list-inside">
-            <% @property.errors.full_messages.each do |msg| %>
-              <li><%= msg %></li>
-            <% end %>
-          </ul>
-        </div>
-      <% end %>
     <% end %>
-  <% end %>
-<% else %>
-  <%= turbo_frame_tag dom_id(@property) do %>
-    <td colspan="3" class="bg-base-200 p-4">
-      <%= render "form", property: @property,
-            form_data: { turbo_frame: "_top" },
-            cancel_path: property_path(@property) %>
-    </td>
   <% end %>
 <% end %>
