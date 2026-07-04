@@ -5,31 +5,25 @@
 <div class="mb-6">
   <div class="flex items-center gap-3">
     <%= turbo_frame_tag dom_id(@agreement, :dates) do %>
-      <div class="flex items-center gap-2">
-        <h1 class="text-2xl font-bold">
+      <div class="flex items-center gap-2"
+           data-controller="rental-agreements"
+           data-action="dblclick->rental-agreements#editDates"
+           data-rental-agreements-edit-url="<%= edit_property_rental_agreement_path(@property, @agreement, inline: "dates") %>"
+           data-rental-agreements-frame-id="<%= dom_id(@agreement, :dates) %>">
+        <h1 class="text-2xl font-bold cursor-pointer hover:opacity-75 transition-opacity" title="Double-click to edit">
           <%= format_date(@agreement.start_date) %> – <%= format_date(@agreement.end_date) %>
         </h1>
-        <%= link_to edit_property_rental_agreement_path(@property, @agreement, inline: "dates"),
-              data: { turbo_frame: dom_id(@agreement, :dates) },
-              class: "btn btn-ghost btn-sm" do %>
-          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-4 h-4">
-            <path stroke-linecap="round" stroke-linejoin="round" d="M16.862 4.487l1.687-1.688a1.875 1.875 0 112.652 2.652L10.582 16.07a4.5 4.5 0 01-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 011.13-1.897l8.932-8.931zm0 0L19.5 7.125M18 9.75a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0z" />
-          </svg>
-        <% end %>
       </div>
     <% end %>
   </div>
   <div class="flex flex-wrap items-center gap-3 mt-2">
     <%= turbo_frame_tag dom_id(@agreement, :rent) do %>
-      <div class="flex items-center gap-2">
-        <span class="text-base-content/70"><%= number_to_currency(@agreement.rent_amount) %>/mo</span>
-        <%= link_to edit_property_rental_agreement_path(@property, @agreement, inline: "rent"),
-              data: { turbo_frame: dom_id(@agreement, :rent) },
-              class: "btn btn-ghost btn-sm" do %>
-          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-4 h-4">
-            <path stroke-linecap="round" stroke-linejoin="round" d="M16.862 4.487l1.687-1.688a1.875 1.875 0 112.652 2.652L10.582 16.07a4.5 4.5 0 01-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 011.13-1.897l8.932-8.931zm0 0L19.5 7.125M18 9.75a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0z" />
-          </svg>
-        <% end %>
+      <div class="flex items-center gap-2"
+           data-controller="rental-agreements"
+           data-action="dblclick->rental-agreements#editRent"
+           data-rental-agreements-edit-url="<%= edit_property_rental_agreement_path(@property, @agreement, inline: "rent") %>"
+           data-rental-agreements-frame-id="<%= dom_id(@agreement, :rent) %>">
+        <span class="text-base-content/70 cursor-pointer hover:opacity-75 transition-opacity" title="Double-click to edit"><%= number_to_currency(@agreement.rent_amount) %>/mo</span>
       </div>
     <% end %>
     <span class="badge badge-sm <%= @agreement.status_badge_class %>"><%= @agreement.status %></span>

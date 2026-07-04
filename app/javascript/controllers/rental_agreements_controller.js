@@ -11,4 +11,22 @@ export default class extends Controller {
     })
     if (clickedFrame) clickedFrame.dataset.editing = "true"
   }
+
+  editDates(event) {
+    const frameId = event.currentTarget.dataset.rentalAgreementsFrameId
+    const editUrl = event.currentTarget.dataset.rentalAgreementsEditUrl
+    const frame = document.querySelector(`turbo-frame#${frameId}`)
+    if (frame && editUrl) {
+      frame.src = editUrl
+    }
+  }
+
+  editRent(event) {
+    const frameId = event.currentTarget.dataset.rentalAgreementsFrameId
+    const editUrl = event.currentTarget.dataset.rentalAgreementsEditUrl
+    const frame = document.querySelector(`turbo-frame#${frameId}`)
+    if (frame && editUrl) {
+      frame.src = editUrl
+    }
+  }
 }
