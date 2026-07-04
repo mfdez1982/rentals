@@ -1,5 +1,5 @@
 class PropertiesController < ApplicationController
-  before_action :set_property, only: [:show, :edit, :update, :destroy]
+  before_action :set_property, only: [:show, :edit, :update, :destroy, :tax_report]
 
   def index
     @properties = current_landlord.properties
@@ -11,6 +11,11 @@ class PropertiesController < ApplicationController
     @new_agreement = @property.rental_agreements.build
     @expenses = @property.expenses.order(date: :desc)
     @new_expense = @property.expenses.build
+  end
+
+  def tax_report
+    @year = params[:year].to_i.positive? ? params[:year].to_i : Date.today.year
+    @report = TaxReportGenerator.new(@property, @year).generate
   end
 
   def create

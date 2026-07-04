@@ -15,7 +15,12 @@
       "Bash(gem install *)",
       "Bash(sudo apt-get install -y ruby-dev build-essential libpq-dev postgresql postgresql-client)",
       "Bash(gem env *)",
-      "Bash(/home/node/.local/share/gem/ruby/3.3.0/bin/rails new *)"
+      "Bash(/home/node/.local/share/gem/ruby/3.3.0/bin/rails new *)",
+      "Bash(bin/rspec *)",
+      "Bash(ruby -c app/services/tax_report_generator.rb)",
+      "Bash(ruby -c app/controllers/properties_controller.rb)",
+      "Bash(ruby -c config/routes.rb)",
+      "Bash(ruby *)"
     ]
   }
 }
