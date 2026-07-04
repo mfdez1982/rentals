@@ -28,7 +28,7 @@ class PropertiesController < ApplicationController
 
   def update
     if @property.update(property_params)
-      redirect_to properties_path
+      redirect_to params[:inline] ? property_path(@property) : properties_path
     else
       render :edit, status: :unprocessable_entity
     end

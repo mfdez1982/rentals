@@ -31,7 +31,7 @@ class RentalAgreementsController < ApplicationController
 
   def update
     if @agreement.update(agreement_params)
-      redirect_to property_path(@property)
+      redirect_to params[:inline] ? property_rental_agreement_path(@property, @agreement) : property_path(@property)
     else
       render :edit, status: :unprocessable_entity
     end
