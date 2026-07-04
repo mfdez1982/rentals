@@ -1,8 +1,8 @@
 <tr>
-  <td><%= payment.due_date.strftime("%b %d, %Y") %></td>
+  <td><%= format_date(payment.due_date) %></td>
   <td>
     <% if payment.paid_date %>
-      <%= payment.paid_date.strftime("%b %d, %Y") %>
+      <%= format_date(payment.paid_date) %>
     <% elsif payment.overdue? %>
       <span class="text-error font-medium">Overdue</span>
     <% else %>

@@ -1,5 +1,5 @@
 <tr>
-  <td><%= expense.date.strftime("%b %d, %Y") %></td>
+  <td><%= format_date(expense.date) %></td>
   <td><%= expense.category.humanize %></td>
   <td><%= expense.description %></td>
   <td><%= number_to_currency(expense.amount) %></td>
