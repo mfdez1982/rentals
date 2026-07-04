@@ -2,17 +2,21 @@
   <td class="font-medium">
     <%= link_to property_path(property), class: "link link-hover", data: { turbo_frame: "_top" } do %>
       <%= property.name %>
-      <% if property.has_overdue_payments? %>
-        <span class="text-error ml-1" title="Has overdue payments">⚠</span>
-      <% end %>
     <% end %>
   </td>
   <td>
-    <% if property.rented? %>
-      <span class="badge badge-warning badge-sm">Rented</span>
-    <% else %>
-      <span class="badge badge-success badge-sm">Available</span>
-    <% end %>
+    <div class="flex items-center gap-2">
+      <% if property.rented? %>
+        <span class="badge badge-warning badge-sm">Rented</span>
+      <% else %>
+        <span class="badge badge-success badge-sm">Available</span>
+      <% end %>
+      <% if property.has_overdue_payments? %>
+        <span class="badge badge-sm badge-error">
+          Overdue Payments
+        </span>
+      <% end %>
+    </div>
   </td>
   <td class="text-right">
     <div style="display:inline-flex; align-items:center; gap:8px;">
