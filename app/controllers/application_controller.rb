@@ -2,17 +2,10 @@ class ApplicationController < ActionController::Base
   allow_browser versions: :modern
   stale_when_importmap_changes
 
-  before_action :auto_login_dev_user if Rails.env.development?
   before_action :authenticate_user!
   before_action :set_locale
 
   private
-
-  def auto_login_dev_user
-    return if user_signed_in?
-    dev_user = User.find_by(email: "dev@example.com")
-    sign_in dev_user if dev_user
-  end
 
   def set_locale
     I18n.locale = session[:locale] || I18n.default_locale
@@ -27,4 +20,8 @@ class ApplicationController < ActionController::Base
     [:en, :es]
   end
   helper_method :available_locales
+
+  def after_sign_in_path_for(resource)
+    resource.admin? ? backoffice_root_path : properties_path
+  end
 end

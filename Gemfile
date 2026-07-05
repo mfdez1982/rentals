@@ -65,3 +65,4 @@ end
 
 gem "tailwindcss-rails", "~> 4.6"
 gem "heroicons-ruby"
+gem "administrate"

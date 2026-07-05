@@ -1,6 +1,21 @@
 Rails.application.routes.draw do
   devise_for :users
 
+  admin_constraint = lambda { |request| request.env["warden"].authenticate(scope: :user)&.admin? }
+
+  constraints admin_constraint do
+    namespace :backoffice do
+      resources :expenses
+      resources :landlords
+      resources :payments
+      resources :properties
+      resources :rental_agreements
+      resources :users
+
+      root to: "expenses#index"
+    end
+  end
+
   get "up" => "rails/health#show", as: :rails_health_check
   post "set_locale" => "locales#set", as: :set_locale
 
