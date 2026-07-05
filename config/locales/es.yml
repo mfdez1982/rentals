@@ -1,0 +1,177 @@
+es:
+  app_name: Alquileres
+
+  date:
+    formats:
+      default: "%d/%m/%Y"
+      short: "%d %b"
+      long: "%d de %B de %Y"
+      db: "%Y-%m-%d"
+    month_names:
+      - ~
+      - enero
+      - febrero
+      - marzo
+      - abril
+      - mayo
+      - junio
+      - julio
+      - agosto
+      - septiembre
+      - octubre
+      - noviembre
+      - diciembre
+    abbr_month_names:
+      - ~
+      - ene
+      - feb
+      - mar
+      - abr
+      - may
+      - jun
+      - jul
+      - ago
+      - sep
+      - oct
+      - nov
+      - dic
+    day_names:
+      - domingo
+      - lunes
+      - martes
+      - miércoles
+      - jueves
+      - viernes
+      - sábado
+    abbr_day_names:
+      - dom
+      - lun
+      - mar
+      - mié
+      - jue
+      - vie
+      - sáb
+
+  time:
+    formats:
+      default: "%a, %d de %b de %Y %H:%M:%S %z"
+      short: "%d de %b %H:%M"
+      long: "%d de %B de %Y %H:%M"
+      db: "%Y-%m-%d %H:%M:%S"
+    am: am
+    pm: pm
+
+  # Navigation & Layout
+  navigation:
+    app_name: Alquileres
+    log_out: Cerrar sesión
+    log_in: Iniciar sesión
+    sign_up: Registrarse
+    language: Idioma
+
+  # Properties
+  properties:
+    my_properties: Mis Propiedades
+    add_property: Añadir Propiedad
+    name: Nombre
+    status: Estado
+    rented: Alquilada
+    available: Disponible
+    overdue_payments: Pagos Vencidos
+    no_properties: No hay propiedades aún.
+    no_properties_hint: Añade la primera arriba para empezar.
+    form:
+      name_placeholder: p. ej. 123 Calle Principal
+      name_label: Nombre
+    delete_confirm: "¿Eliminar \"%{name}\"? Esta acción no se puede deshacer."
+
+  # Rental Agreements
+  rental_agreements:
+    new_rental_agreement: Nuevo Contrato de Alquiler
+    start_date: Fecha de Inicio
+    end_date: Fecha de Finalización
+    monthly_rent: Renta Mensual
+    rent_amount_placeholder: p. ej. 1200.00
+    no_agreements: No hay contratos aún.
+    delete_confirm: "¿Eliminar este contrato? Esta acción no se puede deshacer."
+    renew: Renovar
+
+  # Payments
+  payments:
+    payments: Pagos
+    due_date: Fecha de Vencimiento
+    paid_date: Fecha de Pago
+    paid_date_hint: "(deja en blanco si no está pagado)"
+    amount: Cantidad
+    amount_placeholder: p. ej. 1200.00
+    overdue: Vencido
+    unpaid: No Pagado
+    overdue_badge: "%{count} pago vencido"
+    overdue_badge_plural: "%{count} pagos vencidos"
+    no_payments: No hay pagos registrados aún. Añade uno abajo.
+    add_payments: Añadir Pagos
+    table_headers:
+      due_date: Fecha de Vencimiento
+      paid_date: Fecha de Pago
+      amount: Cantidad
+    delete_confirm: "¿Eliminar este pago? Esta acción no se puede deshacer."
+    create_recurring:
+      start_date: Fecha de Inicio
+      count: Número de meses
+      amount: Cantidad
+
+  # Dashboard
+  dashboard:
+    title: Panel de Control
+    welcome: "Bienvenido, %{name}."
+
+  # Tax Report
+  tax_report:
+    title: "Informe Fiscal"
+    select_year: "Seleccionar Año:"
+    active_rental_days: Días de Alquiler Activos
+    active_rental_days_hint: "de %{total} días en %{year}"
+    pro_rata_ratio: Proporción Pro Rata
+    pro_rata_ratio_hint: "de los gastos son deducibles"
+    total_gross_income: Ingresos Brutos Totales
+    total_gross_income_hint: "de todos los pagos en %{year}"
+    deductible_expenses: Gastos Deducibles
+    no_expenses: "No hay gastos registrados para %{year}."
+    table_headers:
+      date: Fecha
+      category: Categoría
+      description: Descripción
+      original_amount: Cantidad Original
+      deductible_amount: Cantidad Deducible
+    total_row: Total
+    pro_rata_explanation: "La cantidad deducible se calcula multiplicando cada gasto por la proporción pro rata (%{ratio}), que representa la proporción del año durante el cual la propiedad estuvo alquilada activamente."
+
+  # Expenses
+  expenses:
+    date: Fecha
+    category: Categoría
+    select_category: Seleccionar una categoría
+    amount: Cantidad
+    amount_placeholder: p. ej. 250.00
+    description: Descripción
+    description_hint: "(opcional)"
+    description_placeholder: p. ej. Renovación de seguro anual del hogar
+    invoice_url: URL de Factura
+    invoice_url_hint: "(opcional)"
+    invoice_url_placeholder: "https://..."
+    delete_confirm: "¿Eliminar este gasto? Esta acción no se puede deshacer."
+
+  # Forms & Buttons
+  forms:
+    errors:
+      title: "Por favor corrige los siguientes errores:"
+    buttons:
+      submit: Guardar
+      cancel: Cancelar
+      delete: Eliminar
+      edit: Editar
+
+  # Common
+  common:
+    back: "←"
+    my_properties_link: "← Mis Propiedades"

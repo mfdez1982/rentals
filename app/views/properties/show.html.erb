@@ -4,7 +4,7 @@
 <% end %>
 
 <div class="mb-6">
-  <%= link_to "← My Properties", properties_path, class: "btn btn-ghost btn-sm" %>
+  <%= link_to t("common.my_properties_link"), properties_path, class: "btn btn-ghost btn-sm" %>
 </div>
 
 <div class="flex items-center justify-between mb-6">
@@ -21,7 +21,7 @@
 
 <div class="card bg-base-100 shadow-sm" data-controller="rental-agreements">
   <div class="card-body">
-    <h2 class="card-title text-base mb-4">Rental Agreements</h2>
+    <h2 class="card-title text-base mb-4"><%= t("rental_agreements.new_rental_agreement") %></h2>
 
     <%= turbo_frame_tag dom_id(@property, :agreements) do %>
       <% if @agreements.any? %>
@@ -29,10 +29,10 @@
           <table class="table table-zebra">
             <thead>
               <tr>
-                <th>Start Date</th>
-                <th>End Date</th>
-                <th>Monthly Rent</th>
-                <th>Status</th>
+                <th><%= t("rental_agreements.start_date") %></th>
+                <th><%= t("rental_agreements.end_date") %></th>
+                <th><%= t("rental_agreements.monthly_rent") %></th>
+                <th><%= t("properties.status") %></th>
                 <th></th>
               </tr>
             </thead>
@@ -47,13 +47,13 @@
         </div>
       <% else %>
         <div class="text-center py-8 text-base-content/50 mb-6">
-          <p class="text-sm">No rental agreements yet. Add one below.</p>
+          <p class="text-sm"><%= t("rental_agreements.no_agreements") %></p>
         </div>
       <% end %>
 
       <div class="card bg-base-200">
         <div class="card-body">
-          <h3 class="card-title text-base">Add Rental Agreement</h3>
+          <h3 class="card-title text-base"><%= t("rental_agreements.new_rental_agreement") %></h3>
           <%= render "rental_agreements/form", property: @property, agreement: @new_agreement %>
         </div>
       </div>
@@ -63,7 +63,7 @@
 
 <div class="card bg-base-100 shadow-sm mt-6" data-controller="expenses">
   <div class="card-body">
-    <h2 class="card-title text-base mb-4">Expenses</h2>
+    <h2 class="card-title text-base mb-4"><%= t("tax_report.deductible_expenses") %></h2>
 
     <%= turbo_frame_tag dom_id(@property, :expenses) do %>
       <% if @expenses.any? %>
@@ -71,10 +71,10 @@
           <table class="table table-zebra">
             <thead>
               <tr>
-                <th>Date</th>
-                <th>Category</th>
-                <th>Description</th>
-                <th>Amount</th>
+                <th><%= t("expenses.date") %></th>
+                <th><%= t("expenses.category") %></th>
+                <th><%= t("expenses.description") %></th>
+                <th><%= t("expenses.amount") %></th>
                 <th></th>
               </tr>
             </thead>
@@ -89,13 +89,13 @@
         </div>
       <% else %>
         <div class="text-center py-8 text-base-content/50 mb-6">
-          <p class="text-sm">No expenses recorded yet. Add one below.</p>
+          <p class="text-sm"><%= t("expenses.no_expenses", year: Date.today.year) %></p>
         </div>
       <% end %>
 
       <div class="card bg-base-200">
         <div class="card-body">
-          <h3 class="card-title text-base">Add Expense</h3>
+          <h3 class="card-title text-base"><%= t("tax_report.deductible_expenses") %></h3>
           <%= render "expenses/form", property: @property, expense: @new_expense %>
         </div>
       </div>

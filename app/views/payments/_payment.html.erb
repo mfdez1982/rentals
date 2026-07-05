@@ -4,9 +4,9 @@
     <% if payment.paid_date %>
       <%= format_date(payment.paid_date) %>
     <% elsif payment.overdue? %>
-      <span class="text-error font-medium">Overdue</span>
+      <span class="text-error font-medium"><%= t("payments.overdue") %></span>
     <% else %>
-      <span class="text-base-content/50">Unpaid</span>
+      <span class="text-base-content/50"><%= t("payments.unpaid") %></span>
     <% end %>
   </td>
   <td><%= number_to_currency(payment.amount) %></td>
@@ -14,7 +14,7 @@
     <div style="display:inline-flex; align-items:center; gap:8px;">
       <%= link_to edit_property_rental_agreement_payment_path(property, agreement, payment),
           class: "icon-btn",
-          title: "Edit",
+          title: t("forms.buttons.edit"),
           style: "display:inline-flex; color:inherit; cursor:pointer;",
           data: { action: "click->payments#openEdit", turbo_frame: dom_id(payment) } do %>
         <%= heroicon "pencil", variant: :outline %>
@@ -22,10 +22,10 @@
       <%= button_to property_rental_agreement_payment_path(property, agreement, payment),
           method: :delete,
           class: "icon-btn",
-          title: "Delete",
+          title: t("forms.buttons.delete"),
           style: "display:inline-flex; color:inherit; cursor:pointer; background:none; border:none; padding:0;",
           form: { data: {
-            turbo_confirm: "Delete this payment? This cannot be undone.",
+            turbo_confirm: t("payments.delete_confirm"),
             turbo_frame: dom_id(agreement, :payments)
           } } do %>
         <%= heroicon "trash", variant: :outline %>

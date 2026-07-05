@@ -2,6 +2,7 @@ Rails.application.routes.draw do
   devise_for :users
 
   get "up" => "rails/health#show", as: :rails_health_check
+  post "set_locale" => "locales#set", as: :set_locale
 
   resources :properties do
     member do

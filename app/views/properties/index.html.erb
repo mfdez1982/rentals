@@ -1,10 +1,10 @@
 <div class="flex items-center justify-between mb-6">
-  <h1 class="text-2xl font-bold">My Properties</h1>
+  <h1 class="text-2xl font-bold"><%= t("properties.my_properties") %></h1>
 </div>
 
 <div class="card bg-base-100 shadow-sm mb-8">
   <div class="card-body">
-    <h2 class="card-title text-base">Add a Property</h2>
+    <h2 class="card-title text-base"><%= t("properties.add_property") %></h2>
     <%= render "form", property: @new_property %>
   </div>
 </div>
@@ -15,8 +15,8 @@
       <table class="table table-zebra">
         <thead>
           <tr>
-            <th>Name</th>
-            <th>Status</th>
+            <th><%= t("properties.name") %></th>
+            <th><%= t("properties.status") %></th>
             <th></th>
           </tr>
         </thead>
@@ -32,7 +32,7 @@
   </div>
 <% else %>
   <div class="text-center py-16 text-base-content/50">
-    <p class="text-lg">No properties yet.</p>
-    <p class="text-sm mt-1">Add your first one above to get started.</p>
+    <p class="text-lg"><%= t("properties.no_properties") %></p>
+    <p class="text-sm mt-1"><%= t("properties.no_properties_hint") %></p>
   </div>
 <% end %>

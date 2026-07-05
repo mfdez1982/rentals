@@ -11,39 +11,39 @@
     <% end %>
 
     <div>
-      <%= f.label :date, class: "label mb-1" %>
+      <%= f.label :date, t("expenses.date"), class: "label mb-1" %>
       <%= f.date_field :date, class: "input input-bordered w-full" %>
     </div>
 
     <div>
-      <%= f.label :category, class: "label mb-1" %>
+      <%= f.label :category, t("expenses.category"), class: "label mb-1" %>
       <%= f.select :category,
             Expense.categories.keys.map { |k| [k.humanize, k] },
-            { include_blank: "Select a category" },
+            { include_blank: t("expenses.select_category") },
             class: "select select-bordered w-full" %>
     </div>
 
     <div>
-      <%= f.label :amount, class: "label mb-1" %>
+      <%= f.label :amount, t("expenses.amount"), class: "label mb-1" %>
       <%= f.number_field :amount, class: "input input-bordered w-full",
-            step: "0.01", min: "0.01", placeholder: "e.g. 250.00" %>
+            step: "0.01", min: "0.01", placeholder: t("expenses.amount_placeholder") %>
     </div>
 
     <div>
-      <%= f.label :description, "Description (optional)", class: "label mb-1" %>
+      <%= f.label :description, t("expenses.description_hint"), class: "label mb-1" %>
       <%= f.text_field :description, class: "input input-bordered w-full",
-            placeholder: "e.g. Annual home insurance renewal" %>
+            placeholder: t("expenses.description_placeholder") %>
     </div>
 
     <div>
-      <%= f.label :invoice_url, "Invoice URL (optional)", class: "label mb-1" %>
+      <%= f.label :invoice_url, t("expenses.invoice_url_hint"), class: "label mb-1" %>
       <%= f.url_field :invoice_url, class: "input input-bordered w-full",
-            placeholder: "https://..." %>
+            placeholder: t("expenses.invoice_url_placeholder") %>
     </div>
 
     <div class="flex gap-2 pt-2">
       <%= f.submit class: "btn btn-primary" %>
-      <%= link_to "Cancel", property_path(property), class: "btn btn-ghost" %>
+      <%= link_to t("forms.buttons.cancel"), property_path(property), class: "btn btn-ghost" %>
     </div>
   </div>
 <% end %>

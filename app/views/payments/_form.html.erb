@@ -11,24 +11,24 @@
     <% end %>
 
     <div>
-      <%= f.label :due_date, class: "label mb-1" %>
+      <%= f.label :due_date, t("payments.due_date"), class: "label mb-1" %>
       <%= f.date_field :due_date, class: "input input-bordered w-full" %>
     </div>
 
     <div>
-      <%= f.label :paid_date, "Paid Date (leave blank if unpaid)", class: "label mb-1" %>
+      <%= f.label :paid_date, t("payments.paid_date_hint"), class: "label mb-1" %>
       <%= f.date_field :paid_date, class: "input input-bordered w-full" %>
     </div>
 
     <div>
-      <%= f.label :amount, class: "label mb-1" %>
+      <%= f.label :amount, t("payments.amount"), class: "label mb-1" %>
       <%= f.number_field :amount, class: "input input-bordered w-full",
-            step: "0.01", min: "0.01", placeholder: "e.g. 1200.00" %>
+            step: "0.01", min: "0.01", placeholder: t("payments.amount_placeholder") %>
     </div>
 
     <div class="flex gap-2 pt-2">
       <%= f.submit class: "btn btn-primary" %>
-      <%= link_to "Cancel", property_rental_agreement_path(property, agreement), class: "btn btn-ghost" %>
+      <%= link_to t("forms.buttons.cancel"), property_rental_agreement_path(property, agreement), class: "btn btn-ghost" %>
     </div>
   </div>
 <% end %>

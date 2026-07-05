@@ -1,16 +1,36 @@
 <div class="navbar bg-base-100 shadow-sm px-4">
   <div class="flex-1">
-    <%= link_to "Rentals", root_path, class: "text-xl font-bold text-primary" %>
+    <%= link_to t("navigation.app_name"), root_path, class: "text-xl font-bold text-primary" %>
   </div>
   <div class="flex-none gap-2">
+    <!-- Language Selector -->
+    <div class="dropdown dropdown-end">
+      <button class="btn btn-ghost btn-sm">
+        <%= t("navigation.language") %>
+      </button>
+      <ul class="dropdown-content menu bg-base-100 rounded-box z-[1] w-52 p-2 shadow">
+        <% available_locales.each do |locale| %>
+          <li>
+            <% if I18n.locale.to_s == locale.to_s %>
+              <a class="active"><%= locale.to_s.upcase %></a>
+            <% else %>
+              <%= button_to set_locale_path(locale: locale), method: :post, class: "btn btn-ghost btn-sm w-full justify-start" do %>
+                <%= locale.to_s.upcase %>
+              <% end %>
+            <% end %>
+          </li>
+        <% end %>
+      </ul>
+    </div>
+
     <% if user_signed_in? %>
       <span class="text-sm text-base-content/70"><%= current_user.email %></span>
-      <%= link_to "Log out", destroy_user_session_path,
+      <%= link_to t("navigation.log_out"), destroy_user_session_path,
           data: { turbo_method: :delete },
           class: "btn btn-ghost btn-sm" %>
     <% else %>
-      <%= link_to "Log in", new_user_session_path, class: "btn btn-ghost btn-sm" %>
-      <%= link_to "Sign up", new_user_registration_path, class: "btn btn-primary btn-sm" %>
+      <%= link_to t("navigation.log_in"), new_user_session_path, class: "btn btn-ghost btn-sm" %>
+      <%= link_to t("navigation.sign_up"), new_user_registration_path, class: "btn btn-primary btn-sm" %>
     <% end %>
   </div>
 </div>

@@ -1,31 +1,131 @@
-# Files in the config/locales directory are used for internationalization and
-# are automatically loaded by Rails. If you want to use locales other than
-# English, add the necessary files in this directory.
-#
-# To use the locales, use `I18n.t`:
-#
-#     I18n.t "hello"
-#
-# In views, this is aliased to just `t`:
-#
-#     <%= t("hello") %>
-#
-# To use a different locale, set it with `I18n.locale`:
-#
-#     I18n.locale = :es
-#
-# This would use the information in config/locales/es.yml.
-#
-# To learn more about the API, please read the Rails Internationalization guide
-# at https://guides.rubyonrails.org/i18n.html.
-#
-# Be aware that YAML interprets the following case-insensitive strings as
-# booleans: `true`, `false`, `on`, `off`, `yes`, `no`. Therefore, these strings
-# must be quoted to be interpreted as strings. For example:
-#
-#     en:
-#       "yes": yup
-#       enabled: "ON"
-
 en:
-  hello: "Hello world"
+  app_name: Rentals
+
+  date:
+    formats:
+      default: "%Y-%m-%d"
+      short: "%b %d"
+      long: "%B %d, %Y"
+      db: "%Y-%m-%d"
+
+  time:
+    formats:
+      default: "%a, %b %d, %Y %H:%M:%S %z"
+      short: "%b %d %H:%M"
+      long: "%B %d, %Y %H:%M"
+      db: "%Y-%m-%d %H:%M:%S"
+
+  # Navigation & Layout
+  navigation:
+    app_name: Rentals
+    log_out: Log out
+    log_in: Log in
+    sign_up: Sign up
+    language: Language
+
+  # Properties
+  properties:
+    my_properties: My Properties
+    add_property: Add a Property
+    name: Name
+    status: Status
+    rented: Rented
+    available: Available
+    overdue_payments: Overdue Payments
+    no_properties: No properties yet.
+    no_properties_hint: Add your first one above to get started.
+    form:
+      name_placeholder: e.g. 123 Main St
+      name_label: Name
+    delete_confirm: "Delete \"%{name}\"? This cannot be undone."
+
+  # Rental Agreements
+  rental_agreements:
+    new_rental_agreement: New Rental Agreement
+    start_date: Start Date
+    end_date: End Date
+    monthly_rent: Monthly Rent
+    rent_amount_placeholder: e.g. 1200.00
+    no_agreements: No agreements yet.
+    delete_confirm: "Delete this agreement? This cannot be undone."
+    renew: Renew
+
+  # Payments
+  payments:
+    payments: Payments
+    due_date: Due Date
+    paid_date: Paid Date
+    paid_date_hint: "(leave blank if unpaid)"
+    amount: Amount
+    amount_placeholder: e.g. 1200.00
+    overdue: Overdue
+    unpaid: Unpaid
+    overdue_badge: "%{count} overdue payment"
+    overdue_badge_plural: "%{count} overdue payments"
+    no_payments: No payments recorded yet. Add one below.
+    add_payments: Add Payments
+    table_headers:
+      due_date: Due Date
+      paid_date: Paid Date
+      amount: Amount
+    delete_confirm: "Delete this payment? This cannot be undone."
+    create_recurring:
+      start_date: Start Date
+      count: Number of months
+      amount: Amount
+
+  # Dashboard
+  dashboard:
+    title: Dashboard
+    welcome: "Welcome, %{name}."
+
+  # Tax Report
+  tax_report:
+    title: "Tax Report"
+    select_year: "Select Year:"
+    active_rental_days: Active Rental Days
+    active_rental_days_hint: "out of %{total} days in %{year}"
+    pro_rata_ratio: Pro-rata Ratio
+    pro_rata_ratio_hint: "of expenses are deductible"
+    total_gross_income: Total Gross Income
+    total_gross_income_hint: "from all payments in %{year}"
+    deductible_expenses: Deductible Expenses
+    no_expenses: "No expenses recorded for %{year}."
+    table_headers:
+      date: Date
+      category: Category
+      description: Description
+      original_amount: Original Amount
+      deductible_amount: Deductible Amount
+    total_row: Total
+    pro_rata_explanation: "The deductible amount is calculated by multiplying each expense by the pro-rata ratio (%{ratio}), which represents the proportion of the year during which the property was actively rented."
+
+  # Expenses
+  expenses:
+    date: Date
+    category: Category
+    select_category: Select a category
+    amount: Amount
+    amount_placeholder: e.g. 250.00
+    description: Description
+    description_hint: "(optional)"
+    description_placeholder: e.g. Annual home insurance renewal
+    invoice_url: Invoice URL
+    invoice_url_hint: "(optional)"
+    invoice_url_placeholder: "https://..."
+    delete_confirm: "Delete this expense? This cannot be undone."
+
+  # Forms & Buttons
+  forms:
+    errors:
+      title: "Please correct the following errors:"
+    buttons:
+      submit: Save
+      cancel: Cancel
+      delete: Delete
+      edit: Edit
+
+  # Common
+  common:
+    back: "←"
+    my_properties_link: "← My Properties"

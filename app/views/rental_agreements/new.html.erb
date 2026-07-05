@@ -4,10 +4,10 @@
       <table class="table table-zebra">
         <thead>
           <tr>
-            <th>Start Date</th>
-            <th>End Date</th>
-            <th>Monthly Rent</th>
-            <th>Status</th>
+            <th><%= t("rental_agreements.start_date") %></th>
+            <th><%= t("rental_agreements.end_date") %></th>
+            <th><%= t("rental_agreements.monthly_rent") %></th>
+            <th><%= t("properties.status") %></th>
             <th></th>
           </tr>
         </thead>
@@ -24,7 +24,7 @@
 
   <div class="card bg-base-200">
     <div class="card-body">
-      <h3 class="card-title text-base">New Rental Agreement</h3>
+      <h3 class="card-title text-base"><%= t("rental_agreements.new_rental_agreement") %></h3>
       <%= render "form", property: @property, agreement: @agreement %>
     </div>
   </div>

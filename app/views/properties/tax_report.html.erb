@@ -1,14 +1,14 @@
 <div class="mb-6">
-  <%= link_to "← My Properties", properties_path, class: "btn btn-ghost btn-sm" %>
+  <%= link_to t("common.my_properties_link"), properties_path, class: "btn btn-ghost btn-sm" %>
 </div>
 
 <div class="mb-6">
-  <h1 class="text-2xl font-bold"><%= @property.name %> — Tax Report</h1>
+  <h1 class="text-2xl font-bold"><%= @property.name %> — <%= t("tax_report.title") %></h1>
 </div>
 
 <!-- Year Selector -->
 <div class="mb-6 flex items-center gap-2 flex-wrap">
-  <span class="text-sm font-semibold text-base-content/70">Select Year:</span>
+  <span class="text-sm font-semibold text-base-content/70"><%= t("tax_report.select_year") %></span>
   <% (2023..Date.today.year + 1).each do |year| %>
     <% if year == @year %>
       <button class="btn btn-sm btn-primary"><%= year %></button>
@@ -23,27 +23,27 @@
   <!-- Active Days Card -->
   <div class="card bg-base-100 shadow-sm">
     <div class="card-body">
-      <div class="text-sm font-semibold text-base-content/70">Active Rental Days</div>
+      <div class="text-sm font-semibold text-base-content/70"><%= t("tax_report.active_rental_days") %></div>
       <div class="text-3xl font-bold"><%= @report[:active_rental_days] %></div>
-      <div class="text-xs text-base-content/50 mt-1">out of <%= @report[:total_days] %> days in <%= @year %></div>
+      <div class="text-xs text-base-content/50 mt-1"><%= t("tax_report.active_rental_days_hint", total: @report[:total_days], year: @year) %></div>
     </div>
   </div>
 
   <!-- Pro-rata Ratio Card -->
   <div class="card bg-base-100 shadow-sm">
     <div class="card-body">
-      <div class="text-sm font-semibold text-base-content/70">Pro-rata Ratio</div>
+      <div class="text-sm font-semibold text-base-content/70"><%= t("tax_report.pro_rata_ratio") %></div>
       <div class="text-3xl font-bold"><%= number_to_percentage(@report[:pro_rata_ratio] * 100, precision: 2) %></div>
-      <div class="text-xs text-base-content/50 mt-1">of expenses are deductible</div>
+      <div class="text-xs text-base-content/50 mt-1"><%= t("tax_report.pro_rata_ratio_hint") %></div>
     </div>
   </div>
 
   <!-- Total Gross Income Card -->
   <div class="card bg-base-100 shadow-sm">
     <div class="card-body">
-      <div class="text-sm font-semibold text-base-content/70">Total Gross Income</div>
+      <div class="text-sm font-semibold text-base-content/70"><%= t("tax_report.total_gross_income") %></div>
       <div class="text-3xl font-bold"><%= number_to_currency(@report[:total_gross_income]) %></div>
-      <div class="text-xs text-base-content/50 mt-1">from all payments in <%= @year %></div>
+      <div class="text-xs text-base-content/50 mt-1"><%= t("tax_report.total_gross_income_hint", year: @year) %></div>
     </div>
   </div>
 </div>
@@ -51,18 +51,18 @@
 <!-- Expenses Table -->
 <div class="card bg-base-100 shadow-sm">
   <div class="card-body">
-    <h2 class="card-title text-base mb-4">Deductible Expenses</h2>
+    <h2 class="card-title text-base mb-4"><%= t("tax_report.deductible_expenses") %></h2>
 
     <% if @report[:expenses].any? %>
       <div class="overflow-x-auto">
         <table class="table table-zebra table-sm">
           <thead>
             <tr>
-              <th>Date</th>
-              <th>Category</th>
-              <th>Description</th>
-              <th class="text-right">Original Amount</th>
-              <th class="text-right">Deductible Amount</th>
+              <th><%= t("tax_report.table_headers.date") %></th>
+              <th><%= t("tax_report.table_headers.category") %></th>
+              <th><%= t("tax_report.table_headers.description") %></th>
+              <th class="text-right"><%= t("tax_report.table_headers.original_amount") %></th>
+              <th class="text-right"><%= t("tax_report.table_headers.deductible_amount") %></th>
             </tr>
           </thead>
           <tbody>
@@ -84,7 +84,7 @@
           </tbody>
           <tfoot>
             <tr class="font-semibold bg-base-200">
-              <td colspan="3">Total</td>
+              <td colspan="3"><%= t("tax_report.total_row") %></td>
               <td class="text-right">
                 <%= number_to_currency(@report[:expenses].sum { |e| e[:original_amount] }) %>
               </td>
@@ -97,7 +97,7 @@
       </div>
     <% else %>
       <div class="text-center py-8 text-base-content/50">
-        <p class="text-sm">No expenses recorded for <%= @year %>.</p>
+        <p class="text-sm"><%= t("tax_report.no_expenses", year: @year) %></p>
       </div>
     <% end %>
   </div>
@@ -107,9 +107,7 @@
   <div class="alert alert-info">
     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" class="stroke-current shrink-0 w-6 h-6"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
     <span class="text-sm">
-      The deductible amount is calculated by multiplying each expense by the pro-rata ratio
-      (<%= number_to_percentage(@report[:pro_rata_ratio] * 100, precision: 2) %>), which represents the proportion of the year
-      during which the property was actively rented.
+      <%= t("tax_report.pro_rata_explanation", ratio: number_to_percentage(@report[:pro_rata_ratio] * 100, precision: 2)) %>
     </span>
   </div>
 </div>

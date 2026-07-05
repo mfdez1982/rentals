@@ -1,24 +1,24 @@
 <%= form_with url: create_recurring_property_rental_agreement_payments_path(property, agreement) do |f| %>
   <div class="space-y-4 max-w-md">
     <div>
-      <label for="start_date" class="label mb-1">Start Date</label>
+      <label for="start_date" class="label mb-1"><%= t("payments.create_recurring.start_date") %></label>
       <%= f.date_field :start_date, id: "start_date", class: "input input-bordered w-full" %>
     </div>
 
     <div>
-      <label for="count" class="label mb-1">Number of months</label>
+      <label for="count" class="label mb-1"><%= t("payments.create_recurring.count") %></label>
       <%= f.number_field :count, id: "count", class: "input input-bordered w-full",
             min: 1, max: 12, value: 1 %>
     </div>
 
     <div>
-      <label for="amount" class="label mb-1">Amount</label>
+      <label for="amount" class="label mb-1"><%= t("payments.create_recurring.amount") %></label>
       <%= f.number_field :amount, id: "amount", class: "input input-bordered w-full",
-            step: "0.01", min: "0.01", placeholder: "e.g. 1200.00" %>
+            step: "0.01", min: "0.01", placeholder: t("payments.amount_placeholder") %>
     </div>
 
     <div class="pt-2">
-      <%= f.submit "Add Payments", class: "btn btn-primary" %>
+      <%= f.submit t("payments.add_payments"), class: "btn btn-primary" %>
     </div>
   </div>
 <% end %>

@@ -32,13 +32,13 @@
 
 <div class="card bg-base-100 shadow-sm" data-controller="payments">
   <div class="card-body">
-    <h2 class="card-title text-base mb-4">Payments</h2>
+    <h2 class="card-title text-base mb-4"><%= t("payments.payments") %></h2>
 
     <%= turbo_frame_tag dom_id(@agreement, :payments) do %>
       <% overdue = @payments.select(&:overdue?) %>
       <% if overdue.any? %>
         <div class="badge badge-error gap-1 mb-4">
-          <%= overdue.size %> overdue payment<%= overdue.size == 1 ? "" : "s" %>
+          <%= t("payments.overdue_badge", count: overdue.size) %>
         </div>
       <% end %>
 
@@ -47,9 +47,9 @@
           <table class="table table-zebra">
             <thead>
               <tr>
-                <th>Due Date</th>
-                <th>Paid Date</th>
-                <th>Amount</th>
+                <th><%= t("payments.table_headers.due_date") %></th>
+                <th><%= t("payments.table_headers.paid_date") %></th>
+                <th><%= t("payments.table_headers.amount") %></th>
                 <th></th>
               </tr>
             </thead>
@@ -65,13 +65,13 @@
         </div>
       <% else %>
         <div class="text-center py-8 text-base-content/50 mb-6">
-          <p class="text-sm">No payments recorded yet. Add one below.</p>
+          <p class="text-sm"><%= t("payments.no_payments") %></p>
         </div>
       <% end %>
 
       <div class="card bg-base-200">
         <div class="card-body">
-          <h3 class="card-title text-base">Add Payments</h3>
+          <h3 class="card-title text-base"><%= t("payments.add_payments") %></h3>
           <%= render "payments/create_recurring_form", property: @property, agreement: @agreement %>
         </div>
       </div>
