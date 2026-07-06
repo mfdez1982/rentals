@@ -61,6 +61,45 @@ es:
     am: am
     pm: pm
 
+  # Devise
+  devise:
+    shared:
+      links:
+        log_in: Iniciar sesión
+        sign_up: Registrarse
+        forgot_password: "¿Olvidaste tu contraseña?"
+        confirmation_instructions: "¿No recibiste instrucciones de confirmación?"
+        unlock_instructions: "¿No recibiste instrucciones de desbloqueo?"
+        sign_in_with: "Iniciar sesión con %{provider}"
+    sessions:
+      log_in: Iniciar sesión
+    registrations:
+      sign_up: Registrarse
+      edit_account: Editar Cuenta
+      password_divider: Contraseña
+      leave_blank: Deja en blanco si no quieres cambiarla
+      remember_me: Recuérdame
+      update: Actualizar
+      delete_account: Eliminar cuenta
+      delete_confirm: "¿Estás seguro? Esta acción no se puede deshacer."
+      danger_zone: Zona de Peligro
+      danger_zone_warning: Una vez que elimines tu cuenta, no hay forma de volver atrás. Por favor, asegúrate.
+      waiting_confirmation: "Esperando confirmación para: %{email}"
+      current_password_required: Necesitamos tu contraseña actual para confirmar los cambios
+      characters_minimum: "Mínimo %{count} caracteres"
+    passwords:
+      forgot_password: "¿Olvidaste tu contraseña?"
+      send_reset: Envíame instrucciones para restablecer mi contraseña
+      change_password: Cambiar tu contraseña
+      change_submit: Cambiar mi contraseña
+      new_password: Nueva contraseña
+      confirm_new_password: Confirmar nueva contraseña
+    confirmations:
+      confirm_account: Confirma tu cuenta
+    unlocks:
+      unlock_account: Desbloquea tu cuenta
+      resend_unlock: Reenviar instrucciones de desbloqueo
+
   # Navigation & Layout
   navigation:
     app_name: Alquileres
@@ -68,6 +107,58 @@ es:
     log_in: Iniciar sesión
     sign_up: Registrarse
     language: Idioma
+
+  # Landing Page
+  landing:
+    tagline: "Gestión de propiedades, <br>sin el caos"
+    subtitle: Rastrear alquileres, monitorear arrendamientos activos y nunca pierdas un pago vencido. Todas tus propiedades en un panel hermoso.
+    start_managing: Comienza a Gestionar Gratis
+    watch_demo: "📹 Ver Demo"
+    features_header: Todo lo que necesitas para gestionar como un profesional
+    features_subtitle: Construido para propietarios independientes que quieren simplicidad sin sacrificar poder.
+    feature_tracking_title: Seguimiento de Propiedades sin Esfuerzo
+    feature_tracking_desc: Mantén todos tus bienes raíces organizados en un panel central. Ve el estado del portafolio, tasas de ocupación y detalles clave de un vistazo.
+    feature_tracking_1: Descripción general de múltiples propiedades
+    feature_tracking_2: Notas personalizadas de propiedades
+    feature_tracking_3: Estado de ocupación
+    feature_agreements_title: Contratos de Alquiler Inteligentes
+    feature_agreements_desc: Rastrea renovaciones de arrendamientos activos, vencidos y próximos sin problemas. Recibe notificaciones antes de que venza el arrendamiento para que nunca pierdas una oportunidad de renovación.
+    feature_agreements_1: Vista de cronología de arrendamiento
+    feature_agreements_2: Alertas de renovación
+    feature_agreements_3: Duplicación rápida de arrendamiento
+    feature_payments_title: Alertas de Pago Vencido
+    feature_payments_desc: Detecta instantáneamente alquileres perdidos con insignias de estado visuales automatizadas. Nunca dejes que los pagos atrasados afecten tu flujo de efectivo nuevamente.
+    feature_payments_1: Insignias de estado en tiempo real
+    feature_payments_2: Seguimiento de pagos
+    feature_payments_3: Historial de pagos claro
+    cta_title: Comienza a gestionar tus propiedades hoy
+    cta_subtitle: Únete a propietarios en todo el país que han abandonado hojas de cálculo por una forma más inteligente de gestionar.
+    get_started: "Comienza — Es Gratis"
+    no_credit_card: Sin tarjeta de crédito requerida • Configuración en minutos
+    footer_tagline: Gestión de propiedades simplificada para pequeños propietarios.
+    footer_product: Producto
+    footer_company: Empresa
+    footer_legal: Legal
+    footer_security: Seguridad
+    footer_about: Acerca de
+    footer_blog: Blog
+    footer_contact: Contacto
+    footer_privacy: Privacidad
+    footer_terms: Términos
+    footer_cookies: Cookies
+    footer_copyright: "© %{year} Alquileres. Todos los derechos reservados."
+    dashboard_mockup: Panel de Control
+    dashboard_properties: PROPIEDADES
+    dashboard_overdue: VENCIDO
+    mockup_property_1: Calle Maple, Unidad 4A
+    mockup_status_1: Alquilada • Renta vencida en 5 días
+    mockup_property_2: Avenida Oak, Suite 200
+    mockup_status_2: "⚠ Vencido hace 12 días"
+    mockup_property_3: Dúplex Riverside
+    mockup_status_3: Vacante • Listo para arrendar
+    nav_features: Características
+    nav_pricing: Precios
+    nav_contact: Contacto
 
   # Properties
   properties:
@@ -84,6 +175,7 @@ es:
       name_placeholder: p. ej. 123 Calle Principal
       name_label: Nombre
     delete_confirm: "¿Eliminar \"%{name}\"? Esta acción no se puede deshacer."
+    edit_inline: "Haz doble clic para editar"
 
   # Rental Agreements
   rental_agreements:
@@ -95,6 +187,14 @@ es:
     no_agreements: No hay contratos aún.
     delete_confirm: "¿Eliminar este contrato? Esta acción no se puede deshacer."
     renew: Renovar
+    status_active: Activo
+    status_upcoming: Próximo
+    status_expired: Vencido
+    monthly_suffix: "/mes"
+    edit_inline: "Haz doble clic para editar"
+    errors:
+      end_date_after_start: debe ser después de la fecha de inicio
+      overlapping: se superpone con un contrato existente para esta propiedad
 
   # Payments
   payments:
@@ -119,6 +219,7 @@ es:
       start_date: Fecha de Inicio
       count: Número de meses
       amount: Cantidad
+    create_error: "No se pudieron crear los pagos: %{error}"
 
   # Dashboard
   dashboard:

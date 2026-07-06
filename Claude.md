@@ -74,7 +74,37 @@ Each property row is wrapped in `turbo_frame_tag dom_id(property)`:
 - DB-level constraints for everything important: foreign keys, not-null, unique indexes
 - Prefer `present?` / `blank?` over manual nil checks
 
-## Testing
+## Internationalization (i18n)
+**All displayable text must use the i18n framework.** No hardcoded user-facing strings in views, controllers, or models.
+
+**How to implement:**
+- **Views:** Use `t("key.path")` for all text, buttons, labels, placeholders, hints, etc.
+- **Models:** Use `I18n.t("key.path")` for validation error messages, enum display values, and any user-facing strings
+- **Controllers:** Use `t("key.path")` for flash messages and alerts
+- **Translation files:** Update both `config/locales/en.yml` and `config/locales/es.yml` whenever adding new user-facing text
+
+**Key translation files:**
+- `config/locales/en.yml` — English translations
+- `config/locales/es.yml` — Spanish translations
+
+**Translation structure** follows Rails conventions:
+```yaml
+en:
+  properties:
+    my_properties: My Properties
+    form:
+      name_label: Name
+    errors:
+      not_found: Property not found
+```
+
+**When in doubt:**
+- Never render strings like `"Active"`, `"Pending"`, `"Save"`, `"Cancel"`, `"Delete"` without i18n
+- Enum display values should be translated
+- Flash messages should be translated
+- Form labels, hints, and placeholders should be translated
+- Error messages should be translated
+- Any text visible to the user should be translated
 - RSpec, not Minitest
 - FactoryBot for fixtures
 - Test models and controllers; skip view specs

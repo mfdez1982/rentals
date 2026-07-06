@@ -1,7 +1,7 @@
 <div class="flex justify-center items-center min-h-screen bg-base-200">
   <div class="card bg-base-100 shadow-xl w-full max-w-md">
     <div class="card-body">
-      <h2 class="card-title justify-center text-2xl font-bold mb-6">Sign up</h2>
+      <h2 class="card-title justify-center text-2xl font-bold mb-6"><%= t("devise.registrations.sign_up") %></h2>
 
       <%= form_for(resource, as: resource_name, url: registration_path(resource_name)) do |f| %>
         <%= render "devise/shared/error_messages", resource: resource %>

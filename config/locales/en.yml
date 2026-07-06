@@ -15,6 +15,45 @@ en:
       long: "%B %d, %Y %H:%M"
       db: "%Y-%m-%d %H:%M:%S"
 
+  # Devise
+  devise:
+    shared:
+      links:
+        log_in: Log in
+        sign_up: Sign up
+        forgot_password: Forgot your password?
+        confirmation_instructions: "Didn't receive confirmation instructions?"
+        unlock_instructions: "Didn't receive unlock instructions?"
+        sign_in_with: "Sign in with %{provider}"
+    sessions:
+      log_in: Log in
+    registrations:
+      sign_up: Sign up
+      edit_account: Edit Account
+      password_divider: Password
+      leave_blank: Leave blank if you don't want to change it
+      remember_me: Remember me
+      update: Update
+      delete_account: Delete account
+      delete_confirm: "Are you sure? This action cannot be undone."
+      danger_zone: Danger Zone
+      danger_zone_warning: Once you delete your account, there is no going back. Please be certain.
+      waiting_confirmation: "Currently waiting confirmation for: %{email}"
+      current_password_required: We need your current password to confirm your changes
+      characters_minimum: "%{count} characters minimum"
+    passwords:
+      forgot_password: Forgot your password?
+      send_reset: Send me password reset instructions
+      change_password: Change your password
+      change_submit: Change my password
+      new_password: New password
+      confirm_new_password: Confirm new password
+    confirmations:
+      confirm_account: Confirm your account
+    unlocks:
+      unlock_account: Unlock your account
+      resend_unlock: Resend unlock instructions
+
   # Navigation & Layout
   navigation:
     app_name: Rentals
@@ -22,6 +61,58 @@ en:
     log_in: Log in
     sign_up: Sign up
     language: Language
+
+  # Landing Page
+  landing:
+    tagline: "Property management, <br>minus the chaos"
+    subtitle: Track rentals, monitor active leases, and never miss an overdue payment again. All your properties in one beautiful dashboard.
+    start_managing: Start Managing Free
+    watch_demo: "📹 Watch Demo"
+    features_header: Everything you need to manage like a pro
+    features_subtitle: Built for independent landlords who want simplicity without sacrificing power.
+    feature_tracking_title: Effortless Property Tracking
+    feature_tracking_desc: Keep all your real estate organized in one central dashboard. View portfolio status, occupancy rates, and key details at a glance.
+    feature_tracking_1: Multi-property overview
+    feature_tracking_2: Custom property notes
+    feature_tracking_3: Occupancy status
+    feature_agreements_title: Smart Rental Agreements
+    feature_agreements_desc: Track active, expired, and upcoming lease renewals seamlessly. Get notified before leases expire so you never miss a renewal opportunity.
+    feature_agreements_1: Lease timeline view
+    feature_agreements_2: Renewal alerts
+    feature_agreements_3: Quick lease duplication
+    feature_payments_title: Overdue Payment Alerts
+    feature_payments_desc: Instantly spot missed rent with automated visual status badges. Never let late payments impact your cash flow again.
+    feature_payments_1: Real-time status badges
+    feature_payments_2: Payment tracking
+    feature_payments_3: Clear payment history
+    cta_title: Start managing your properties today
+    cta_subtitle: Join landlords across the country who've ditched spreadsheets for a smarter way to manage.
+    get_started: "Get Started — It's Free"
+    no_credit_card: No credit card required • Set up in minutes
+    footer_tagline: Property management simplified for small landlords.
+    footer_product: Product
+    footer_company: Company
+    footer_legal: Legal
+    footer_security: Security
+    footer_about: About
+    footer_blog: Blog
+    footer_contact: Contact
+    footer_privacy: Privacy
+    footer_terms: Terms
+    footer_cookies: Cookies
+    footer_copyright: "© %{year} Rentals. All rights reserved."
+    dashboard_mockup: Dashboard
+    dashboard_properties: PROPERTIES
+    dashboard_overdue: OVERDUE
+    mockup_property_1: Maple Street, Unit 4A
+    mockup_status_1: Rented • Rent due in 5 days
+    mockup_property_2: Oak Avenue, Suite 200
+    mockup_status_2: "⚠ Overdue by 12 days"
+    mockup_property_3: Riverside Duplex
+    mockup_status_3: Vacant • Ready for lease
+    nav_features: Features
+    nav_pricing: Pricing
+    nav_contact: Contact
 
   # Properties
   properties:
@@ -38,6 +129,7 @@ en:
       name_placeholder: e.g. 123 Main St
       name_label: Name
     delete_confirm: "Delete \"%{name}\"? This cannot be undone."
+    edit_inline: "Double-click to edit"
 
   # Rental Agreements
   rental_agreements:
@@ -49,6 +141,14 @@ en:
     no_agreements: No agreements yet.
     delete_confirm: "Delete this agreement? This cannot be undone."
     renew: Renew
+    status_active: Active
+    status_upcoming: Upcoming
+    status_expired: Expired
+    monthly_suffix: "/mo"
+    edit_inline: "Double-click to edit"
+    errors:
+      end_date_after_start: must be after start date
+      overlapping: overlaps with an existing agreement for this property
 
   # Payments
   payments:
@@ -73,6 +173,7 @@ en:
       start_date: Start Date
       count: Number of months
       amount: Amount
+    create_error: "Could not create payments: %{error}"
 
   # Dashboard
   dashboard:

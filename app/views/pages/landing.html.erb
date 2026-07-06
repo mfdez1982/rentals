@@ -3,17 +3,17 @@
   <nav class="navbar bg-white border-b border-gray-100 sticky top-0 z-50">
     <div class="flex-1">
       <a href="/" class="btn btn-ghost text-xl font-bold text-gray-900">
-        🏠 Rentals
+        🏠 <%= t("app_name") %>
       </a>
     </div>
     <div class="flex-none gap-4 hidden sm:flex">
-      <a href="#features" class="link link-hover text-gray-700 font-medium">Features</a>
-      <a href="#pricing" class="link link-hover text-gray-700 font-medium">Pricing</a>
-      <a href="#contact" class="link link-hover text-gray-700 font-medium">Contact</a>
+      <a href="#features" class="link link-hover text-gray-700 font-medium"><%= t("landing.nav_features") %></a>
+      <a href="#pricing" class="link link-hover text-gray-700 font-medium"><%= t("landing.nav_pricing") %></a>
+      <a href="#contact" class="link link-hover text-gray-700 font-medium"><%= t("landing.nav_contact") %></a>
     </div>
     <div class="flex-none gap-2">
-      <a href="<%= new_user_session_path %>" class="btn btn-ghost btn-sm text-gray-700">Sign In</a>
-      <a href="<%= new_user_registration_path %>" class="btn btn-primary btn-sm">Get Started</a>
+      <a href="<%= new_user_session_path %>" class="btn btn-ghost btn-sm text-gray-700"><%= t("devise.sessions.log_in") %></a>
+      <a href="<%= new_user_registration_path %>" class="btn btn-primary btn-sm"><%= t("landing.get_started") %></a>
     </div>
   </nav>
 
@@ -23,17 +23,17 @@
       <!-- Left: Copy -->
       <div class="flex-1 text-center lg:text-left">
         <h1 class="text-4xl sm:text-5xl lg:text-6xl font-black text-gray-900 leading-tight mb-4">
-          Property management,<br class="hidden sm:block" /><span class="text-emerald-600">minus the chaos</span>.
+          <%= t("landing.tagline").gsub("<br>", "<br class='hidden sm:block'>").html_safe %>
         </h1>
         <p class="text-lg sm:text-xl text-gray-600 mb-8 max-w-xl">
-          Track rentals, monitor active leases, and never miss an overdue payment again. All your properties in one beautiful dashboard.
+          <%= t("landing.subtitle") %>
         </p>
         <div class="flex flex-col sm:flex-row gap-3 justify-center lg:justify-start">
           <a href="<%= new_user_registration_path %>" class="btn btn-primary btn-lg text-white font-semibold">
-            Start Managing Free
+            <%= t("landing.start_managing") %>
           </a>
           <button class="btn btn-outline btn-lg font-semibold">
-            📹 Watch Demo
+            <%= t("landing.watch_demo") %>
           </button>
         </div>
       </div>
@@ -44,7 +44,7 @@
           <div class="card-body p-4 sm:p-6">
             <!-- Mock header -->
             <div class="flex items-center justify-between mb-4">
-              <h3 class="font-bold text-gray-900">Dashboard</h3>
+              <h3 class="font-bold text-gray-900"><%= t("landing.dashboard_mockup") %></h3>
               <div class="flex gap-2">
                 <div class="w-3 h-3 rounded-full bg-gray-300"></div>
                 <div class="w-3 h-3 rounded-full bg-gray-300"></div>
@@ -55,11 +55,11 @@
             <!-- Mock stats row -->
             <div class="grid grid-cols-2 gap-3 mb-4">
               <div class="bg-emerald-50 rounded p-3">
-                <p class="text-xs text-gray-600 font-semibold">PROPERTIES</p>
+                <p class="text-xs text-gray-600 font-semibold"><%= t("landing.dashboard_properties") %></p>
                 <p class="text-2xl font-bold text-emerald-600">12</p>
               </div>
               <div class="bg-amber-50 rounded p-3">
-                <p class="text-xs text-gray-600 font-semibold">OVERDUE</p>
+                <p class="text-xs text-gray-600 font-semibold"><%= t("landing.dashboard_overdue") %></p>
                 <p class="text-2xl font-bold text-amber-600">2</p>
               </div>
             </div>
@@ -67,16 +67,16 @@
             <!-- Mock property cards -->
             <div class="space-y-2">
               <div class="bg-gray-50 rounded p-3 border-l-4 border-emerald-500">
-                <p class="text-sm font-semibold text-gray-900">Maple Street, Unit 4A</p>
-                <p class="text-xs text-gray-600">Rented • Rent due in 5 days</p>
+                <p class="text-sm font-semibold text-gray-900"><%= t("landing.mockup_property_1") %></p>
+                <p class="text-xs text-gray-600"><%= t("landing.mockup_status_1") %></p>
               </div>
               <div class="bg-gray-50 rounded p-3 border-l-4 border-amber-500">
-                <p class="text-sm font-semibold text-gray-900">Oak Avenue, Suite 200</p>
-                <p class="text-xs text-red-600 font-medium">⚠ Overdue by 12 days</p>
+                <p class="text-sm font-semibold text-gray-900"><%= t("landing.mockup_property_2") %></p>
+                <p class="text-xs text-red-600 font-medium"><%= t("landing.mockup_status_2") %></p>
               </div>
               <div class="bg-gray-50 rounded p-3 border-l-4 border-blue-500">
-                <p class="text-sm font-semibold text-gray-900">Riverside Duplex</p>
-                <p class="text-xs text-gray-600">Vacant • Ready for lease</p>
+                <p class="text-sm font-semibold text-gray-900"><%= t("landing.mockup_property_3") %></p>
+                <p class="text-xs text-gray-600"><%= t("landing.mockup_status_3") %></p>
               </div>
             </div>
           </div>
@@ -91,10 +91,10 @@
       <!-- Section header -->
       <div class="text-center mb-16">
         <h2 class="text-3xl sm:text-4xl font-black text-gray-900 mb-4">
-          Everything you need to manage like a pro
+          <%= t("landing.features_header") %>
         </h2>
         <p class="text-lg text-gray-600 max-w-2xl mx-auto">
-          Built for independent landlords who want simplicity without sacrificing power.
+          <%= t("landing.features_subtitle") %>
         </p>
       </div>
 
@@ -105,21 +105,21 @@
           <div class="card-body">
             <div class="text-4xl mb-4">🏘️</div>
             <h3 class="card-title text-xl font-bold text-gray-900 mb-3">
-              Effortless Property Tracking
+              <%= t("landing.feature_tracking_title") %>
             </h3>
             <p class="text-gray-700 leading-relaxed">
-              Keep all your real estate organized in one central dashboard. View portfolio status, occupancy rates, and key details at a glance.
+              <%= t("landing.feature_tracking_desc") %>
             </p>
             <div class="mt-4 pt-4 border-t border-emerald-200">
               <ul class="space-y-2 text-sm text-gray-600">
                 <li class="flex items-center gap-2">
-                  <span class="text-emerald-600 font-bold">✓</span> Multi-property overview
+                  <span class="text-emerald-600 font-bold">✓</span> <%= t("landing.feature_tracking_1") %>
                 </li>
                 <li class="flex items-center gap-2">
-                  <span class="text-emerald-600 font-bold">✓</span> Custom property notes
+                  <span class="text-emerald-600 font-bold">✓</span> <%= t("landing.feature_tracking_2") %>
                 </li>
                 <li class="flex items-center gap-2">
-                  <span class="text-emerald-600 font-bold">✓</span> Occupancy status
+                  <span class="text-emerald-600 font-bold">✓</span> <%= t("landing.feature_tracking_3") %>
                 </li>
               </ul>
             </div>
@@ -131,21 +131,21 @@
           <div class="card-body">
             <div class="text-4xl mb-4">📋</div>
             <h3 class="card-title text-xl font-bold text-gray-900 mb-3">
-              Smart Rental Agreements
+              <%= t("landing.feature_agreements_title") %>
             </h3>
             <p class="text-gray-700 leading-relaxed">
-              Track active, expired, and upcoming lease renewals seamlessly. Get notified before leases expire so you never miss a renewal opportunity.
+              <%= t("landing.feature_agreements_desc") %>
             </p>
             <div class="mt-4 pt-4 border-t border-blue-200">
               <ul class="space-y-2 text-sm text-gray-600">
                 <li class="flex items-center gap-2">
-                  <span class="text-blue-600 font-bold">✓</span> Lease timeline view
+                  <span class="text-blue-600 font-bold">✓</span> <%= t("landing.feature_agreements_1") %>
                 </li>
                 <li class="flex items-center gap-2">
-                  <span class="text-blue-600 font-bold">✓</span> Renewal alerts
+                  <span class="text-blue-600 font-bold">✓</span> <%= t("landing.feature_agreements_2") %>
                 </li>
                 <li class="flex items-center gap-2">
-                  <span class="text-blue-600 font-bold">✓</span> Quick lease duplication
+                  <span class="text-blue-600 font-bold">✓</span> <%= t("landing.feature_agreements_3") %>
                 </li>
               </ul>
             </div>
@@ -157,21 +157,21 @@
           <div class="card-body">
             <div class="text-4xl mb-4">⚠️</div>
             <h3 class="card-title text-xl font-bold text-gray-900 mb-3">
-              Overdue Payment Alerts
+              <%= t("landing.feature_payments_title") %>
             </h3>
             <p class="text-gray-700 leading-relaxed">
-              Instantly spot missed rent with automated visual status badges. Never let late payments impact your cash flow again.
+              <%= t("landing.feature_payments_desc") %>
             </p>
             <div class="mt-4 pt-4 border-t border-amber-200">
               <ul class="space-y-2 text-sm text-gray-600">
                 <li class="flex items-center gap-2">
-                  <span class="text-amber-600 font-bold">✓</span> Real-time status badges
+                  <span class="text-amber-600 font-bold">✓</span> <%= t("landing.feature_payments_1") %>
                 </li>
                 <li class="flex items-center gap-2">
-                  <span class="text-amber-600 font-bold">✓</span> Payment tracking
+                  <span class="text-amber-600 font-bold">✓</span> <%= t("landing.feature_payments_2") %>
                 </li>
                 <li class="flex items-center gap-2">
-                  <span class="text-amber-600 font-bold">✓</span> Clear payment history
+                  <span class="text-amber-600 font-bold">✓</span> <%= t("landing.feature_payments_3") %>
                 </li>
               </ul>
             </div>
@@ -185,17 +185,17 @@
   <section class="py-16 sm:py-24 bg-gradient-to-r from-emerald-600 to-emerald-700">
     <div class="max-w-4xl mx-auto px-4 sm:px-8 text-center">
       <h2 class="text-3xl sm:text-4xl font-black text-white mb-4">
-        Start managing your properties today
+        <%= t("landing.cta_title") %>
       </h2>
       <p class="text-lg text-emerald-100 mb-8 max-w-2xl mx-auto">
-        Join landlords across the country who've ditched spreadsheets for a smarter way to manage.
+        <%= t("landing.cta_subtitle") %>
       </p>
       <div class="flex flex-col sm:flex-row gap-4 justify-center items-center">
         <a href="<%= new_user_registration_path %>" class="btn btn-lg btn-primary text-white font-semibold shadow-lg hover:shadow-xl">
-          Get Started — It's Free
+          <%= t("landing.get_started") %>
         </a>
         <p class="text-emerald-100 text-sm font-medium">
-          No credit card required • Set up in minutes
+          <%= t("landing.no_credit_card") %>
         </p>
       </div>
     </div>
@@ -207,39 +207,39 @@
       <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 mb-8">
         <!-- Brand -->
         <div>
-          <a href="/" class="text-xl font-bold text-white mb-2 block">🏠 Rentals</a>
+          <a href="/" class="text-xl font-bold text-white mb-2 block">🏠 <%= t("app_name") %></a>
           <p class="text-sm text-gray-400">
-            Property management simplified for small landlords.
+            <%= t("landing.footer_tagline") %>
           </p>
         </div>
 
         <!-- Product Links -->
         <div>
-          <h4 class="font-semibold text-white mb-4">Product</h4>
+          <h4 class="font-semibold text-white mb-4"><%= t("landing.footer_product") %></h4>
           <ul class="space-y-2 text-sm">
-            <li><a href="#features" class="hover:text-emerald-400 transition">Features</a></li>
-            <li><a href="#pricing" class="hover:text-emerald-400 transition">Pricing</a></li>
-            <li><a href="#" class="hover:text-emerald-400 transition">Security</a></li>
+            <li><a href="#features" class="hover:text-emerald-400 transition"><%= t("landing.nav_features") %></a></li>
+            <li><a href="#pricing" class="hover:text-emerald-400 transition"><%= t("landing.nav_pricing") %></a></li>
+            <li><a href="#" class="hover:text-emerald-400 transition"><%= t("landing.footer_security") %></a></li>
           </ul>
         </div>
 
         <!-- Company Links -->
         <div>
-          <h4 class="font-semibold text-white mb-4">Company</h4>
+          <h4 class="font-semibold text-white mb-4"><%= t("landing.footer_company") %></h4>
           <ul class="space-y-2 text-sm">
-            <li><a href="#" class="hover:text-emerald-400 transition">About</a></li>
-            <li><a href="#" class="hover:text-emerald-400 transition">Blog</a></li>
-            <li><a href="#contact" class="hover:text-emerald-400 transition">Contact</a></li>
+            <li><a href="#" class="hover:text-emerald-400 transition"><%= t("landing.footer_about") %></a></li>
+            <li><a href="#" class="hover:text-emerald-400 transition"><%= t("landing.footer_blog") %></a></li>
+            <li><a href="#contact" class="hover:text-emerald-400 transition"><%= t("landing.footer_contact") %></a></li>
           </ul>
         </div>
 
         <!-- Legal -->
         <div>
-          <h4 class="font-semibold text-white mb-4">Legal</h4>
+          <h4 class="font-semibold text-white mb-4"><%= t("landing.footer_legal") %></h4>
           <ul class="space-y-2 text-sm">
-            <li><a href="#" class="hover:text-emerald-400 transition">Privacy</a></li>
-            <li><a href="#" class="hover:text-emerald-400 transition">Terms</a></li>
-            <li><a href="#" class="hover:text-emerald-400 transition">Cookies</a></li>
+            <li><a href="#" class="hover:text-emerald-400 transition"><%= t("landing.footer_privacy") %></a></li>
+            <li><a href="#" class="hover:text-emerald-400 transition"><%= t("landing.footer_terms") %></a></li>
+            <li><a href="#" class="hover:text-emerald-400 transition"><%= t("landing.footer_cookies") %></a></li>
           </ul>
         </div>
       </div>
@@ -248,7 +248,7 @@
       <div class="border-t border-gray-700 pt-8">
         <div class="flex flex-col sm:flex-row justify-between items-center gap-4">
           <p class="text-sm text-gray-500">
-            &copy; <%= Date.today.year %> Rentals. All rights reserved.
+            <%= t("landing.footer_copyright", year: Date.today.year) %>
           </p>
           <div class="flex gap-6">
             <a href="#" class="text-gray-400 hover:text-emerald-400 transition">Twitter</a>
