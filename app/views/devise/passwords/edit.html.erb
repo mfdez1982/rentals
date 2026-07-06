@@ -1,27 +1,27 @@
 <div class="flex justify-center items-center min-h-screen bg-base-200">
   <div class="card bg-base-100 shadow-xl w-full max-w-md">
     <div class="card-body">
-      <h2 class="card-title justify-center text-2xl font-bold mb-6">Change your password</h2>
+      <h2 class="card-title justify-center text-2xl font-bold mb-6"><%= t("devise.passwords.change_password") %></h2>
 
       <%= form_for(resource, as: resource_name, url: password_path(resource_name), html: { method: :put }) do |f| %>
         <%= render "devise/shared/error_messages", resource: resource %>
         <%= f.hidden_field :reset_password_token %>
 
         <div class="form-control mb-4">
-          <%= f.label :password, "New password", class: "label" %>
+          <%= f.label :password, t("devise.passwords.new_password"), class: "label" %>
           <% if @minimum_password_length %>
-            <span class="label-text text-xs text-base-content/70">(<%= @minimum_password_length %> characters minimum)</span>
+            <span class="label-text text-xs text-base-content/70">(<%= t("devise.registrations.characters_minimum", count: @minimum_password_length) %>)</span>
           <% end %>
           <%= f.password_field :password, autofocus: true, autocomplete: "new-password", class: "input input-bordered w-full" %>
         </div>
 
         <div class="form-control mb-6">
-          <%= f.label :password_confirmation, "Confirm new password", class: "label" %>
+          <%= f.label :password_confirmation, t("devise.passwords.confirm_new_password"), class: "label" %>
           <%= f.password_field :password_confirmation, autocomplete: "new-password", class: "input input-bordered w-full" %>
         </div>
 
         <div class="form-control">
-          <%= f.submit t("change_password", default: "Change my password"), class: "btn btn-primary w-full" %>
+          <%= f.submit t("devise.passwords.change_submit"), class: "btn btn-primary w-full" %>
         </div>
       <% end %>
 

@@ -26,9 +26,9 @@ class RentalAgreement < ApplicationRecord
   end
 
   def status
-    if active?   then "Active"
-    elsif upcoming? then "Upcoming"
-    else "Expired"
+    if active?   then I18n.t("rental_agreements.status_active")
+    elsif upcoming? then I18n.t("rental_agreements.status_upcoming")
+    else I18n.t("rental_agreements.status_expired")
     end
   end
 
@@ -47,7 +47,7 @@ class RentalAgreement < ApplicationRecord
 
   def end_date_after_start_date
     return unless start_date && end_date
-    errors.add(:end_date, "must be after start date") if end_date <= start_date
+    errors.add(:end_date, I18n.t("rental_agreements.errors.end_date_after_start")) if end_date <= start_date
   end
 
   def no_overlapping_agreements
@@ -55,6 +55,6 @@ class RentalAgreement < ApplicationRecord
     scope = property.rental_agreements
                     .where("start_date <= ? AND end_date >= ?", end_date, start_date)
     scope = scope.where.not(id: id) if persisted?
-    errors.add(:base, "overlaps with an existing agreement for this property") if scope.exists?
+    errors.add(:base, I18n.t("rental_agreements.errors.overlapping")) if scope.exists?
   end
 end

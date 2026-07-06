@@ -31,7 +31,7 @@
               class: "input input-bordered input-sm bg-base-100 w-32",
               step: "0.01", min: "0.01",
               data: { inline_edit_target: "input", action: "keydown->inline-edit#submit blur->inline-edit#blur" } %>
-        <span class="text-sm text-base-content/70">/mo</span>
+        <span class="text-sm text-base-content/70"><%= t("rental_agreements.monthly_suffix") %></span>
       </div>
       <% if @agreement.errors.any? %>
         <div role="alert" class="alert alert-error text-sm mt-2">

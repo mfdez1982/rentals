@@ -14,7 +14,7 @@
          data-action="dblclick->properties#editName"
          data-properties-edit-url="<%= edit_property_path(@property, inline: true) %>"
          data-properties-frame-id="<%= dom_id(@property, :name) %>">
-      <h1 class="text-2xl font-bold cursor-pointer hover:opacity-75 transition-opacity" title="Double-click to edit"><%= @property.name %></h1>
+      <h1 class="text-2xl font-bold cursor-pointer hover:opacity-75 transition-opacity" title="<%= t('properties.edit_inline') %>"><%= @property.name %></h1>
     </div>
   <% end %>
 </div>

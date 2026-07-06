@@ -18,7 +18,7 @@ class PaymentsController < ApplicationController
     redirect_to property_rental_agreement_path(@property, @agreement)
   rescue ActiveRecord::RecordInvalid => e
     redirect_to property_rental_agreement_path(@property, @agreement),
-      alert: "Could not create payments: #{e.message}"
+      alert: t("payments.create_error", error: e.message)
   end
 
   def edit

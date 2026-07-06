@@ -10,7 +10,7 @@
            data-action="dblclick->rental-agreements#editDates"
            data-rental-agreements-edit-url="<%= edit_property_rental_agreement_path(@property, @agreement, inline: "dates") %>"
            data-rental-agreements-frame-id="<%= dom_id(@agreement, :dates) %>">
-        <h1 class="text-2xl font-bold cursor-pointer hover:opacity-75 transition-opacity" title="Double-click to edit">
+        <h1 class="text-2xl font-bold cursor-pointer hover:opacity-75 transition-opacity" title="<%= t('rental_agreements.edit_inline') %>">
           <%= format_date(@agreement.start_date) %> – <%= format_date(@agreement.end_date) %>
         </h1>
       </div>
@@ -23,7 +23,7 @@
            data-action="dblclick->rental-agreements#editRent"
            data-rental-agreements-edit-url="<%= edit_property_rental_agreement_path(@property, @agreement, inline: "rent") %>"
            data-rental-agreements-frame-id="<%= dom_id(@agreement, :rent) %>">
-        <span class="text-base-content/70 cursor-pointer hover:opacity-75 transition-opacity" title="Double-click to edit"><%= number_to_currency(@agreement.rent_amount) %>/mo</span>
+        <span class="text-base-content/70 cursor-pointer hover:opacity-75 transition-opacity" title="<%= t('rental_agreements.edit_inline') %>"><%= number_to_currency(@agreement.rent_amount) %><%= t('rental_agreements.monthly_suffix') %></span>
       </div>
     <% end %>
     <span class="badge badge-sm <%= @agreement.status_badge_class %>"><%= @agreement.status %></span>
