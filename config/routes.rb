@@ -33,5 +33,7 @@ Rails.application.routes.draw do
     end
   end
 
+  get "landing", to: "pages#landing"
+
   root "properties#index"
 end
