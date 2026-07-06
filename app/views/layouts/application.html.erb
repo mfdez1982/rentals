@@ -15,6 +15,7 @@
 <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
 <link href="https://cdn.jsdelivr.net/npm/daisyui@5/daisyui.css" rel="stylesheet" type="text/css" />
 <link href="https://cdn.jsdelivr.net/npm/daisyui@5/themes.css" rel="stylesheet" type="text/css" />
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orestbida/cookieconsent@3.0.1/dist/cookieconsent.css">
     <style>
       .icon-btn svg { width: 20px !important; height: 20px !important; }
     </style>
@@ -26,5 +27,6 @@
     <main class="max-w-5xl mx-auto px-4 py-8">
       <%= yield %>
     </main>
+    <%= render "layouts/cookies_consent" %>
   </body>
 </html>
