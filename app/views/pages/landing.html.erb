@@ -1,0 +1,262 @@
+<div class="min-h-screen flex flex-col bg-white">
+  <!-- Navigation Bar -->
+  <nav class="navbar bg-white border-b border-gray-100 sticky top-0 z-50">
+    <div class="flex-1">
+      <a href="/" class="btn btn-ghost text-xl font-bold text-gray-900">
+        🏠 Rentals
+      </a>
+    </div>
+    <div class="flex-none gap-4 hidden sm:flex">
+      <a href="#features" class="link link-hover text-gray-700 font-medium">Features</a>
+      <a href="#pricing" class="link link-hover text-gray-700 font-medium">Pricing</a>
+      <a href="#contact" class="link link-hover text-gray-700 font-medium">Contact</a>
+    </div>
+    <div class="flex-none gap-2">
+      <a href="<%= new_user_session_path %>" class="btn btn-ghost btn-sm text-gray-700">Sign In</a>
+      <a href="<%= new_user_registration_path %>" class="btn btn-primary btn-sm">Get Started</a>
+    </div>
+  </nav>
+
+  <!-- Hero Section -->
+  <section class="hero min-h-[calc(100vh-80px)] bg-gradient-to-br from-emerald-50 via-white to-blue-50 px-4 sm:px-8 flex items-center">
+    <div class="hero-content flex-col-reverse lg:flex-row max-w-6xl w-full">
+      <!-- Left: Copy -->
+      <div class="flex-1 text-center lg:text-left">
+        <h1 class="text-4xl sm:text-5xl lg:text-6xl font-black text-gray-900 leading-tight mb-4">
+          Property management,<br class="hidden sm:block" /><span class="text-emerald-600">minus the chaos</span>.
+        </h1>
+        <p class="text-lg sm:text-xl text-gray-600 mb-8 max-w-xl">
+          Track rentals, monitor active leases, and never miss an overdue payment again. All your properties in one beautiful dashboard.
+        </p>
+        <div class="flex flex-col sm:flex-row gap-3 justify-center lg:justify-start">
+          <a href="<%= new_user_registration_path %>" class="btn btn-primary btn-lg text-white font-semibold">
+            Start Managing Free
+          </a>
+          <button class="btn btn-outline btn-lg font-semibold">
+            📹 Watch Demo
+          </button>
+        </div>
+      </div>
+
+      <!-- Right: Dashboard Mockup -->
+      <div class="flex-1 mb-8 lg:mb-0">
+        <div class="card bg-white shadow-2xl border border-gray-100">
+          <div class="card-body p-4 sm:p-6">
+            <!-- Mock header -->
+            <div class="flex items-center justify-between mb-4">
+              <h3 class="font-bold text-gray-900">Dashboard</h3>
+              <div class="flex gap-2">
+                <div class="w-3 h-3 rounded-full bg-gray-300"></div>
+                <div class="w-3 h-3 rounded-full bg-gray-300"></div>
+                <div class="w-3 h-3 rounded-full bg-gray-300"></div>
+              </div>
+            </div>
+
+            <!-- Mock stats row -->
+            <div class="grid grid-cols-2 gap-3 mb-4">
+              <div class="bg-emerald-50 rounded p-3">
+                <p class="text-xs text-gray-600 font-semibold">PROPERTIES</p>
+                <p class="text-2xl font-bold text-emerald-600">12</p>
+              </div>
+              <div class="bg-amber-50 rounded p-3">
+                <p class="text-xs text-gray-600 font-semibold">OVERDUE</p>
+                <p class="text-2xl font-bold text-amber-600">2</p>
+              </div>
+            </div>
+
+            <!-- Mock property cards -->
+            <div class="space-y-2">
+              <div class="bg-gray-50 rounded p-3 border-l-4 border-emerald-500">
+                <p class="text-sm font-semibold text-gray-900">Maple Street, Unit 4A</p>
+                <p class="text-xs text-gray-600">Rented • Rent due in 5 days</p>
+              </div>
+              <div class="bg-gray-50 rounded p-3 border-l-4 border-amber-500">
+                <p class="text-sm font-semibold text-gray-900">Oak Avenue, Suite 200</p>
+                <p class="text-xs text-red-600 font-medium">⚠ Overdue by 12 days</p>
+              </div>
+              <div class="bg-gray-50 rounded p-3 border-l-4 border-blue-500">
+                <p class="text-sm font-semibold text-gray-900">Riverside Duplex</p>
+                <p class="text-xs text-gray-600">Vacant • Ready for lease</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Features Section -->
+  <section id="features" class="py-16 sm:py-24 bg-white">
+    <div class="max-w-6xl mx-auto px-4 sm:px-8">
+      <!-- Section header -->
+      <div class="text-center mb-16">
+        <h2 class="text-3xl sm:text-4xl font-black text-gray-900 mb-4">
+          Everything you need to manage like a pro
+        </h2>
+        <p class="text-lg text-gray-600 max-w-2xl mx-auto">
+          Built for independent landlords who want simplicity without sacrificing power.
+        </p>
+      </div>
+
+      <!-- Feature Grid -->
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+        <!-- Feature 1: Property Tracking -->
+        <div class="card bg-gradient-to-br from-emerald-50 to-white border border-emerald-100 hover:shadow-lg transition-shadow">
+          <div class="card-body">
+            <div class="text-4xl mb-4">🏘️</div>
+            <h3 class="card-title text-xl font-bold text-gray-900 mb-3">
+              Effortless Property Tracking
+            </h3>
+            <p class="text-gray-700 leading-relaxed">
+              Keep all your real estate organized in one central dashboard. View portfolio status, occupancy rates, and key details at a glance.
+            </p>
+            <div class="mt-4 pt-4 border-t border-emerald-200">
+              <ul class="space-y-2 text-sm text-gray-600">
+                <li class="flex items-center gap-2">
+                  <span class="text-emerald-600 font-bold">✓</span> Multi-property overview
+                </li>
+                <li class="flex items-center gap-2">
+                  <span class="text-emerald-600 font-bold">✓</span> Custom property notes
+                </li>
+                <li class="flex items-center gap-2">
+                  <span class="text-emerald-600 font-bold">✓</span> Occupancy status
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        <!-- Feature 2: Smart Rental Agreements -->
+        <div class="card bg-gradient-to-br from-blue-50 to-white border border-blue-100 hover:shadow-lg transition-shadow">
+          <div class="card-body">
+            <div class="text-4xl mb-4">📋</div>
+            <h3 class="card-title text-xl font-bold text-gray-900 mb-3">
+              Smart Rental Agreements
+            </h3>
+            <p class="text-gray-700 leading-relaxed">
+              Track active, expired, and upcoming lease renewals seamlessly. Get notified before leases expire so you never miss a renewal opportunity.
+            </p>
+            <div class="mt-4 pt-4 border-t border-blue-200">
+              <ul class="space-y-2 text-sm text-gray-600">
+                <li class="flex items-center gap-2">
+                  <span class="text-blue-600 font-bold">✓</span> Lease timeline view
+                </li>
+                <li class="flex items-center gap-2">
+                  <span class="text-blue-600 font-bold">✓</span> Renewal alerts
+                </li>
+                <li class="flex items-center gap-2">
+                  <span class="text-blue-600 font-bold">✓</span> Quick lease duplication
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        <!-- Feature 3: Overdue Payment Alerts -->
+        <div class="card bg-gradient-to-br from-amber-50 to-white border border-amber-100 hover:shadow-lg transition-shadow">
+          <div class="card-body">
+            <div class="text-4xl mb-4">⚠️</div>
+            <h3 class="card-title text-xl font-bold text-gray-900 mb-3">
+              Overdue Payment Alerts
+            </h3>
+            <p class="text-gray-700 leading-relaxed">
+              Instantly spot missed rent with automated visual status badges. Never let late payments impact your cash flow again.
+            </p>
+            <div class="mt-4 pt-4 border-t border-amber-200">
+              <ul class="space-y-2 text-sm text-gray-600">
+                <li class="flex items-center gap-2">
+                  <span class="text-amber-600 font-bold">✓</span> Real-time status badges
+                </li>
+                <li class="flex items-center gap-2">
+                  <span class="text-amber-600 font-bold">✓</span> Payment tracking
+                </li>
+                <li class="flex items-center gap-2">
+                  <span class="text-amber-600 font-bold">✓</span> Clear payment history
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Bottom CTA Section -->
+  <section class="py-16 sm:py-24 bg-gradient-to-r from-emerald-600 to-emerald-700">
+    <div class="max-w-4xl mx-auto px-4 sm:px-8 text-center">
+      <h2 class="text-3xl sm:text-4xl font-black text-white mb-4">
+        Start managing your properties today
+      </h2>
+      <p class="text-lg text-emerald-100 mb-8 max-w-2xl mx-auto">
+        Join landlords across the country who've ditched spreadsheets for a smarter way to manage.
+      </p>
+      <div class="flex flex-col sm:flex-row gap-4 justify-center items-center">
+        <a href="<%= new_user_registration_path %>" class="btn btn-lg btn-primary text-white font-semibold shadow-lg hover:shadow-xl">
+          Get Started — It's Free
+        </a>
+        <p class="text-emerald-100 text-sm font-medium">
+          No credit card required • Set up in minutes
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="bg-gray-900 text-gray-300 py-12 sm:py-16">
+    <div class="max-w-6xl mx-auto px-4 sm:px-8">
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 mb-8">
+        <!-- Brand -->
+        <div>
+          <a href="/" class="text-xl font-bold text-white mb-2 block">🏠 Rentals</a>
+          <p class="text-sm text-gray-400">
+            Property management simplified for small landlords.
+          </p>
+        </div>
+
+        <!-- Product Links -->
+        <div>
+          <h4 class="font-semibold text-white mb-4">Product</h4>
+          <ul class="space-y-2 text-sm">
+            <li><a href="#features" class="hover:text-emerald-400 transition">Features</a></li>
+            <li><a href="#pricing" class="hover:text-emerald-400 transition">Pricing</a></li>
+            <li><a href="#" class="hover:text-emerald-400 transition">Security</a></li>
+          </ul>
+        </div>
+
+        <!-- Company Links -->
+        <div>
+          <h4 class="font-semibold text-white mb-4">Company</h4>
+          <ul class="space-y-2 text-sm">
+            <li><a href="#" class="hover:text-emerald-400 transition">About</a></li>
+            <li><a href="#" class="hover:text-emerald-400 transition">Blog</a></li>
+            <li><a href="#contact" class="hover:text-emerald-400 transition">Contact</a></li>
+          </ul>
+        </div>
+
+        <!-- Legal -->
+        <div>
+          <h4 class="font-semibold text-white mb-4">Legal</h4>
+          <ul class="space-y-2 text-sm">
+            <li><a href="#" class="hover:text-emerald-400 transition">Privacy</a></li>
+            <li><a href="#" class="hover:text-emerald-400 transition">Terms</a></li>
+            <li><a href="#" class="hover:text-emerald-400 transition">Cookies</a></li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- Divider -->
+      <div class="border-t border-gray-700 pt-8">
+        <div class="flex flex-col sm:flex-row justify-between items-center gap-4">
+          <p class="text-sm text-gray-500">
+            &copy; <%= Date.today.year %> Rentals. All rights reserved.
+          </p>
+          <div class="flex gap-6">
+            <a href="#" class="text-gray-400 hover:text-emerald-400 transition">Twitter</a>
+            <a href="#" class="text-gray-400 hover:text-emerald-400 transition">LinkedIn</a>
+            <a href="#" class="text-gray-400 hover:text-emerald-400 transition">GitHub</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </footer>
+</div>
