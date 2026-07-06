@@ -1,0 +1,57 @@
+<div class="card bg-base-100 shadow-lg mb-8">
+  <div class="card-body">
+    <h2 class="card-title text-2xl font-bold mb-6">Edit Account</h2>
+
+    <%= form_for(resource, as: resource_name, url: registration_path(resource_name), html: { method: :put }) do |f| %>
+      <%= render "devise/shared/error_messages", resource: resource %>
+
+      <div class="form-control mb-4 max-w-md">
+        <%= f.label :email, class: "label" %>
+        <%= f.email_field :email, autofocus: true, autocomplete: "email", class: "input input-bordered w-full" %>
+      </div>
+
+      <% if devise_mapping.confirmable? && resource.pending_reconfirmation? %>
+        <div class="alert alert-info mb-4">
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" class="stroke-current shrink-0 w-6 h-6"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+          <span>Currently waiting confirmation for: <%= resource.unconfirmed_email %></span>
+        </div>
+      <% end %>
+
+      <div class="divider my-6">Password</div>
+
+      <div class="form-control mb-4 max-w-md">
+        <%= f.label :password, class: "label" %>
+        <span class="label-text text-xs text-base-content/70">Leave blank if you don't want to change it</span>
+        <%= f.password_field :password, autocomplete: "new-password", class: "input input-bordered w-full" %>
+        <% if @minimum_password_length %>
+          <span class="label-text text-xs text-base-content/70 mt-2"><%= @minimum_password_length %> characters minimum</span>
+        <% end %>
+      </div>
+
+      <div class="form-control mb-4 max-w-md">
+        <%= f.label :password_confirmation, class: "label" %>
+        <%= f.password_field :password_confirmation, autocomplete: "new-password", class: "input input-bordered w-full" %>
+      </div>
+
+      <div class="form-control mb-6 max-w-md">
+        <%= f.label :current_password, class: "label" %>
+        <span class="label-text text-xs text-base-content/70">We need your current password to confirm your changes</span>
+        <%= f.password_field :current_password, autocomplete: "current-password", class: "input input-bordered w-full" %>
+      </div>
+
+      <div class="form-control max-w-md">
+        <%= f.submit t("update", default: "Update"), class: "btn btn-primary w-full" %>
+      </div>
+    <% end %>
+  </div>
+</div>
+
+<div class="card bg-error/10 border border-error shadow-lg">
+  <div class="card-body">
+    <h3 class="card-title text-lg font-bold text-error mb-4">Danger Zone</h3>
+    <p class="mb-4">Once you delete your account, there is no going back. Please be certain.</p>
+    <div class="card-actions">
+      <%= button_to "Delete account", registration_path(resource_name), data: { turbo_confirm: "Are you sure? This action cannot be undone." }, method: :delete, class: "btn btn-error w-full" %>
+    </div>
+  </div>
+</div>
