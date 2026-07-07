@@ -9,7 +9,7 @@ class ApplicationController < ActionController::Base
   private
 
   def redirect_to_landing_if_needed
-    redirect_to landing_path if !user_signed_in? && request.path == "/" && request.method == "GET"
+    redirect_to landing_path if request.get? && request.path == "/" && !user_signed_in?
   end
 
   def set_locale
