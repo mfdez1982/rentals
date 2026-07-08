@@ -22,13 +22,23 @@ Schema, models, routes, controllers, and view structure are all readable from th
 - Views → `app/views/`
 
 ## Domain model (the shape, not the fields)
-`User` is the auth record (Devise + a `role` enum, default `:landlord`). `Landlord` is a separate profile model belonging to a `User`, created automatically on sign-up **only for landlord-role users** (`after_create :create_landlord, if: :landlord?`). Admins never get a Landlord. A `Landlord` has many `Property` records; a `Property` has many `RentalAgreement` records; a `RentalAgreement` has many `Payment` records.
+`User` is the auth record (Devise + a `role` enum, default `:landlord`). `Landlord` is a separate profile model belonging to a `User`, created automatically on sign-up **only for landlord-role users** (`after_create :create_landlord, if: :landlord?`). Admins never get a Landlord. A `Landlord` has many `Property` records; a `Property` has many `RentalAgreement` records; a `RentalAgreement` has many `Payment` records. A `Property` also has many `Expense` records directly (not nested under an agreement) — used for the per-property, per-year Tax Report.
 
 Derived state (never stored as a column):
 - `property.rented?` — true if any agreement is active today
 - `payment.overdue?` — true when `paid_date` is nil and `due_date < Date.today`
 - `rental_agreement.has_overdue_payments?` — any payment is overdue
 - `property.has_overdue_payments?` — any agreement has overdue payments
+
+## Implemented features
+- Property management with derived rented/available status
+- Rental agreements per property, with renew-with-prefill (start date + rent copied from the prior agreement)
+- Payments per agreement, including bulk/recurring generation (start date + number of months) and overdue tracking
+- Deductible expenses per property, categorized (`Expense.category` enum)
+- Tax report per property/year: pro-rata deductible ratio based on active rental days, gross income, deductible expense breakdown
+- Devise auth (sign up/in/out, account edit, account deletion) — password reset is currently broken (submitting throws a 500)
+- EN/ES i18n throughout
+- Cookie consent banner with granular preferences
 
 ## Multi-tenancy (critical)
 Every query must be scoped to `current_landlord`. Never rely on the view alone. Always scope from `current_landlord` down the full chain:
