@@ -24,6 +24,16 @@
            data-rental-agreements-edit-url="<%= edit_property_rental_agreement_path(@property, @agreement, inline: "rent") %>"
            data-rental-agreements-frame-id="<%= dom_id(@agreement, :rent) %>">
         <span class="text-base-content/70 cursor-pointer hover:opacity-75 transition-opacity" title="<%= t('rental_agreements.edit_inline') %>"><%= number_to_currency(@agreement.rent_amount) %><%= t('rental_agreements.monthly_suffix') %></span>
+        <button type="button"
+                class="icon-btn"
+                title="<%= t('forms.buttons.edit') %>"
+                aria-label="<%= t('forms.buttons.edit') %>"
+                style="display:inline-flex; color:inherit; cursor:pointer; background:none; border:none; padding:0;"
+                data-action="click->rental-agreements#editRent"
+                data-rental-agreements-edit-url="<%= edit_property_rental_agreement_path(@property, @agreement, inline: "rent") %>"
+                data-rental-agreements-frame-id="<%= dom_id(@agreement, :rent) %>">
+          <%= heroicon "pencil", variant: :outline %>
+        </button>
       </div>
     <% end %>
     <span class="badge badge-sm <%= @agreement.status_badge_class %>"><%= @agreement.status %></span>
