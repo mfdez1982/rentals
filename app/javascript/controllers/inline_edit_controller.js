@@ -22,6 +22,12 @@ export default class extends Controller {
   }
 
   blur(event) {
+    // Moving focus to a sibling input within the same inline-edit form (e.g.
+    // tabbing from start date to end date) isn't a real blur of the form --
+    // submitting here would save the sibling field's stale value before the
+    // user finishes editing it.
+    if (event.relatedTarget && this.inputTargets.includes(event.relatedTarget)) return
+
     if (!this.isSubmitting) {
       this.isSubmitting = true
       this.formTarget.requestSubmit()
