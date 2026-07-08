@@ -1,6 +1,6 @@
 <tr>
   <td><%= format_date(expense.date) %></td>
-  <td><%= expense.category.humanize %></td>
+  <td><%= t("expenses.categories.#{expense.category}") %></td>
   <td><%= expense.description %></td>
   <td><%= number_to_currency(expense.amount) %></td>
   <td class="text-right">
@@ -24,7 +24,7 @@
         <%= heroicon "trash", variant: :outline %>
       <% end %>
       <% if expense.invoice_url.present? %>
-        <a href="<%= expense.invoice_url %>" class="icon-btn" title="View invoice"
+        <a href="<%= expense.invoice_url %>" class="icon-btn" title="<%= t('expenses.view_invoice') %>"
            style="display:inline-flex; color:inherit; cursor:pointer;"
            target="_blank" rel="noopener">
           <%= heroicon "document-text", variant: :outline %>

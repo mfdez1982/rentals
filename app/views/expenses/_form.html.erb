@@ -18,7 +18,7 @@
     <div>
       <%= f.label :category, t("expenses.category"), class: "label mb-1" %>
       <%= f.select :category,
-            Expense.categories.keys.map { |k| [k.humanize, k] },
+            Expense.categories.keys.map { |k| [t("expenses.categories.#{k}"), k] },
             { include_blank: t("expenses.select_category") },
             class: "select select-bordered w-full" %>
     </div>
@@ -46,7 +46,7 @@
     </div>
 
     <div class="flex gap-2 pt-2">
-      <%= f.submit class: "btn btn-primary" %>
+      <%= f.submit expense.persisted? ? t("expenses.form.submit_update") : t("expenses.form.submit_create"), class: "btn btn-primary" %>
       <%= link_to t("forms.buttons.cancel"), property_path(property), class: "btn btn-ghost" %>
     </div>
   </div>

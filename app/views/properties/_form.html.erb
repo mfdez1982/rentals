@@ -17,7 +17,7 @@
     </div>
 
     <div class="flex gap-2 pt-2">
-      <%= f.submit class: "btn btn-primary" %>
+      <%= f.submit t("properties.form.submit"), class: "btn btn-primary" %>
       <% if local_assigns[:cancel_path] %>
         <%= link_to t("forms.buttons.cancel"), cancel_path, class: "btn btn-ghost" %>
       <% end %>

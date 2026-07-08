@@ -250,6 +250,7 @@ es:
     form:
       name_placeholder: p. ej. 123 Calle Principal
       name_label: Nombre
+      submit: Crear Propiedad
     delete_confirm: "¿Eliminar \"%{name}\"? Esta acción no se puede deshacer."
     edit_inline: "Haz doble clic para editar"
 
@@ -268,6 +269,8 @@ es:
     status_expired: Vencido
     monthly_suffix: "/mes"
     edit_inline: "Haz doble clic para editar"
+    form:
+      submit: Crear Contrato de Alquiler
     errors:
       end_date_after_start: debe ser después de la fecha de inicio
       overlapping: se superpone con un contrato existente para esta propiedad
@@ -296,6 +299,8 @@ es:
       count: Número de meses
       amount: Cantidad
     create_error: "No se pudieron crear los pagos: %{error}"
+    form:
+      submit: Actualizar Pago
 
   # Dashboard
   dashboard:
@@ -337,6 +342,19 @@ es:
     invoice_url_hint: "(opcional)"
     invoice_url_placeholder: "https://..."
     delete_confirm: "¿Eliminar este gasto? Esta acción no se puede deshacer."
+    view_invoice: Ver factura
+    categories:
+      tax: Impuestos
+      insurance: Seguro
+      utilities: Servicios
+      community_fees: Cuotas de comunidad
+      repairs_maintenance: Reparaciones y mantenimiento
+      management_legal: Gestión y legal
+      financing: Financiación
+      other: Otro
+    form:
+      submit_create: Crear Gasto
+      submit_update: Actualizar Gasto
 
   # Forms & Buttons
   forms:

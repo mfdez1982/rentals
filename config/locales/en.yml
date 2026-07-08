@@ -127,6 +127,7 @@ en:
     form:
       name_placeholder: e.g. 123 Main St
       name_label: Name
+      submit: Create Property
     delete_confirm: "Delete \"%{name}\"? This cannot be undone."
     edit_inline: "Double-click to edit"
 
@@ -145,6 +146,8 @@ en:
     status_expired: Expired
     monthly_suffix: "/mo"
     edit_inline: "Double-click to edit"
+    form:
+      submit: Create Rental Agreement
     errors:
       end_date_after_start: must be after start date
       overlapping: overlaps with an existing agreement for this property
@@ -173,6 +176,8 @@ en:
       count: Number of months
       amount: Amount
     create_error: "Could not create payments: %{error}"
+    form:
+      submit: Update Payment
 
   # Dashboard
   dashboard:
@@ -214,6 +219,19 @@ en:
     invoice_url_hint: "(optional)"
     invoice_url_placeholder: "https://..."
     delete_confirm: "Delete this expense? This cannot be undone."
+    view_invoice: View invoice
+    categories:
+      tax: Tax
+      insurance: Insurance
+      utilities: Utilities
+      community_fees: Community fees
+      repairs_maintenance: Repairs & maintenance
+      management_legal: Management & legal
+      financing: Financing
+      other: Other
+    form:
+      submit_create: Create Expense
+      submit_update: Update Expense
 
   # Forms & Buttons
   forms:

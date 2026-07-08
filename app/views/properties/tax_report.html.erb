@@ -71,7 +71,7 @@
                 <td><%= l(expense[:date], format: :short) %></td>
                 <td>
                   <span class="badge badge-sm">
-                    <%= expense[:category].humanize %>
+                    <%= t("expenses.categories.#{expense[:category]}") %>
                   </span>
                 </td>
                 <td><%= expense[:description] || "—" %></td>
