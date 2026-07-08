@@ -2,7 +2,7 @@
   <td>
     <%= link_to format_date(agreement.start_date),
         property_rental_agreement_path(property, agreement),
-        class: "link link-hover",
+        class: "link link-primary",
         data: { turbo_frame: "_top" } %>
   </td>
   <td><%= format_date(agreement.end_date) %></td>
