@@ -2,6 +2,7 @@ class PaymentsController < ApplicationController
   before_action :set_property
   before_action :set_agreement
   before_action :set_payment, only: [:edit, :update, :destroy]
+  before_action -> { redirect_unless_turbo_frame_request(property_rental_agreement_path(@property, @agreement)) }, only: [:edit]
 
   def create_recurring
     start_date = Date.parse(params[:start_date])

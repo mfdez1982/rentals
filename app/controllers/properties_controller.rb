@@ -1,5 +1,6 @@
 class PropertiesController < ApplicationController
   before_action :set_property, only: [:show, :edit, :update, :destroy, :tax_report]
+  before_action -> { redirect_unless_turbo_frame_request(property_path(@property)) }, only: [:edit]
 
   def index
     @properties = current_landlord.properties

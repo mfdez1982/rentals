@@ -1,6 +1,7 @@
 class ExpensesController < ApplicationController
   before_action :set_property
   before_action :set_expense, only: [:edit, :update, :destroy]
+  before_action -> { redirect_unless_turbo_frame_request(property_path(@property)) }, only: [:edit]
 
   def create
     @expense = @property.expenses.build(expense_params)

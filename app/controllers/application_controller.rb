@@ -29,4 +29,11 @@ class ApplicationController < ActionController::Base
   def after_sign_in_path_for(resource)
     resource.admin? ? backoffice_root_path : properties_path
   end
+
+  # These inline-edit/renew views render only a Turbo Frame fragment, not a full page.
+  # Loading them outside a frame (direct navigation, bookmark, refresh) would otherwise
+  # render a broken-looking partial page, so bounce back to the full page instead.
+  def redirect_unless_turbo_frame_request(fallback_path)
+    redirect_to fallback_path unless turbo_frame_request?
+  end
 end

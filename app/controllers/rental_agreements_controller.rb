@@ -1,6 +1,8 @@
 class RentalAgreementsController < ApplicationController
   before_action :set_property
   before_action :set_agreement, only: [:show, :edit, :update, :destroy]
+  before_action -> { redirect_unless_turbo_frame_request(property_path(@property)) }, only: [:new]
+  before_action -> { redirect_unless_turbo_frame_request(property_rental_agreement_path(@property, @agreement)) }, only: [:edit]
 
   def show
     @payments = @agreement.payments.order(due_date: :asc).to_a
