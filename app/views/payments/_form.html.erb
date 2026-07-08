@@ -16,7 +16,9 @@
     </div>
 
     <div>
-      <%= f.label :paid_date, t("payments.paid_date_hint"), class: "label mb-1" %>
+      <%= f.label :paid_date, class: "label mb-1" do %>
+        <%= t("payments.paid_date") %> <span class="text-base-content/60"><%= t("payments.paid_date_hint") %></span>
+      <% end %>
       <%= f.date_field :paid_date, class: "input input-bordered w-full" %>
     </div>
 

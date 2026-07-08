@@ -14,7 +14,7 @@
         <div class="form-control mb-4">
           <%= f.label :password, class: "label" %>
           <% if @minimum_password_length %>
-            <span class="label-text text-xs text-base-content/70">(<%= @minimum_password_length %> characters minimum)</span>
+            <span class="label-text text-xs text-base-content/70">(<%= t("devise.registrations.characters_minimum", count: @minimum_password_length) %>)</span>
           <% end %>
           <%= f.password_field :password, autocomplete: "new-password", class: "input input-bordered w-full" %>
         </div>
@@ -25,7 +25,7 @@
         </div>
 
         <div class="form-control">
-          <%= f.submit t("sign_up", default: "Sign up"), class: "btn btn-primary w-full" %>
+          <%= f.submit t("devise.registrations.sign_up"), class: "btn btn-primary w-full" %>
         </div>
       <% end %>
 

@@ -25,6 +25,7 @@
   <body class="bg-base-200 min-h-screen">
     <%= render "shared/nav" %>
     <main class="max-w-5xl mx-auto px-4 py-8">
+      <%= render "shared/flash" %>
       <%= yield %>
     </main>
     <%= render "layouts/cookies_consent" %>

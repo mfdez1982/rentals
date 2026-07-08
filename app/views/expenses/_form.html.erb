@@ -30,13 +30,17 @@
     </div>
 
     <div>
-      <%= f.label :description, t("expenses.description_hint"), class: "label mb-1" %>
+      <%= f.label :description, class: "label mb-1" do %>
+        <%= t("expenses.description") %> <span class="text-base-content/60"><%= t("expenses.description_hint") %></span>
+      <% end %>
       <%= f.text_field :description, class: "input input-bordered w-full",
             placeholder: t("expenses.description_placeholder") %>
     </div>
 
     <div>
-      <%= f.label :invoice_url, t("expenses.invoice_url_hint"), class: "label mb-1" %>
+      <%= f.label :invoice_url, class: "label mb-1" do %>
+        <%= t("expenses.invoice_url") %> <span class="text-base-content/60"><%= t("expenses.invoice_url_hint") %></span>
+      <% end %>
       <%= f.url_field :invoice_url, class: "input input-bordered w-full",
             placeholder: t("expenses.invoice_url_placeholder") %>
     </div>

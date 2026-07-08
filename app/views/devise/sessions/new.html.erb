@@ -18,13 +18,13 @@
           <div class="form-control mb-6">
             <label class="label cursor-pointer justify-start gap-3">
               <%= f.check_box :remember_me %>
-              <span class="label-text"><%= f.label :remember_me, t("remember_me", default: "Remember me") %></span>
+              <span class="label-text"><%= f.label :remember_me, t("devise.registrations.remember_me") %></span>
             </label>
           </div>
         <% end %>
 
         <div class="form-control">
-          <%= f.submit t("login", default: "Log in"), class: "btn btn-primary w-full" %>
+          <%= f.submit t("devise.sessions.log_in"), class: "btn btn-primary w-full" %>
         </div>
       <% end %>
 
