@@ -12,4 +12,10 @@ class Property < ApplicationRecord
   def has_overdue_payments?
     rental_agreements.any?(&:has_overdue_payments?)
   end
+
+  def earliest_tax_year
+    earliest_agreement_year = rental_agreements.minimum(:start_date)&.year
+    earliest_expense_year = expenses.minimum(:date)&.year
+    [earliest_agreement_year, earliest_expense_year].compact.min || Date.today.year
+  end
 end

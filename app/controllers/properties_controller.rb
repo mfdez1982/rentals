@@ -17,6 +17,8 @@ class PropertiesController < ApplicationController
   def tax_report
     @year = params[:year].to_i.positive? ? params[:year].to_i : Date.today.year
     @report = TaxReportGenerator.new(@property, @year).generate
+    start_year = [@property.earliest_tax_year, Date.today.year].min
+    @year_options = (start_year..Date.today.year + 1).to_a.reverse
   end
 
   def create

@@ -210,6 +210,7 @@ en:
     date: Date
     category: Category
     select_category: Select a category
+    no_expenses: "No expenses recorded for %{year}."
     amount: Amount
     amount_placeholder: e.g. 250.00
     description: Description

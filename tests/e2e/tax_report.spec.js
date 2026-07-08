@@ -51,12 +51,45 @@ test.describe('Tax report', () => {
     await expect(page.getByText('No expenses recorded for 2019.')).toBeVisible();
   });
 
-  test('the year selector links to the same report for different years', async ({ page, property }) => {
+  test('the year selector dropdown navigates to the same report for different years', async ({ page, property }) => {
     await createAgreement(page, { startDate: '2023-01-01', endDate: '2023-12-31', rent: 1000 });
     await page.goto(`${property}/tax_report?year=2023`);
 
-    await page.getByRole('link', { name: '2024' }).click();
+    await page.getByLabel('Select Year:').selectOption('2024');
     await expect(page).toHaveURL(/year=2024/);
+    await expect(page.getByLabel('Select Year:')).toHaveValue('2024');
     await expect(page.getByText('out of 366 days in 2024')).toBeVisible(); // 2024 is a leap year
+  });
+
+  test('the year dropdown always includes the current and next year, even with no data', async ({
+    page,
+    property,
+  }) => {
+    const currentYear = new Date().getFullYear();
+    await page.goto(`${property}/tax_report`);
+
+    const options = await page.getByLabel('Select Year:').locator('option').allTextContents();
+    expect(options).toEqual([String(currentYear + 1), String(currentYear)]);
+  });
+
+  test('the year dropdown extends back to the earliest rental agreement on record', async ({ page, property }) => {
+    const currentYear = new Date().getFullYear();
+    await createAgreement(page, { startDate: '2015-06-01', endDate: '2015-12-31', rent: 800 });
+    await page.goto(`${property}/tax_report`);
+
+    const options = await page.getByLabel('Select Year:').locator('option').allTextContents();
+    expect(options[0]).toBe(String(currentYear + 1));
+    expect(options[options.length - 1]).toBe('2015');
+    expect(options).toContain('2016'); // range is contiguous, not just the two endpoints
+  });
+
+  test('the year dropdown extends back to the earliest expense on record', async ({ page, property }) => {
+    const currentYear = new Date().getFullYear();
+    await addExpense(page, { date: '2016-03-01', category: 'Other', amount: 50 });
+    await page.goto(`${property}/tax_report`);
+
+    const options = await page.getByLabel('Select Year:').locator('option').allTextContents();
+    expect(options[0]).toBe(String(currentYear + 1));
+    expect(options[options.length - 1]).toBe('2016');
   });
 });

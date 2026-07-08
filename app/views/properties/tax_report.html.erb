@@ -7,15 +7,15 @@
 </div>
 
 <!-- Year Selector -->
-<div class="mb-6 flex items-center gap-2 flex-wrap">
-  <span class="text-sm font-semibold text-base-content/70"><%= t("tax_report.select_year") %></span>
-  <% (2023..Date.today.year + 1).each do |year| %>
-    <% if year == @year %>
-      <button class="btn btn-sm btn-primary"><%= year %></button>
-    <% else %>
-      <%= link_to year, tax_report_property_path(@property, year: year), class: "btn btn-sm btn-ghost" %>
+<div class="mb-6 flex items-center gap-2 flex-wrap" data-controller="year-select">
+  <label for="tax_report_year" class="text-sm font-semibold text-base-content/70"><%= t("tax_report.select_year") %></label>
+  <select id="tax_report_year" class="select select-bordered select-sm w-32"
+          data-action="change->year-select#navigate"
+          data-year-select-base-url-value="<%= tax_report_property_path(@property) %>">
+    <% @year_options.each do |year| %>
+      <option value="<%= year %>" <%= "selected" if year == @year %>><%= year %></option>
     <% end %>
-  <% end %>
+  </select>
 </div>
 
 <!-- Summary Cards -->

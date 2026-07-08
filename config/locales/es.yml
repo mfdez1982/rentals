@@ -333,6 +333,7 @@ es:
     date: Fecha
     category: Categoría
     select_category: Seleccionar una categoría
+    no_expenses: "No hay gastos registrados para %{year}."
     amount: Cantidad
     amount_placeholder: p. ej. 250.00
     description: Descripción
