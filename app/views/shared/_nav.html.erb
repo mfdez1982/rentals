@@ -8,7 +8,7 @@
       <button class="btn btn-ghost btn-sm">
         <%= t("navigation.language") %>
       </button>
-      <ul class="dropdown-content menu bg-base-100 rounded-box z-[1] w-52 p-2 shadow">
+      <ul class="dropdown-content menu bg-base-100 rounded-box z-[60] w-52 p-2 shadow">
         <% available_locales.each do |locale| %>
           <li>
             <% if I18n.locale.to_s == locale.to_s %>

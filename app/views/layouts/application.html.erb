@@ -18,6 +18,11 @@
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orestbida/cookieconsent@3.0.1/dist/cookieconsent.css">
     <style>
       .icon-btn svg { width: 20px !important; height: 20px !important; }
+      /* The cookie consent banner ships with a max z-index so it always sits above page
+         content, but that also puts it above its own preferences modal/overlay when the
+         two are open at once. Pin the banner below the preferences modal explicitly. */
+      .cm-wrapper { z-index: 40 !important; }
+      .pm-wrapper { z-index: 50 !important; }
     </style>
     <%= javascript_importmap_tags %>
   </head>
@@ -28,6 +33,5 @@
       <%= render "shared/flash" %>
       <%= yield %>
     </main>
-    <%= render "layouts/cookies_consent" %>
   </body>
 </html>
