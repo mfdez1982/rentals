@@ -94,10 +94,8 @@
     <h2 class="card-title text-base mb-4"><%= t("notes.my_notes") %></h2>
 
     <% if @notes.any? %>
-      <div class="space-y-3 mb-6">
-        <% @notes.each do |note| %>
-          <%= render "notes/note_row", note: note %>
-        <% end %>
+      <div class="overflow-x-auto mb-6">
+        <%= render "notes/notes_list", notes: @notes %>
       </div>
     <% else %>
       <div class="text-center py-8 text-base-content/50 mb-6">

@@ -30,12 +30,27 @@
         </div>
       </div>
 
-      <div class="flex gap-2 flex-shrink-0">
+      <div class="flex gap-2 flex-shrink-0" style="display:inline-flex; align-items:center;">
         <% if note.active? && note.activity? %>
-          <%= button_to t("notes.mark_complete"), mark_complete_note_path(note), method: :patch, class: "btn btn-sm btn-outline" %>
+          <%= button_to mark_complete_note_path(note), method: :patch,
+              class: "icon-btn",
+              title: t("notes.mark_complete"),
+              style: "display:inline-flex; color:inherit; cursor:pointer; background:none; border:none; padding:0;" do %>
+            <%= heroicon "check", variant: :outline %>
+          <% end %>
         <% end %>
-        <%= link_to t("notes.edit"), edit_note_path(note), class: "btn btn-sm btn-outline" %>
-        <%= button_to t("notes.delete"), note_path(note), method: :delete, data: { confirm: t("notes.confirm_delete", default: "Are you sure?") }, class: "btn btn-sm btn-error btn-outline" %>
+        <%= link_to edit_note_path(note),
+            class: "icon-btn",
+            title: t("notes.edit"),
+            style: "display:inline-flex; color:inherit; cursor:pointer;" do %>
+          <%= heroicon "pencil", variant: :outline %>
+        <% end %>
+        <%= button_to note_path(note), method: :delete, data: { confirm: t("notes.confirm_delete", default: "Are you sure?") },
+            class: "icon-btn",
+            title: t("notes.delete"),
+            style: "display:inline-flex; color:inherit; cursor:pointer; background:none; border:none; padding:0;" do %>
+          <%= heroicon "trash", variant: :outline %>
+        <% end %>
       </div>
     </div>
   </div>

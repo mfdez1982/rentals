@@ -378,6 +378,7 @@ es:
     cancel: Cancelar
     delete: Eliminar
     edit: Editar
+    actions: Acciones
     form_errors:
       one: "1 error impidió que se guardara este formulario:"
       other: "%{count} errores impidieron que se guardara este formulario:"
@@ -391,6 +392,7 @@ es:
     description: Descripción
     due_date: Fecha de Vencimiento
     due_date_hint: Deja en blanco para una nota regular
+    related_to: Relacionado con
     add_note: Añadir Nota
     add_activity: Añadir Actividad
     mark_complete: Marcar como Completado

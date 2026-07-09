@@ -151,6 +151,9 @@ bin/rspec
 bin/rails s
 ```
 
+## Git commits
+**CRITICAL: Never commit anything to git without explicit permission from the user.** If you make changes that you believe should be committed, ask for approval first. Do not commit as part of a task unless the user specifically asks you to.
+
 ---
 
 ## Future direction — DO NOT IMPLEMENT

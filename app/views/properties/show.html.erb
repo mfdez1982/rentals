@@ -120,13 +120,8 @@
 
     <% all_property_notes = @property_notes + @agreement_notes %>
     <% if all_property_notes.any? %>
-      <div class="space-y-3 mb-6">
-        <% @property_notes.each do |note| %>
-          <%= render "notes/note_row", note: note %>
-        <% end %>
-        <% @agreement_notes.each do |note| %>
-          <%= render "notes/note_row", note: note %>
-        <% end %>
+      <div class="overflow-x-auto mb-6">
+        <%= render "notes/notes_list", notes: all_property_notes %>
       </div>
     <% else %>
       <div class="text-center py-8 text-base-content/50 mb-6">

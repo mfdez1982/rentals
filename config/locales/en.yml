@@ -255,6 +255,7 @@ en:
     cancel: Cancel
     delete: Delete
     edit: Edit
+    actions: Actions
     form_errors:
       one: "1 error prevented this form from being saved:"
       other: "%{count} errors prevented this form from being saved:"
@@ -268,6 +269,7 @@ en:
     description: Description
     due_date: Due Date
     due_date_hint: Leave empty for a regular note
+    related_to: Related to
     add_note: Add Note
     add_activity: Add Activity
     mark_complete: Mark Complete
