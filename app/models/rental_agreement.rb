@@ -1,6 +1,7 @@
 class RentalAgreement < ApplicationRecord
   belongs_to :property
   has_many :payments, dependent: :destroy
+  has_many :notes, as: :noteable, dependent: :destroy
 
   validates :start_date, :end_date, :rent_amount, presence: true
   validates :rent_amount, numericality: { greater_than: 0 }, allow_nil: true

@@ -248,3 +248,51 @@ en:
   common:
     back: "←"
     my_properties_link: "← My Properties"
+
+  # General
+  general:
+    save: Save
+    cancel: Cancel
+    delete: Delete
+    edit: Edit
+    form_errors:
+      one: "1 error prevented this form from being saved:"
+      other: "%{count} errors prevented this form from being saved:"
+
+  # Notes & Activities
+  notes:
+    my_notes: My Notes
+    note: Note
+    activity: Activity
+    title: Title
+    description: Description
+    due_date: Due Date
+    due_date_hint: Leave empty for a regular note
+    add_note: Add Note
+    add_activity: Add Activity
+    mark_complete: Mark Complete
+    edit: Edit
+    delete: Delete
+    confirm_delete: "Are you sure? This cannot be undone."
+    status:
+      active: Active
+      completed: Completed
+    filters:
+      label: Filters
+      all: All
+      active: Active
+      completed: Completed
+      overdue: Overdue
+    scopes:
+      general: General Notes
+      property: "Property: %{name}"
+      agreement: "Agreement: %{start_date}"
+    overdue: Overdue
+    due: "Due %{date}"
+    completed_on: "Completed %{date}"
+    no_notes: "No notes yet. Add one to get started."
+    created: Note created
+    updated: Note updated
+    deleted: Note deleted
+    marked_complete: Note marked as complete
+    creation_failed: Could not create note

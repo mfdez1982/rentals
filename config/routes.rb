@@ -19,6 +19,12 @@ Rails.application.routes.draw do
   get "up" => "rails/health#show", as: :rails_health_check
   post "set_locale" => "locales#set", as: :set_locale
 
+  resources :notes, only: [:index, :create, :edit, :update, :destroy] do
+    member do
+      patch :mark_complete
+    end
+  end
+
   resources :properties do
     member do
       get :tax_report

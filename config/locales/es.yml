@@ -371,3 +371,51 @@ es:
   common:
     back: "←"
     my_properties_link: "← Mis Propiedades"
+
+  # General
+  general:
+    save: Guardar
+    cancel: Cancelar
+    delete: Eliminar
+    edit: Editar
+    form_errors:
+      one: "1 error impidió que se guardara este formulario:"
+      other: "%{count} errores impidieron que se guardara este formulario:"
+
+  # Notes & Activities
+  notes:
+    my_notes: Mis Notas
+    note: Nota
+    activity: Actividad
+    title: Título
+    description: Descripción
+    due_date: Fecha de Vencimiento
+    due_date_hint: Deja en blanco para una nota regular
+    add_note: Añadir Nota
+    add_activity: Añadir Actividad
+    mark_complete: Marcar como Completado
+    edit: Editar
+    delete: Eliminar
+    confirm_delete: "¿Estás seguro? Esta acción no se puede deshacer."
+    status:
+      active: Activo
+      completed: Completado
+    filters:
+      label: Filtros
+      all: Todas
+      active: Activas
+      completed: Completadas
+      overdue: Vencidas
+    scopes:
+      general: Notas Generales
+      property: "Propiedad: %{name}"
+      agreement: "Contrato: %{start_date}"
+    overdue: Vencida
+    due: "Vence %{date}"
+    completed_on: "Completada %{date}"
+    no_notes: "Sin notas aún. Añade una para empezar."
+    created: Nota creada
+    updated: Nota actualizada
+    deleted: Nota eliminada
+    marked_complete: Nota marcada como completada
+    creation_failed: No se pudo crear la nota

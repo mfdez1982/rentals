@@ -1,0 +1,12 @@
+<div class="space-y-6">
+  <% notes_by_scope(notes).each do |scope_label, scoped_notes| %>
+    <div>
+      <h2 class="text-xl font-bold mb-4"><%= scope_label %></h2>
+      <div class="space-y-3">
+        <% scoped_notes.each do |note| %>
+          <%= render "note_row", note: note %>
+        <% end %>
+      </div>
+    </div>
+  <% end %>
+</div>

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_07_01_000004) do
+ActiveRecord::Schema[8.1].define(version: 2026_07_09_000001) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -33,6 +33,24 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_01_000004) do
     t.datetime "updated_at", null: false
     t.bigint "user_id", null: false
     t.index ["user_id"], name: "index_landlords_on_user_id"
+  end
+
+  create_table "notes", force: :cascade do |t|
+    t.datetime "completed_at"
+    t.datetime "created_at", null: false
+    t.text "description", null: false
+    t.date "due_date"
+    t.bigint "landlord_id", null: false
+    t.bigint "noteable_id"
+    t.string "noteable_type"
+    t.integer "status", default: 0, null: false
+    t.string "title", null: false
+    t.datetime "updated_at", null: false
+    t.index ["due_date"], name: "index_notes_on_due_date"
+    t.index ["landlord_id", "noteable_type", "noteable_id"], name: "index_notes_on_landlord_id_and_noteable_type_and_noteable_id"
+    t.index ["landlord_id", "status"], name: "index_notes_on_landlord_id_and_status"
+    t.index ["landlord_id"], name: "index_notes_on_landlord_id"
+    t.index ["noteable_type", "noteable_id"], name: "index_notes_on_noteable"
   end
 
   create_table "payments", force: :cascade do |t|
@@ -78,6 +96,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_01_000004) do
 
   add_foreign_key "expenses", "properties"
   add_foreign_key "landlords", "users"
+  add_foreign_key "notes", "landlords"
   add_foreign_key "payments", "rental_agreements"
   add_foreign_key "properties", "landlords"
   add_foreign_key "rental_agreements", "properties"

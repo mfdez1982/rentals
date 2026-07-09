@@ -2,6 +2,7 @@ class Property < ApplicationRecord
   belongs_to :landlord
   has_many :rental_agreements, dependent: :destroy
   has_many :expenses, dependent: :destroy
+  has_many :notes, as: :noteable, dependent: :destroy
 
   validates :name, presence: true
 

@@ -1,6 +1,12 @@
 <div class="navbar bg-base-100 shadow-sm px-4">
   <div class="flex-1">
     <%= link_to t("navigation.app_name"), root_path, class: "text-xl font-bold text-primary" %>
+    <% if user_signed_in? && !current_user.admin? %>
+      <div class="ml-8 flex gap-4">
+        <%= link_to t("properties.my_properties"), properties_path, class: "link link-hover" %>
+        <%= link_to t("notes.my_notes"), notes_path, class: "link link-hover" %>
+      </div>
+    <% end %>
   </div>
   <div class="flex-none gap-2">
     <!-- Language Selector -->
