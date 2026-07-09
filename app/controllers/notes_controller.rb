@@ -2,7 +2,7 @@ class NotesController < ApplicationController
   before_action :set_note, only: [:edit, :update, :mark_complete, :destroy]
 
   def index
-    @filter = params[:filter] || "active"
+    @filter = params[:filter] || "all"
     @notes = filtered_notes.order(due_date: :asc, created_at: :desc)
     @new_note = Note.new(landlord: current_landlord)
   end
@@ -51,8 +51,10 @@ class NotesController < ApplicationController
       base_scope.completed
     when "overdue"
       base_scope.overdue
-    else
+    when "active"
       base_scope.active
+    else
+      base_scope
     end
   end
 

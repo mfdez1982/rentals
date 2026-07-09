@@ -8,7 +8,7 @@
         <div class="card bg-base-200 p-6">
           <h2 class="font-bold mb-4"><%= t("notes.filters.label", default: "Filters") %></h2>
           <div class="space-y-2">
-            <%= link_to t("notes.filters.all"), notes_path(filter: nil), class: "btn btn-block btn-sm #{@filter.nil? || @filter == 'active' ? 'btn-primary' : 'btn-ghost'}" %>
+            <%= link_to t("notes.filters.all"), notes_path(filter: "all"), class: "btn btn-block btn-sm #{@filter == 'all' ? 'btn-primary' : 'btn-ghost'}" %>
             <%= link_to t("notes.filters.active"), notes_path(filter: "active"), class: "btn btn-block btn-sm #{@filter == 'active' ? 'btn-primary' : 'btn-ghost'}" %>
             <%= link_to t("notes.filters.completed"), notes_path(filter: "completed"), class: "btn btn-block btn-sm #{@filter == 'completed' ? 'btn-primary' : 'btn-ghost'}" %>
             <%= link_to t("notes.filters.overdue"), notes_path(filter: "overdue"), class: "btn btn-block btn-sm #{@filter == 'overdue' ? 'btn-primary' : 'btn-ghost'}" %>
