@@ -15,11 +15,21 @@ RSpec.describe NotesController, type: :controller do
       expect(response).to have_http_status(:success)
     end
 
-    it "returns only active notes by default" do
+    it "returns all notes by default" do
+      active_note = create(:note, landlord: landlord, status: :active)
+      completed_note = create(:note, landlord: landlord, status: :completed)
+
+      get :index
+      notes = Note.where(landlord: landlord)
+      expect(notes).to include(active_note)
+      expect(notes).to include(completed_note)
+    end
+
+    it "filters by active notes when filter param is set" do
       active_note = create(:note, landlord: landlord, status: :active)
       create(:note, landlord: landlord, status: :completed)
 
-      get :index
+      get :index, params: { filter: "active" }
       notes = Note.where(landlord: landlord).active
       expect(notes).to include(active_note)
     end
