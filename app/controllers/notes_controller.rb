@@ -10,7 +10,7 @@ class NotesController < ApplicationController
   def create
     @note = Note.new(note_params.merge(landlord: current_landlord))
     if @note.save
-      redirect_back_or_to notes_path, notice: t("notes.created")
+      redirect_back_or_to notes_path
     else
       redirect_back_or_to notes_path, alert: t("notes.creation_failed")
     end

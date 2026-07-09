@@ -40,9 +40,16 @@
   </div>
 </div>
 
-<div class="card bg-base-100 shadow-sm" data-controller="payments">
+<!-- Payments Section -->
+<div class="card bg-base-100 shadow-sm" data-controller="payments modal">
   <div class="card-body">
-    <h2 class="card-title text-base mb-4"><%= t("payments.payments") %></h2>
+    <!-- Toolbar -->
+    <div class="flex items-center justify-between mb-6">
+      <h2 class="card-title text-base"><%= t("payments.payments") %></h2>
+      <button type="button" class="btn btn-primary btn-sm" data-action="modal#open">
+        <%= t("payments.add_payments") %>
+      </button>
+    </div>
 
     <%= turbo_frame_tag dom_id(@agreement, :payments) do %>
       <% overdue = @payments.select(&:overdue?) %>
@@ -53,7 +60,7 @@
       <% end %>
 
       <% if @payments.any? %>
-        <div class="overflow-x-auto mb-6">
+        <div class="overflow-x-auto">
           <table class="table table-zebra">
             <thead>
               <tr>
@@ -74,60 +81,91 @@
           </table>
         </div>
       <% else %>
-        <div class="text-center py-8 text-base-content/50 mb-6">
+        <div class="text-center py-8 text-base-content/50">
           <p class="text-sm"><%= t("payments.no_payments") %></p>
         </div>
       <% end %>
-
-      <div class="card bg-base-200">
-        <div class="card-body">
-          <h3 class="card-title text-base"><%= t("payments.add_payments") %></h3>
-          <%= render "payments/create_recurring_form", property: @property, agreement: @agreement %>
-        </div>
-      </div>
     <% end %>
+
+    <!-- Payments Modal -->
+    <dialog class="modal" data-modal-target="dialog">
+      <div class="modal-box max-w-lg">
+        <button type="button" class="btn btn-sm btn-circle btn-ghost absolute right-2 top-2" data-action="modal#close">✕</button>
+        <h3 class="font-bold text-lg mb-4"><%= t("payments.add_payments") %></h3>
+        <%= render "payments/create_recurring_form", property: @property, agreement: @agreement %>
+      </div>
+      <form method="dialog" class="modal-backdrop">
+        <button></button>
+      </form>
+    </dialog>
   </div>
 </div>
 
-<div class="card bg-base-100 shadow-sm mt-6" data-controller="notes">
+<!-- Notes Section -->
+<div class="card bg-base-100 shadow-sm mt-6" data-controller="notes modal">
   <div class="card-body">
-    <h2 class="card-title text-base mb-4"><%= t("notes.my_notes") %></h2>
+    <!-- Toolbar -->
+    <div class="flex items-center justify-between mb-6">
+      <h2 class="card-title text-base"><%= t("notes.my_notes") %></h2>
+      <button type="button" class="btn btn-primary btn-sm" data-action="modal#open">
+        <%= t("notes.add_note") %>
+      </button>
+    </div>
 
-    <% if @notes.any? %>
-      <div class="overflow-x-auto mb-6">
+    <div class="overflow-x-auto">
+      <% if @notes.any? %>
         <%= render "notes/notes_list", notes: @notes %>
-      </div>
-    <% else %>
-      <div class="text-center py-8 text-base-content/50 mb-6">
-        <p class="text-sm"><%= t("notes.no_notes") %></p>
-      </div>
-    <% end %>
+      <% else %>
+        <table class="table table-zebra w-full">
+          <thead>
+            <tr>
+              <th><%= t("notes.title") %></th>
+              <th><%= t("notes.related_to", default: "Related to") %></th>
+              <th><%= t("notes.due_date") %></th>
+              <th><%= t("general.actions", default: "Actions") %></th>
+            </tr>
+          </thead>
+          <tbody></tbody>
+        </table>
+      <% end %>
+    </div>
 
-    <div class="card bg-base-200">
-      <div class="card-body">
-        <h3 class="card-title text-base"><%= t("notes.add_note") %></h3>
+    <!-- Notes Modal -->
+    <dialog class="modal" data-modal-target="dialog">
+      <div class="modal-box max-w-lg">
+        <button type="button" class="btn btn-sm btn-circle btn-ghost absolute right-2 top-2" data-action="modal#close">✕</button>
+        <h3 class="font-bold text-lg mb-4"><%= t("notes.add_note") %></h3>
+
         <%= form_with(model: Note.new(landlord: current_landlord), local: true) do |form| %>
           <%= form.hidden_field :noteable_type, value: "RentalAgreement" %>
           <%= form.hidden_field :noteable_id, value: @agreement.id %>
-          <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
+
+          <div class="space-y-4 mb-6">
             <div class="form-control">
               <%= form.label :title %>
               <%= form.text_field :title, placeholder: t("notes.title"), class: "input input-bordered w-full input-sm" %>
             </div>
-            <div class="form-control md:col-span-2">
+            <div class="form-control">
               <%= form.label :description %>
               <%= form.text_field :description, placeholder: t("notes.description"), class: "input input-bordered w-full input-sm" %>
             </div>
+            <div class="form-control">
+              <%= form.label :due_date, t("notes.due_date") %>
+              <%= form.date_field :due_date, class: "input input-bordered w-full input-sm" %>
+            </div>
           </div>
-          <div class="form-control mb-4">
-            <%= form.label :due_date, t("notes.due_date") %>
-            <%= form.date_field :due_date, class: "input input-bordered w-full input-sm" %>
-          </div>
-          <div class="flex gap-3">
+
+          <div class="flex gap-3 justify-end">
+            <button type="button" class="btn btn-ghost btn-sm" data-action="modal#close">
+              <%= t("forms.buttons.cancel") %>
+            </button>
             <%= form.submit t("notes.add_note"), class: "btn btn-primary btn-sm" %>
           </div>
         <% end %>
       </div>
-    </div>
+      <form method="dialog" class="modal-backdrop">
+        <button></button>
+      </form>
+    </dialog>
   </div>
 </div>
