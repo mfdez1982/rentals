@@ -6,6 +6,7 @@ class RentalAgreementsController < ApplicationController
 
   def show
     @payments = @agreement.payments.order(due_date: :asc).to_a
+    @notes = @agreement.notes.active.order(due_date: :asc, created_at: :desc)
   end
 
   def new

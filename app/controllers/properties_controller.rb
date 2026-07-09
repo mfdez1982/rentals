@@ -12,6 +12,8 @@ class PropertiesController < ApplicationController
     @new_agreement = @property.rental_agreements.build
     @expenses = @property.expenses.order(date: :desc)
     @new_expense = @property.expenses.build
+    @property_notes = @property.notes.active.order(due_date: :asc, created_at: :desc)
+    @agreement_notes = Note.where(noteable_type: "RentalAgreement", noteable_id: @property.rental_agreements.pluck(:id)).active.order(due_date: :asc, created_at: :desc)
   end
 
   def tax_report

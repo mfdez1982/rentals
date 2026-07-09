@@ -113,3 +113,52 @@
     <% end %>
   </div>
 </div>
+
+<div class="card bg-base-100 shadow-sm mt-6" data-controller="notes">
+  <div class="card-body">
+    <h2 class="card-title text-base mb-4"><%= t("notes.my_notes") %></h2>
+
+    <% all_property_notes = @property_notes + @agreement_notes %>
+    <% if all_property_notes.any? %>
+      <div class="space-y-3 mb-6">
+        <% @property_notes.each do |note| %>
+          <%= render "notes/note_row", note: note %>
+        <% end %>
+        <% @agreement_notes.each do |note| %>
+          <%= render "notes/note_row", note: note %>
+        <% end %>
+      </div>
+    <% else %>
+      <div class="text-center py-8 text-base-content/50 mb-6">
+        <p class="text-sm"><%= t("notes.no_notes") %></p>
+      </div>
+    <% end %>
+
+    <div class="card bg-base-200">
+      <div class="card-body">
+        <h3 class="card-title text-base"><%= t("notes.add_note") %></h3>
+        <%= form_with(model: Note.new(landlord: current_landlord), local: true) do |form| %>
+          <%= form.hidden_field :noteable_type, value: "Property" %>
+          <%= form.hidden_field :noteable_id, value: @property.id %>
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
+            <div class="form-control">
+              <%= form.label :title %>
+              <%= form.text_field :title, placeholder: t("notes.title"), class: "input input-bordered w-full input-sm" %>
+            </div>
+            <div class="form-control md:col-span-2">
+              <%= form.label :description %>
+              <%= form.text_field :description, placeholder: t("notes.description"), class: "input input-bordered w-full input-sm" %>
+            </div>
+          </div>
+          <div class="form-control mb-4">
+            <%= form.label :due_date, t("notes.due_date") %>
+            <%= form.date_field :due_date, class: "input input-bordered w-full input-sm" %>
+          </div>
+          <div class="flex gap-3">
+            <%= form.submit t("notes.add_note"), class: "btn btn-primary btn-sm" %>
+          </div>
+        <% end %>
+      </div>
+    </div>
+  </div>
+</div>
