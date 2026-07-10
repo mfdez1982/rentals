@@ -10,11 +10,13 @@ test.describe('Internationalization (EN/ES)', () => {
   test('switching to Spanish translates the properties dashboard', async ({ page, landlord }) => {
     await switchLanguage(page, 'ES');
     await expect(page.getByRole('heading', { name: 'Mis Propiedades' })).toBeVisible();
+    await page.getByRole('button', { name: 'Añadir Propiedad' }).first().click();
     await expect(page.getByRole('button', { name: 'Crear Propiedad' })).toBeVisible();
   });
 
   test('the rental agreement submit button is translated in Spanish', async ({ page, property }) => {
     await switchLanguage(page, 'ES');
+    await page.getByRole('button', { name: 'Nuevo Contrato de Alquiler' }).click();
     await expect(page.getByRole('button', { name: 'Crear Contrato de Alquiler' })).toBeVisible();
   });
 
@@ -23,6 +25,7 @@ test.describe('Internationalization (EN/ES)', () => {
     property,
   }) => {
     await switchLanguage(page, 'ES');
+    await page.getByRole('button', { name: 'Gastos Deducibles' }).click();
     await expect(page.getByRole('button', { name: 'Crear Gasto' })).toBeVisible();
 
     const options = await page.getByLabel('Categoría').locator('option').allTextContents();

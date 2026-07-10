@@ -7,12 +7,13 @@ test.describe('Properties', () => {
   });
 
   test('creates a property and lists it with an Available status', async ({ page, landlord }) => {
+    await page.getByRole('button', { name: 'Add a Property' }).first().click();
     await page.getByRole('textbox', { name: 'Name' }).fill('Maple Street, Unit 4A');
     await page.getByRole('button', { name: 'Create Property' }).click();
 
-    const row = page.locator('table tbody tr', { hasText: 'Maple Street, Unit 4A' });
-    await expect(row).toBeVisible();
-    await expect(row.getByText('Available')).toBeVisible();
+    const card = page.locator('[data-testid^="property-card-"]', { hasText: 'Maple Street, Unit 4A' });
+    await expect(card).toBeVisible();
+    await expect(card.getByText('Available')).toBeVisible();
   });
 
   test('shows Rented status once the property has an active agreement', async ({ page, landlord }) => {
@@ -20,8 +21,9 @@ test.describe('Properties', () => {
     await createAgreement(page, { startDate: '2020-01-01', endDate: '2099-12-31', rent: 1000 });
 
     await page.goto('/properties');
-    const row = page.locator('table tbody tr', { hasText: 'Oak Avenue' });
-    await expect(row.getByText('Rented')).toBeVisible();
+    const card = page.locator('[data-testid^="property-card-"]', { hasText: 'Oak Avenue' });
+    await expect(card).toBeVisible();
+    await expect(card.getByText('Rented')).toBeVisible();
   });
 
   test('property show page allows renaming the property inline', async ({ page, landlord }) => {
@@ -40,14 +42,14 @@ test.describe('Properties', () => {
     await createProperty(page, 'To Be Deleted');
     await page.goto('/properties');
 
-    const row = page.locator('table tbody tr', { hasText: 'To Be Deleted' });
+    const card = page.locator('[data-testid^="property-card-"]', { hasText: 'To Be Deleted' });
     page.once('dialog', (dialog) => {
       expect(dialog.message()).toContain('To Be Deleted');
       dialog.accept();
     });
-    await row.getByRole('button', { name: 'Delete' }).click();
+    await card.getByRole('button', { name: 'Delete' }).click();
 
-    await expect(row).toBeHidden();
+    await expect(card).toBeHidden();
     await expect(page.getByText('No properties yet.')).toBeVisible();
   });
 
@@ -55,10 +57,10 @@ test.describe('Properties', () => {
     await createProperty(page, 'Keep Me');
     await page.goto('/properties');
 
-    const row = page.locator('table tbody tr', { hasText: 'Keep Me' });
+    const card = page.locator('[data-testid^="property-card-"]', { hasText: 'Keep Me' });
     page.once('dialog', (dialog) => dialog.dismiss());
-    await row.getByRole('button', { name: 'Delete' }).click();
+    await card.getByRole('button', { name: 'Delete' }).click();
 
-    await expect(row).toBeVisible();
+    await expect(card).toBeVisible();
   });
 });

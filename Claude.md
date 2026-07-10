@@ -147,12 +147,18 @@ The Rails server runs on the **host** machine (`bin/rails s`), not inside this d
 - Confirm with the user that `bin/rails s` is running on the host before attempting to navigate.
 - Use `http://localhost:3000/...` as the base URL for all `mcp__playwright__browser_*` tool calls.
 
+## Testing
+- **RSpec unit/controller tests:** `bin/rspec`
+- **Playwright tests:** `npm test` (generates report at `playwright-report/index.html`)
+- **Playwright report:** Open `playwright-report/index.html` in a browser to view detailed test results, traces, and screenshots
+
 ## Common commands
 ```bash
 bin/rails db:create db:migrate
 bin/rails db:seed
 bin/rspec
 bin/rails s
+npm test
 ```
 
 ## Git commits

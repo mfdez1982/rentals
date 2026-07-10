@@ -59,6 +59,7 @@ test.describe('Rental agreements', () => {
   });
 
   test('rejects an end date before the start date', async ({ page, property }) => {
+    await page.getByRole('button', { name: 'New Rental Agreement' }).click();
     await page.getByRole('textbox', { name: 'Start Date' }).fill('2020-06-01');
     await page.getByRole('textbox', { name: 'End Date' }).fill('2020-01-01');
     await page.getByRole('spinbutton', { name: 'Monthly Rent' }).fill('1000');
@@ -71,6 +72,7 @@ test.describe('Rental agreements', () => {
     await createAgreement(page, { startDate: '2020-01-01', endDate: '2020-12-31', rent: 1000 });
     await page.goto(property);
 
+    await page.getByRole('button', { name: 'New Rental Agreement' }).click();
     await page.getByRole('textbox', { name: 'Start Date' }).fill('2020-06-01');
     await page.getByRole('textbox', { name: 'End Date' }).fill('2021-06-01');
     await page.getByRole('spinbutton', { name: 'Monthly Rent' }).fill('1000');

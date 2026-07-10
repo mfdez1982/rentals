@@ -6,6 +6,7 @@
 /** Creates a property from the /properties index and returns its show-page URL. */
 async function createProperty(page, name) {
   await page.goto('/properties');
+  await page.getByRole('button', { name: 'Add a Property' }).first().click();
   await page.getByRole('textbox', { name: 'Name' }).fill(name);
   await page.getByRole('button', { name: 'Create Property' }).click();
   await page.getByRole('link', { name }).click();
@@ -15,6 +16,11 @@ async function createProperty(page, name) {
 
 /** Creates a rental agreement on the currently-open property show page. */
 async function createAgreement(page, { startDate, endDate, rent }) {
+  // Open the rental agreement modal first
+  const buttons = await page.getByRole('button', { name: 'New Rental Agreement' }).all();
+  if (buttons.length > 0) {
+    await buttons[0].click();
+  }
   await page.getByRole('textbox', { name: 'Start Date' }).fill(startDate);
   await page.getByRole('textbox', { name: 'End Date' }).fill(endDate);
   await page.getByRole('spinbutton', { name: 'Monthly Rent' }).fill(String(rent));
@@ -32,10 +38,15 @@ async function createAgreement(page, { startDate, endDate, rent }) {
  * and observe pre-submission state (or cancel the request outright).
  */
 async function addPayments(page, { startDate, months, amount }) {
+  // Open the payments modal first
+  const buttons = await page.getByRole('button', { name: 'Add Payments' }).all();
+  if (buttons.length > 0) {
+    await buttons[0].click();
+  }
   await page.getByRole('textbox', { name: 'Start Date' }).fill(startDate);
   await page.getByRole('spinbutton', { name: 'Number of months' }).fill(String(months));
   await page.getByRole('spinbutton', { name: 'Amount' }).fill(String(amount));
-  await page.getByRole('button', { name: 'Add Payments' }).click();
+  await page.getByRole('dialog').getByRole('button', { name: 'Add Payments' }).click();
   await page.locator('table tbody tr', { hasText: formatUsDate(startDate) }).first().waitFor();
 }
 
@@ -45,8 +56,15 @@ async function addPayments(page, { startDate, months, amount }) {
  * for why this matters).
  */
 async function addExpense(page, { date, category, amount, description, invoiceUrl }) {
+  // Open the expense modal first - there may be multiple buttons with that label on the page
+  const buttons = await page.getByRole('button', { name: 'Deductible Expenses' }).all();
+  if (buttons.length > 0) {
+    // Click the last one which should be the "add" button in the toolbar
+    await buttons[buttons.length - 1].click();
+  }
   await page.getByRole('textbox', { name: 'Date', exact: true }).fill(date);
-  await page.getByLabel('Category').selectOption({ label: category });
+  const categoryLabel = page.getByLabel('Category');
+  await categoryLabel.selectOption({ label: category });
   await page.getByRole('spinbutton', { name: 'Amount' }).fill(String(amount));
   if (description) {
     await page.getByRole('textbox', { name: 'Description (optional)' }).fill(description);

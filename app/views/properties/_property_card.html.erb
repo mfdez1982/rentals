@@ -14,7 +14,7 @@
         <%= button_to property_path(property), method: :delete,
             class: "btn btn-ghost btn-xs btn-circle",
             title: t("forms.buttons.delete"),
-            form: { data: { turbo_confirm: t("properties.delete_confirm", name: property.name) } } do %>
+            form: { data: { turbo_confirm: t("properties.delete_confirm", name: property.name), turbo_frame: "_top" } } do %>
           <%= heroicon "trash", variant: :outline %>
         <% end %>
       </div>

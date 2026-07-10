@@ -65,6 +65,7 @@ test.describe('Deductible expenses', () => {
   });
 
   test('rejects an invalid invoice URL', async ({ page, property }) => {
+    await page.getByRole('button', { name: 'Deductible Expenses' }).click();
     await page.getByRole('textbox', { name: 'Date', exact: true }).fill('2024-03-15');
     await page.getByLabel('Category').selectOption({ label: 'Other' });
     await page.getByRole('spinbutton', { name: 'Amount' }).fill('50');
