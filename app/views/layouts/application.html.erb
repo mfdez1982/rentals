@@ -23,6 +23,40 @@
          two are open at once. Pin the banner below the preferences modal explicitly. */
       .cm-wrapper { z-index: 40 !important; }
       .pm-wrapper { z-index: 50 !important; }
+
+      /* Softer palette pass: page background, deeper primary green, soft card
+         shadows instead of hard borders, muted badge tints, subtler zebra rows. */
+      body.bg-base-200 { background-color: #F7F5F0 !important; }
+
+      [data-theme=emerald] {
+        --color-primary: #1F5C43 !important;
+        --color-primary-content: #ffffff !important;
+      }
+
+      .card.shadow-sm,
+      .card.shadow-md,
+      .card.shadow-lg,
+      .card.shadow-xl,
+      .card.shadow-2xl {
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05) !important;
+      }
+      .card.hover\:shadow-lg:hover {
+        box-shadow: 0 8px 28px rgba(0, 0, 0, 0.08) !important;
+      }
+      .card.border-base-300,
+      .card.card-bordered:not(.border-error) {
+        border-width: 0 !important;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05) !important;
+      }
+
+      .badge-success { --badge-color: #DCF3E3 !important; --badge-fg: #1F5C43 !important; }
+      .badge-warning { --badge-color: #FCEFD2 !important; --badge-fg: #8A5A00 !important; }
+      .badge-error   { --badge-color: #FBE2E2 !important; --badge-fg: #9B2226 !important; }
+      .badge-info    { --badge-color: #DCEEFB !important; --badge-fg: #1D5A80 !important; }
+
+      .table-zebra tbody tr:nth-child(2n) {
+        background-color: color-mix(in oklab, var(--color-primary) 4%, var(--color-base-100)) !important;
+      }
     </style>
     <%= javascript_importmap_tags %>
   </head>
