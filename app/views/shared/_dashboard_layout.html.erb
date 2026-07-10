@@ -1,0 +1,16 @@
+<!-- Navigation Tabs -->
+<% properties_active = request.path_info.start_with?("/properties") %>
+<% notes_active = request.path_info.start_with?("/notes") %>
+
+<nav class="flex gap-8 border-b border-base-300 mb-6">
+  <%= link_to t("properties.my_properties"), properties_path,
+      class: "text-sm pb-3 transition-colors inline-block #{properties_active ? 'text-primary font-bold border-b-2 border-primary' : 'text-base-content/60 font-normal hover:text-base-content'}" %>
+
+  <%= link_to t("notes.my_notes"), notes_path,
+      class: "text-sm pb-3 transition-colors inline-block #{notes_active ? 'text-primary font-bold border-b-2 border-primary' : 'text-base-content/60 font-normal hover:text-base-content'}" %>
+</nav>
+
+<!-- Main Content -->
+<div>
+  <%= yield %>
+</div>
