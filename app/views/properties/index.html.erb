@@ -1,76 +1,40 @@
-<div class="flex items-center justify-between mb-6">
-  <h1 class="text-2xl font-bold"><%= t("properties.my_properties") %></h1>
+<div data-controller="properties modal">
+  <div class="flex items-center justify-between mb-6">
+    <h1 class="text-2xl font-bold"><%= t("properties.my_properties") %></h1>
+    <button type="button" class="btn btn-primary btn-sm" data-action="modal#open">
+      <%= t("properties.add_property") %>
+    </button>
+  </div>
+
+  <% if @properties.any? %>
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4" data-testid="properties-grid">
+      <% @properties.each do |property| %>
+        <%= turbo_frame_tag dom_id(property), data: { row_url: property_path(property) } do %>
+          <%= render "property_card", property: property %>
+        <% end %>
+      <% end %>
+    </div>
+  <% else %>
+    <div class="flex items-center justify-center min-h-96">
+      <div class="text-center">
+        <p class="text-lg text-base-content/60 mb-4"><%= t("properties.no_properties") %></p>
+        <p class="text-sm text-base-content/40 mb-6"><%= t("properties.no_properties_hint") %></p>
+        <button type="button" class="btn btn-primary" data-action="modal#open">
+          <%= t("properties.add_property") %>
+        </button>
+      </div>
+    </div>
+  <% end %>
+
+  <!-- Add Property Modal -->
+  <dialog class="modal" data-modal-target="dialog">
+    <div class="modal-box max-w-lg">
+      <button type="button" class="btn btn-sm btn-circle btn-ghost absolute right-2 top-2" data-action="modal#close">✕</button>
+      <h3 class="font-bold text-lg mb-4"><%= t("properties.add_property") %></h3>
+      <%= render "form", property: @new_property %>
+    </div>
+    <form method="dialog" class="modal-backdrop">
+      <button></button>
+    </form>
+  </dialog>
 </div>
-
-<% if @properties.any? %>
-  <div class="card bg-base-100 shadow-sm" data-controller="properties modal">
-    <div class="card-body">
-      <!-- Toolbar -->
-      <div class="flex items-center justify-between mb-6">
-        <h2 class="card-title text-base"><%= t("properties.name") %></h2>
-        <button type="button" class="btn btn-primary btn-sm" data-action="modal#open">
-          <%= t("properties.add_property") %>
-        </button>
-      </div>
-
-      <div class="overflow-x-auto">
-        <table class="table table-zebra">
-          <thead>
-            <tr>
-              <th><%= t("properties.name") %></th>
-              <th><%= t("properties.status") %></th>
-              <th></th>
-            </tr>
-          </thead>
-          <tbody>
-            <% @properties.each do |property| %>
-              <%= turbo_frame_tag dom_id(property), data: { row_url: property_path(property) } do %>
-                <%= render "property", property: property %>
-              <% end %>
-            <% end %>
-          </tbody>
-        </table>
-      </div>
-    </div>
-
-    <!-- Add Property Modal -->
-    <dialog class="modal" data-modal-target="dialog">
-      <div class="modal-box max-w-lg">
-        <button type="button" class="btn btn-sm btn-circle btn-ghost absolute right-2 top-2" data-action="modal#close">✕</button>
-        <h3 class="font-bold text-lg mb-4"><%= t("properties.add_property") %></h3>
-        <%= render "form", property: @new_property %>
-      </div>
-      <form method="dialog" class="modal-backdrop">
-        <button></button>
-      </form>
-    </dialog>
-  </div>
-<% else %>
-  <div class="card bg-base-100 shadow-sm" data-controller="modal">
-    <div class="card-body">
-      <div class="flex items-center justify-between mb-6">
-        <h2 class="card-title text-base"><%= t("properties.add_property") %></h2>
-        <button type="button" class="btn btn-primary btn-sm" data-action="modal#open">
-          <%= t("properties.add_property") %>
-        </button>
-      </div>
-
-      <div class="text-center py-16 text-base-content/50">
-        <p class="text-lg"><%= t("properties.no_properties") %></p>
-        <p class="text-sm mt-1"><%= t("properties.no_properties_hint") %></p>
-      </div>
-    </div>
-
-    <!-- Add Property Modal -->
-    <dialog class="modal" data-modal-target="dialog">
-      <div class="modal-box max-w-lg">
-        <button type="button" class="btn btn-sm btn-circle btn-ghost absolute right-2 top-2" data-action="modal#close">✕</button>
-        <h3 class="font-bold text-lg mb-4"><%= t("properties.add_property") %></h3>
-        <%= render "form", property: @new_property %>
-      </div>
-      <form method="dialog" class="modal-backdrop">
-        <button></button>
-      </form>
-    </dialog>
-  </div>
-<% end %>

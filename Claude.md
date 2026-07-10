@@ -29,6 +29,9 @@ Derived state (never stored as a column):
 - `payment.overdue?` — true when `paid_date` is nil and `due_date < Date.today`
 - `rental_agreement.has_overdue_payments?` — any payment is overdue
 - `property.has_overdue_payments?` — any agreement has overdue payments
+- `property.active_rental_agreement` — returns the currently active agreement (if any)
+- `property.next_unpaid_payment` — gets the soonest unpaid payment from any agreement
+- `property.max_days_overdue` — calculates maximum days overdue across all payments
 
 ## Implemented features
 - Property management with derived rented/available status
@@ -129,6 +132,7 @@ en:
 - **Components:** use DaisyUI semantic components (card, table, badge, navbar, btn, input, alert).
 - **Mobile:** forms and tables must not overflow on small widths.
 - **Accessibility:** labels associated with inputs via `for`/`id` or wrapping.
+- **Avatar colors:** Property avatars use deterministic color assignment from a fixed palette (6 colors: success, warning, error, info, primary, secondary). Color is derived by hashing the property name to an index — same property name always gets the same color across renders and sessions. See `app/helpers/avatar_helper.rb` for implementation. This ensures visual consistency without requiring image uploads or database storage.
 
 ## Workflow
 Before writing any code, always present your analysis and implementation plan and wait for the user's approval. Never jump straight into writing files.

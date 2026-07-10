@@ -245,6 +245,10 @@ es:
     rented: Alquilada
     available: Disponible
     overdue_payments: Pagos Vencidos
+    monthly_rent: "Renta Mensual"
+    next_payment_due: "Próximo Pago Vencido"
+    days_overdue: "%{count} día de retraso"
+    days_overdue_plural: "%{count} días de retraso"
     no_properties: No hay propiedades aún.
     no_properties_hint: Añade la primera arriba para empezar.
     form:
