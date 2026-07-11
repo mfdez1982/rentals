@@ -3,14 +3,14 @@
   <%= render "properties/property", property: @property %>
 <% end %>
 
+<!-- Global Navigation & Header (Always Visible) -->
 <div class="mb-6">
   <%= link_to t("common.my_properties_link"), properties_path, class: "btn btn-ghost btn-sm" %>
 </div>
 
-<div class="flex items-center justify-between mb-6">
+<div class="flex items-center justify-start mb-6">
   <%= turbo_frame_tag dom_id(@property, :name) do %>
     <div class="flex items-center gap-3"
-         data-controller="properties"
          data-action="dblclick->properties#editName"
          data-properties-edit-url="<%= edit_property_path(@property, inline: true) %>"
          data-properties-frame-id="<%= dom_id(@property, :name) %>">
@@ -27,19 +27,35 @@
       </button>
     </div>
   <% end %>
-  <%= link_to t("tax_report.title"), tax_report_property_path(@property), class: "btn btn-ghost btn-sm" %>
 </div>
 
-<!-- Rental Agreements Section -->
-<div class="card bg-base-100 shadow-sm" data-controller="rental-agreements modal">
-  <div class="card-body">
-    <!-- Toolbar -->
-    <div class="flex items-center justify-between mb-6">
-      <h2 class="card-title text-base"><%= t("rental_agreements.new_rental_agreement") %></h2>
-      <button type="button" class="btn btn-primary btn-sm" data-action="modal#open">
-        <%= t("rental_agreements.new_rental_agreement") %>
-      </button>
-    </div>
+<!-- Navigation Tabs & Content (Tab-Managed) -->
+<div data-controller="properties" data-properties-active-tab-value="contratos">
+  <nav class="flex gap-8 border-b border-base-300 mb-6">
+    <%= link_to t("rental_agreements.new_rental_agreement"), "#",
+        data: { properties_tab: "contratos", action: "click->properties#selectTab" } %>
+
+    <%= link_to t("tax_report.deductible_expenses"), "#",
+        data: { properties_tab: "gastos", action: "click->properties#selectTab" } %>
+
+    <%= link_to t("notes.my_notes"), "#",
+        data: { properties_tab: "notas", action: "click->properties#selectTab" } %>
+
+    <%= link_to t("tax_report.title"), "#",
+        data: { properties_tab: "tax_report", action: "click->properties#selectTab" } %>
+  </nav>
+
+  <!-- Rental Agreements Section -->
+<div data-property-section="contratos">
+    <div class="card bg-base-100 shadow-sm" data-controller="rental-agreements modal">
+      <div class="card-body">
+        <!-- Toolbar -->
+        <div class="flex items-center justify-between mb-6">
+          <h2 class="card-title text-base"><%= t("rental_agreements.new_rental_agreement") %></h2>
+          <button type="button" class="btn btn-primary btn-sm" data-action="modal#open">
+            <%= t("rental_agreements.new_rental_agreement") %>
+          </button>
+        </div>
 
     <%= turbo_frame_tag dom_id(@property, :agreements) do %>
       <% if @agreements.any? %>
@@ -81,11 +97,13 @@
         <button></button>
       </form>
     </dialog>
+      </div>
+    </div>
   </div>
-</div>
 
-<!-- Expenses Section -->
-<div class="card bg-base-100 shadow-sm mt-6" data-controller="expenses modal">
+  <!-- Expenses Section -->
+  <div data-property-section="gastos">
+    <div class="card bg-base-100 shadow-sm" data-controller="expenses modal">
   <div class="card-body">
     <!-- Toolbar -->
     <div class="flex items-center justify-between mb-6">
@@ -135,11 +153,13 @@
         <button></button>
       </form>
     </dialog>
+    </div>
   </div>
-</div>
+  </div>
 
-<!-- Notes Section -->
-<div class="card bg-base-100 shadow-sm mt-6" data-controller="notes modal">
+  <!-- Notes Section -->
+  <div data-property-section="notas">
+    <div class="card bg-base-100 shadow-sm" data-controller="notes modal">
   <div class="card-body">
     <!-- Toolbar -->
     <div class="flex items-center justify-between mb-6">
@@ -205,5 +225,19 @@
         <button></button>
       </form>
     </dialog>
+    </div>
+  </div>
+  </div>
+
+  <!-- Tax Report Section -->
+  <div data-property-section="tax_report">
+    <div class="card bg-base-100 shadow-sm">
+      <div class="card-body">
+        <!-- Header -->
+        <h2 class="card-title text-base mb-6"><%= t("tax_report.title") %></h2>
+
+        <%= render "tax_report_content", property: @property %>
+      </div>
+    </div>
   </div>
 </div>

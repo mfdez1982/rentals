@@ -14,6 +14,12 @@ class PropertiesController < ApplicationController
     @new_expense = @property.expenses.build
     @property_notes = @property.notes.active.order(due_date: :asc, created_at: :desc)
     @agreement_notes = Note.where(noteable_type: "RentalAgreement", noteable_id: @property.rental_agreements.pluck(:id)).active.order(due_date: :asc, created_at: :desc)
+
+    # Load tax report data for the tab
+    @year = Date.today.year
+    @report = TaxReportGenerator.new(@property, @year).generate
+    start_year = [@property.earliest_tax_year, Date.today.year].min
+    @year_options = (start_year..Date.today.year + 1).to_a.reverse
   end
 
   def tax_report

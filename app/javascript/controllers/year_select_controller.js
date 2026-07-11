@@ -4,6 +4,12 @@ export default class extends Controller {
   static values = { baseUrl: String }
 
   navigate(event) {
-    Turbo.visit(`${this.baseUrlValue}?year=${event.target.value}`)
+    const url = `${this.baseUrlValue}?year=${event.target.value}`
+    const frame = this.element.closest("turbo-frame")
+    if (frame) {
+      frame.src = url
+    } else {
+      Turbo.visit(url)
+    }
   }
 }
