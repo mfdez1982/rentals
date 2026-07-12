@@ -1,4 +1,4 @@
-<%= form_with model: [property, expense], data: local_assigns.fetch(:form_data, {}) do |f| %>
+<%= form_with model: [property, expense], data: local_assigns.fetch(:form_data, { turbo_frame: "_top" }) do |f| %>
   <div class="space-y-4 max-w-md">
     <% if expense.errors.any? %>
       <div role="alert" class="alert alert-error">
@@ -47,7 +47,7 @@
 
     <div class="flex gap-2 pt-2">
       <%= f.submit expense.persisted? ? t("expenses.form.submit_update") : t("expenses.form.submit_create"), class: "btn btn-primary" %>
-      <%= link_to t("forms.buttons.cancel"), property_path(property), class: "btn btn-ghost" %>
+      <button type="button" class="btn btn-ghost" data-action="modal#close"><%= t("forms.buttons.cancel") %></button>
     </div>
   </div>
 <% end %>

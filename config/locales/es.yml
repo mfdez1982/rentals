@@ -293,6 +293,7 @@ es:
     overdue_badge_plural: "%{count} pagos vencidos"
     no_payments: No hay pagos registrados aún. Añade uno abajo.
     add_payments: Añadir Pagos
+    edit_payment: Editar Pago
     table_headers:
       due_date: Fecha de Vencimiento
       paid_date: Fecha de Pago
@@ -338,6 +339,7 @@ es:
     category: Categoría
     select_category: Seleccionar una categoría
     no_expenses: "No hay gastos registrados para %{year}."
+    edit_expense: Editar Gasto
     amount: Cantidad
     amount_placeholder: p. ej. 250.00
     description: Descripción

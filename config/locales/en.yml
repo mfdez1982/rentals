@@ -170,6 +170,7 @@ en:
     overdue_badge_plural: "%{count} overdue payments"
     no_payments: No payments recorded yet. Add one below.
     add_payments: Add Payments
+    edit_payment: Edit Payment
     table_headers:
       due_date: Due Date
       paid_date: Paid Date
@@ -215,6 +216,7 @@ en:
     category: Category
     select_category: Select a category
     no_expenses: "No expenses recorded for %{year}."
+    edit_expense: Edit Expense
     amount: Amount
     amount_placeholder: e.g. 250.00
     description: Description

@@ -9,7 +9,7 @@
           class: "icon-btn",
           title: t("forms.buttons.edit"),
           style: "display:inline-flex; color:inherit; cursor:pointer;",
-          data: { action: "click->expenses#openEdit", turbo_frame: dom_id(expense) } do %>
+          data: { turbo_frame: "expense_edit_frame", action: "click->modal#openFrame" } do %>
         <%= heroicon "pencil", variant: :outline %>
       <% end %>
       <%= button_to property_expense_path(property, expense),
