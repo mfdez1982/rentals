@@ -131,7 +131,6 @@ en:
     form:
       name_placeholder: e.g. 123 Main St
       name_label: Name
-      submit: Create Property
     delete_confirm: "Delete \"%{name}\"? This cannot be undone."
     edit_property: Edit Property
 
@@ -150,8 +149,6 @@ en:
     status_expired: Expired
     monthly_suffix: "/mo"
     edit_agreement: Edit Rental Agreement
-    form:
-      submit: Create Rental Agreement
     errors:
       end_date_after_start: must be after start date
       overlapping: overlaps with an existing agreement for this property
@@ -169,7 +166,7 @@ en:
     overdue_badge: "%{count} overdue payment"
     overdue_badge_plural: "%{count} overdue payments"
     no_payments: No payments recorded yet. Add one below.
-    add_payments: Add Payments
+    add_payments: Add Payment
     edit_payment: Edit Payment
     table_headers:
       due_date: Due Date
@@ -181,8 +178,6 @@ en:
       count: Number of months
       amount: Amount
     create_error: "Could not create payments: %{error}"
-    form:
-      submit: Update Payment
 
   # Dashboard
   dashboard:
@@ -216,6 +211,7 @@ en:
     category: Category
     select_category: Select a category
     no_expenses: "No expenses recorded for %{year}."
+    add_expense: Add Expense
     edit_expense: Edit Expense
     amount: Amount
     amount_placeholder: e.g. 250.00
@@ -236,9 +232,6 @@ en:
       management_legal: Management & legal
       financing: Financing
       other: Other
-    form:
-      submit_create: Create Expense
-      submit_update: Update Expense
 
   # Forms & Buttons
   forms:
@@ -257,10 +250,6 @@ en:
 
   # General
   general:
-    save: Save
-    cancel: Cancel
-    delete: Delete
-    edit: Edit
     actions: Actions
     form_errors:
       one: "1 error prevented this form from being saved:"

@@ -254,7 +254,6 @@ es:
     form:
       name_placeholder: p. ej. 123 Calle Principal
       name_label: Nombre
-      submit: Crear Propiedad
     delete_confirm: "¿Eliminar \"%{name}\"? Esta acción no se puede deshacer."
     edit_property: Editar Propiedad
 
@@ -273,8 +272,6 @@ es:
     status_expired: Vencido
     monthly_suffix: "/mes"
     edit_agreement: Editar Contrato de Alquiler
-    form:
-      submit: Crear Contrato de Alquiler
     errors:
       end_date_after_start: debe ser después de la fecha de inicio
       overlapping: se superpone con un contrato existente para esta propiedad
@@ -292,7 +289,7 @@ es:
     overdue_badge: "%{count} pago vencido"
     overdue_badge_plural: "%{count} pagos vencidos"
     no_payments: No hay pagos registrados aún. Añade uno abajo.
-    add_payments: Añadir Pagos
+    add_payments: Añadir Pago
     edit_payment: Editar Pago
     table_headers:
       due_date: Fecha de Vencimiento
@@ -304,8 +301,6 @@ es:
       count: Número de meses
       amount: Cantidad
     create_error: "No se pudieron crear los pagos: %{error}"
-    form:
-      submit: Actualizar Pago
 
   # Dashboard
   dashboard:
@@ -339,6 +334,7 @@ es:
     category: Categoría
     select_category: Seleccionar una categoría
     no_expenses: "No hay gastos registrados para %{year}."
+    add_expense: Añadir Gasto
     edit_expense: Editar Gasto
     amount: Cantidad
     amount_placeholder: p. ej. 250.00
@@ -359,9 +355,6 @@ es:
       management_legal: Gestión y legal
       financing: Financiación
       other: Otro
-    form:
-      submit_create: Crear Gasto
-      submit_update: Actualizar Gasto
 
   # Forms & Buttons
   forms:
@@ -380,10 +373,6 @@ es:
 
   # General
   general:
-    save: Guardar
-    cancel: Cancelar
-    delete: Eliminar
-    edit: Editar
     actions: Acciones
     form_errors:
       one: "1 error impidió que se guardara este formulario:"

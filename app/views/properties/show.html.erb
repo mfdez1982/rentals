@@ -112,7 +112,7 @@
     <div class="flex items-center justify-between mb-6">
       <h2 class="card-title text-base"><%= t("tax_report.deductible_expenses") %></h2>
       <button type="button" class="btn btn-primary btn-sm" data-action="modal#open">
-        <%= t("tax_report.deductible_expenses") %>
+        <%= t("expenses.add_expense") %>
       </button>
     </div>
 
@@ -160,7 +160,7 @@
     <dialog class="modal" data-modal-target="dialog">
       <div class="modal-box max-w-lg">
         <button type="button" class="btn btn-sm btn-circle btn-ghost absolute right-2 top-2" data-action="modal#close">✕</button>
-        <h3 class="font-bold text-lg mb-4"><%= t("tax_report.deductible_expenses") %></h3>
+        <h3 class="font-bold text-lg mb-4"><%= t("expenses.add_expense") %></h3>
         <%= render "expenses/form", property: @property, expense: @new_expense %>
       </div>
       <form method="dialog" class="modal-backdrop">
@@ -227,11 +227,9 @@
             </div>
           </div>
 
-          <div class="flex gap-3 justify-end">
-            <button type="button" class="btn btn-ghost btn-sm" data-action="modal#close">
-              <%= t("forms.buttons.cancel") %>
-            </button>
-            <%= form.submit t("notes.add_note"), class: "btn btn-primary btn-sm" %>
+          <div class="flex gap-2 pt-2">
+            <%= form.submit t("forms.buttons.submit"), class: "btn btn-primary" %>
+            <button type="button" class="btn btn-ghost" data-action="modal#close"><%= t("forms.buttons.cancel") %></button>
           </div>
         <% end %>
       </div>

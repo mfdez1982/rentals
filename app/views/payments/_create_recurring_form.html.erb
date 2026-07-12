@@ -17,8 +17,9 @@
             step: "0.01", min: "0.01", placeholder: t("payments.amount_placeholder") %>
     </div>
 
-    <div class="pt-2">
-      <%= f.submit t("payments.add_payments"), class: "btn btn-primary" %>
+    <div class="flex gap-2 pt-2">
+      <%= f.submit t("forms.buttons.submit"), class: "btn btn-primary" %>
+      <button type="button" class="btn btn-ghost" data-action="modal#close"><%= t("forms.buttons.cancel") %></button>
     </div>
   </div>
 <% end %>
