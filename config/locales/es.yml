@@ -256,7 +256,7 @@ es:
       name_label: Nombre
       submit: Crear Propiedad
     delete_confirm: "¿Eliminar \"%{name}\"? Esta acción no se puede deshacer."
-    edit_inline: "Haz doble clic para editar"
+    edit_property: Editar Propiedad
 
   # Rental Agreements
   rental_agreements:
@@ -272,7 +272,7 @@ es:
     status_upcoming: Próximo
     status_expired: Vencido
     monthly_suffix: "/mes"
-    edit_inline: "Haz doble clic para editar"
+    edit_agreement: Editar Contrato de Alquiler
     form:
       submit: Crear Contrato de Alquiler
     errors:

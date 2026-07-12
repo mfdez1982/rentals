@@ -2,42 +2,34 @@
   <%= link_to "← #{@property.name}", property_path(@property), class: "btn btn-ghost btn-sm" %>
 </div>
 
-<div class="mb-6">
+<div class="mb-6" data-controller="modal">
   <div class="flex items-center gap-3">
-    <%= turbo_frame_tag dom_id(@agreement, :dates) do %>
-      <div class="flex items-center gap-2"
-           data-controller="rental-agreements"
-           data-action="dblclick->rental-agreements#editDates"
-           data-rental-agreements-edit-url="<%= edit_property_rental_agreement_path(@property, @agreement, inline: "dates") %>"
-           data-rental-agreements-frame-id="<%= dom_id(@agreement, :dates) %>">
-        <h1 class="text-2xl font-bold cursor-pointer hover:opacity-75 transition-opacity" title="<%= t('rental_agreements.edit_inline') %>">
-          <%= format_date(@agreement.start_date) %> – <%= format_date(@agreement.end_date) %>
-        </h1>
-      </div>
-    <% end %>
+    <h1 class="text-2xl font-bold">
+      <%= format_date(@agreement.start_date) %> – <%= format_date(@agreement.end_date) %>
+    </h1>
   </div>
   <div class="flex flex-wrap items-center gap-3 mt-2">
-    <%= turbo_frame_tag dom_id(@agreement, :rent) do %>
-      <div class="flex items-center gap-2"
-           data-controller="rental-agreements"
-           data-action="dblclick->rental-agreements#editRent"
-           data-rental-agreements-edit-url="<%= edit_property_rental_agreement_path(@property, @agreement, inline: "rent") %>"
-           data-rental-agreements-frame-id="<%= dom_id(@agreement, :rent) %>">
-        <span class="text-base-content/70 cursor-pointer hover:opacity-75 transition-opacity" title="<%= t('rental_agreements.edit_inline') %>"><%= number_to_currency(@agreement.rent_amount) %><%= t('rental_agreements.monthly_suffix') %></span>
-        <button type="button"
-                class="icon-btn"
-                title="<%= t('forms.buttons.edit') %>"
-                aria-label="<%= t('forms.buttons.edit') %>"
-                style="display:inline-flex; color:inherit; cursor:pointer; background:none; border:none; padding:0;"
-                data-action="click->rental-agreements#editRent"
-                data-rental-agreements-edit-url="<%= edit_property_rental_agreement_path(@property, @agreement, inline: "rent") %>"
-                data-rental-agreements-frame-id="<%= dom_id(@agreement, :rent) %>">
-          <%= heroicon "pencil", variant: :outline %>
-        </button>
-      </div>
+    <span class="text-base-content/70"><%= number_to_currency(@agreement.rent_amount) %><%= t('rental_agreements.monthly_suffix') %></span>
+    <%= link_to edit_property_rental_agreement_path(@property, @agreement, inline: true),
+        class: "icon-btn",
+        title: t("forms.buttons.edit"),
+        "aria-label": t("forms.buttons.edit"),
+        style: "display:inline-flex; color:inherit; cursor:pointer;",
+        data: { turbo_frame: "agreement_edit_frame", action: "click->modal#openFrame" } do %>
+      <%= heroicon "pencil", variant: :outline %>
     <% end %>
     <span class="badge badge-sm <%= @agreement.status_badge_class %>"><%= @agreement.status %></span>
   </div>
+
+  <dialog class="modal" data-modal-target="dialog">
+    <div class="modal-box max-w-lg">
+      <button type="button" class="btn btn-sm btn-circle btn-ghost absolute right-2 top-2" data-action="modal#close">✕</button>
+      <%= turbo_frame_tag "agreement_edit_frame" %>
+    </div>
+    <form method="dialog" class="modal-backdrop">
+      <button></button>
+    </form>
+  </dialog>
 </div>
 
 <!-- Payments Section -->

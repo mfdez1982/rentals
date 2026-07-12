@@ -1,19 +1,10 @@
-<%= turbo_frame_tag dom_id(@property, :name) do %>
-  <%= form_with model: @property, data: { controller: "inline-edit", inline_edit_target: "form", turbo_frame: dom_id(@property, :name) } do |f| %>
-    <input type="hidden" name="inline" value="true">
-    <div class="flex items-center gap-2">
-      <%= f.text_field :name,
-            class: "input input-bordered input-sm bg-base-100 w-96",
-            data: { inline_edit_target: "input", action: "keydown->inline-edit#submit blur->inline-edit#blur" } %>
+<div class="min-h-screen bg-base-100 flex items-center justify-center py-12 px-4">
+  <div class="card bg-base-100 border border-base-300 shadow-lg max-w-lg w-full">
+    <div class="card-body">
+      <%= turbo_frame_tag "property_edit_frame" do %>
+        <h3 class="font-bold text-lg mb-4"><%= t("properties.edit_property") %></h3>
+        <%= render "form", property: @property, inline: true %>
+      <% end %>
     </div>
-    <% if @property.errors.any? %>
-      <div role="alert" class="alert alert-error text-sm mt-2">
-        <ul class="list-disc list-inside">
-          <% @property.errors.full_messages.each do |msg| %>
-            <li><%= msg %></li>
-          <% end %>
-        </ul>
-      </div>
-    <% end %>
-  <% end %>
-<% end %>
+  </div>
+</div>

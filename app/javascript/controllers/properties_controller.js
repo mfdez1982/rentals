@@ -96,13 +96,4 @@ export default class extends Controller {
     })
     if (clickedFrame) clickedFrame.dataset.editing = "true"
   }
-
-  editName(event) {
-    const frameId = event.currentTarget.dataset.propertiesFrameId
-    const editUrl = event.currentTarget.dataset.propertiesEditUrl
-    const frame = document.querySelector(`turbo-frame#${frameId}`)
-    if (frame && editUrl) {
-      frame.src = editUrl
-    }
-  }
 }

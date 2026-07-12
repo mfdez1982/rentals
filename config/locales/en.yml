@@ -133,7 +133,7 @@ en:
       name_label: Name
       submit: Create Property
     delete_confirm: "Delete \"%{name}\"? This cannot be undone."
-    edit_inline: "Double-click to edit"
+    edit_property: Edit Property
 
   # Rental Agreements
   rental_agreements:
@@ -149,7 +149,7 @@ en:
     status_upcoming: Upcoming
     status_expired: Expired
     monthly_suffix: "/mo"
-    edit_inline: "Double-click to edit"
+    edit_agreement: Edit Rental Agreement
     form:
       submit: Create Rental Agreement
     errors:

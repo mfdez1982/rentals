@@ -1,5 +1,9 @@
-<%= form_with model: property, data: local_assigns.fetch(:form_data, {}) do |f| %>
+<%= form_with model: property, data: local_assigns.fetch(:form_data, { turbo_frame: "_top" }) do |f| %>
   <div class="space-y-4 max-w-md">
+    <% if local_assigns[:inline] %>
+      <input type="hidden" name="inline" value="true">
+    <% end %>
+
     <% if property.errors.any? %>
       <div role="alert" class="alert alert-error">
         <ul class="list-disc list-inside text-sm">
@@ -18,9 +22,7 @@
 
     <div class="flex gap-2 pt-2">
       <%= f.submit t("properties.form.submit"), class: "btn btn-primary" %>
-      <% if local_assigns[:cancel_path] %>
-        <%= link_to t("forms.buttons.cancel"), cancel_path, class: "btn btn-ghost" %>
-      <% end %>
+      <button type="button" class="btn btn-ghost" data-action="modal#close"><%= t("forms.buttons.cancel") %></button>
     </div>
   </div>
 <% end %>

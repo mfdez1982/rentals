@@ -1,47 +1,11 @@
-<% if params[:inline] == "dates" %>
-  <%= turbo_frame_tag dom_id(@agreement, :dates) do %>
-    <%= form_with model: [@property, @agreement], data: { controller: "inline-edit", inline_edit_target: "form", turbo_frame: dom_id(@agreement, :dates) } do |f| %>
-      <input type="hidden" name="inline" value="dates">
-      <div class="flex items-center gap-2">
-        <%= f.date_field :start_date,
-              class: "input input-bordered input-sm bg-base-100",
-              data: { inline_edit_target: "input", action: "keydown->inline-edit#submit blur->inline-edit#blur" } %>
-        <span class="text-sm">–</span>
-        <%= f.date_field :end_date,
-              class: "input input-bordered input-sm bg-base-100",
-              data: { inline_edit_target: "input", action: "keydown->inline-edit#submit blur->inline-edit#blur" } %>
-      </div>
-      <% if @agreement.errors.any? %>
-        <div role="alert" class="alert alert-error text-sm mt-2">
-          <ul class="list-disc list-inside">
-            <% @agreement.errors.full_messages.each do |msg| %>
-              <li><%= msg %></li>
-            <% end %>
-          </ul>
-        </div>
+<div class="min-h-screen bg-base-100 flex items-center justify-center py-12 px-4">
+  <div class="card bg-base-100 border border-base-300 shadow-lg max-w-lg w-full">
+    <div class="card-body">
+      <%= turbo_frame_tag "agreement_edit_frame" do %>
+        <h3 class="font-bold text-lg mb-4"><%= t("rental_agreements.edit_agreement") %></h3>
+        <%= render "form", property: @property, agreement: @agreement,
+              form_data: { turbo_frame: "_top" }, cancel_action: "modal#close", inline: true %>
       <% end %>
-    <% end %>
-  <% end %>
-<% elsif params[:inline] == "rent" %>
-  <%= turbo_frame_tag dom_id(@agreement, :rent) do %>
-    <%= form_with model: [@property, @agreement], data: { controller: "inline-edit", inline_edit_target: "form", turbo_frame: dom_id(@agreement, :rent) } do |f| %>
-      <input type="hidden" name="inline" value="rent">
-      <div class="flex items-center gap-2">
-        <%= f.number_field :rent_amount,
-              class: "input input-bordered input-sm bg-base-100 w-32",
-              step: "0.01", min: "0.01",
-              data: { inline_edit_target: "input", action: "keydown->inline-edit#submit blur->inline-edit#blur" } %>
-        <span class="text-sm text-base-content/70"><%= t("rental_agreements.monthly_suffix") %></span>
-      </div>
-      <% if @agreement.errors.any? %>
-        <div role="alert" class="alert alert-error text-sm mt-2">
-          <ul class="list-disc list-inside">
-            <% @agreement.errors.full_messages.each do |msg| %>
-              <li><%= msg %></li>
-            <% end %>
-          </ul>
-        </div>
-      <% end %>
-    <% end %>
-  <% end %>
-<% end %>
+    </div>
+  </div>
+</div>

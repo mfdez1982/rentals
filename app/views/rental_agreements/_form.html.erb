@@ -1,5 +1,9 @@
 <%= form_with model: [property, agreement], data: local_assigns.fetch(:form_data, {}) do |f| %>
   <div class="space-y-4 max-w-md">
+    <% if local_assigns[:inline] %>
+      <input type="hidden" name="inline" value="true">
+    <% end %>
+
     <% if agreement.errors.any? %>
       <div role="alert" class="alert alert-error">
         <ul class="list-disc list-inside text-sm">
@@ -28,7 +32,11 @@
 
     <div class="flex gap-2 pt-2">
       <%= f.submit t("rental_agreements.form.submit"), class: "btn btn-primary" %>
-      <%= link_to t("forms.buttons.cancel"), property_path(property), class: "btn btn-ghost" %>
+      <% if local_assigns[:cancel_action] %>
+        <button type="button" class="btn btn-ghost" data-action="<%= cancel_action %>"><%= t("forms.buttons.cancel") %></button>
+      <% else %>
+        <%= link_to t("forms.buttons.cancel"), property_path(property), class: "btn btn-ghost" %>
+      <% end %>
     </div>
   </div>
 <% end %>
