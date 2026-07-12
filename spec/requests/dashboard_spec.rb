@@ -3,9 +3,9 @@ require "rails_helper"
 RSpec.describe "Dashboard", type: :request do
   describe "GET /" do
     context "when not logged in" do
-      it "redirects to login" do
+      it "redirects to landing" do
         get root_path
-        expect(response).to redirect_to(new_user_session_path)
+        expect(response).to redirect_to(landing_path)
       end
     end
 
