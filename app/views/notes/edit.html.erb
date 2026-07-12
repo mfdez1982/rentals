@@ -1,44 +1,46 @@
 <div class="min-h-screen bg-base-100 flex items-center justify-center py-12 px-4">
   <div class="card bg-base-100 border border-base-300 shadow-lg max-w-md w-full">
     <div class="card-body">
-      <h1 class="card-title text-2xl font-bold mb-6"><%= t("notes.edit") %></h1>
+      <%= turbo_frame_tag "note_edit_frame" do %>
+        <h1 class="card-title text-2xl font-bold mb-6"><%= t("notes.edit") %></h1>
 
-      <%= form_with(model: @note, local: true) do |form| %>
-        <% if @note.errors.any? %>
-          <div class="alert alert-error mb-4">
-            <div>
-              <h4 class="font-bold"><%= t("general.form_errors", count: @note.errors.count) %></h4>
-              <ul class="list-disc list-inside text-sm mt-2">
-                <% @note.errors.full_messages.each do |message| %>
-                  <li><%= message %></li>
-                <% end %>
-              </ul>
+        <%= form_with(model: @note, data: { turbo_frame: "_top" }) do |form| %>
+          <% if @note.errors.any? %>
+            <div class="alert alert-error mb-4">
+              <div>
+                <h4 class="font-bold"><%= t("general.form_errors", count: @note.errors.count) %></h4>
+                <ul class="list-disc list-inside text-sm mt-2">
+                  <% @note.errors.full_messages.each do |message| %>
+                    <li><%= message %></li>
+                  <% end %>
+                </ul>
+              </div>
             </div>
+          <% end %>
+
+          <div class="form-control w-full mb-4">
+            <%= form.label :title %>
+            <%= form.text_field :title, class: "input input-bordered w-full" %>
+          </div>
+
+          <div class="form-control w-full mb-4">
+            <%= form.label :description %>
+            <%= form.text_area :description, rows: 4, class: "textarea textarea-bordered w-full" %>
+          </div>
+
+          <div class="form-control w-full mb-6">
+            <%= form.label :due_date, t("notes.due_date") %>
+            <%= form.date_field :due_date, class: "input input-bordered w-full" %>
+            <label class="label">
+              <span class="label-text-alt"><%= t("notes.due_date_hint", default: "Leave empty for a regular note") %></span>
+            </label>
+          </div>
+
+          <div class="flex gap-3">
+            <%= form.submit t("general.save"), class: "btn btn-primary flex-1" %>
+            <button type="button" class="btn btn-ghost flex-1" data-action="modal#close"><%= t("general.cancel") %></button>
           </div>
         <% end %>
-
-        <div class="form-control w-full mb-4">
-          <%= form.label :title %>
-          <%= form.text_field :title, class: "input input-bordered w-full" %>
-        </div>
-
-        <div class="form-control w-full mb-4">
-          <%= form.label :description %>
-          <%= form.text_area :description, rows: 4, class: "textarea textarea-bordered w-full" %>
-        </div>
-
-        <div class="form-control w-full mb-6">
-          <%= form.label :due_date, t("notes.due_date") %>
-          <%= form.date_field :due_date, class: "input input-bordered w-full" %>
-          <label class="label">
-            <span class="label-text-alt"><%= t("notes.due_date_hint", default: "Leave empty for a regular note") %></span>
-          </label>
-        </div>
-
-        <div class="flex gap-3">
-          <%= form.submit t("general.save"), class: "btn btn-primary flex-1" %>
-          <%= link_to t("general.cancel"), notes_path, class: "btn btn-ghost flex-1" %>
-        </div>
       <% end %>
     </div>
   </div>

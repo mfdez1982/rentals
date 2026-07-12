@@ -1,3 +1,4 @@
+<div data-controller="modal">
 <div class="overflow-x-auto">
   <table class="table table-zebra w-full">
     <thead>
@@ -49,6 +50,7 @@
               <%= link_to edit_note_path(note),
                   class: "icon-btn",
                   title: t("notes.edit"),
+                  data: { turbo_frame: "note_edit_frame", action: "click->modal#openFrame" },
                   style: "display:inline-flex; color:inherit; cursor:pointer;" do %>
                 <%= heroicon "pencil", variant: :outline %>
               <% end %>
@@ -64,4 +66,15 @@
       <% end %>
     </tbody>
   </table>
+</div>
+
+<dialog class="modal" data-modal-target="dialog">
+  <div class="modal-box">
+    <button type="button" class="btn btn-sm btn-circle btn-ghost absolute right-2 top-2" data-action="modal#close">✕</button>
+    <%= turbo_frame_tag "note_edit_frame" %>
+  </div>
+  <form method="dialog" class="modal-backdrop">
+    <button></button>
+  </form>
+</dialog>
 </div>

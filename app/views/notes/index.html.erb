@@ -11,73 +11,7 @@
     </div>
 
     <!-- Notes list -->
-    <div class="overflow-x-auto">
-      <table class="table table-zebra w-full">
-        <thead>
-          <tr>
-            <th><%= t("notes.title") %></th>
-            <th><%= t("notes.related_to", default: "Related to") %></th>
-            <th><%= t("notes.due_date") %></th>
-            <th><%= t("general.actions", default: "Actions") %></th>
-          </tr>
-        </thead>
-        <tbody>
-          <% @notes.each do |note| %>
-            <tr class="<%= note.completed? ? 'opacity-50' : '' %> <%= note.overdue? ? 'bg-error/10' : '' %>">
-              <td>
-                <div class="flex items-center gap-3">
-                  <% if note.completed? %>
-                    <span class="line-through text-base-400"><%= note.title %></span>
-                  <% else %>
-                    <span><%= note.title %></span>
-                  <% end %>
-                  <% if note.completed? %>
-                    <span class="badge badge-ghost"><%= t("notes.status.completed") %></span>
-                  <% end %>
-                </div>
-              </td>
-              <td><%= related_to_label(note) %></td>
-              <td>
-                <% if note.due_date %>
-                  <div class="flex items-center gap-2">
-                    <span><%= l(note.due_date, format: :short) %></span>
-                    <% if note.overdue? %>
-                      <span class="badge badge-error"><%= t("notes.overdue") %></span>
-                    <% end %>
-                  </div>
-                <% else %>
-                  <span class="text-base-400">—</span>
-                <% end %>
-              </td>
-              <td>
-                <div style="display:inline-flex; align-items:center; gap:8px;">
-                  <% if note.active? && note.activity? %>
-                    <%= button_to mark_complete_note_path(note), method: :patch,
-                        class: "icon-btn",
-                        title: t("notes.mark_complete"),
-                        style: "display:inline-flex; color:inherit; cursor:pointer; background:none; border:none; padding:0;" do %>
-                      <%= heroicon "check", variant: :outline %>
-                    <% end %>
-                  <% end %>
-                  <%= link_to edit_note_path(note),
-                      class: "icon-btn",
-                      title: t("notes.edit"),
-                      style: "display:inline-flex; color:inherit; cursor:pointer;" do %>
-                    <%= heroicon "pencil", variant: :outline %>
-                  <% end %>
-                  <%= button_to note_path(note), method: :delete, data: { confirm: t("notes.confirm_delete", default: "Are you sure?") },
-                      class: "icon-btn",
-                      title: t("notes.delete"),
-                      style: "display:inline-flex; color:inherit; cursor:pointer; background:none; border:none; padding:0;" do %>
-                    <%= heroicon "trash", variant: :outline %>
-                  <% end %>
-                </div>
-              </td>
-            </tr>
-          <% end %>
-        </tbody>
-      </table>
-    </div>
+    <%= render "notes_list", notes: @notes %>
 
     <!-- Add Note Modal -->
     <dialog class="modal" data-modal-target="dialog">
