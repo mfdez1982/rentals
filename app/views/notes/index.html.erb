@@ -4,18 +4,7 @@
   <div class="card bg-base-100 shadow-sm" data-controller="modal">
   <div class="card-body">
     <!-- Toolbar -->
-    <div class="flex items-center justify-between mb-6">
-      <div class="flex items-center gap-4">
-        <h2 class="card-title text-base"><%= t("notes.filters.label", default: "Filters") %></h2>
-        <%= form_with url: notes_path, method: :get, local: true, class: "flex-1" do |form| %>
-          <select name="filter" class="select select-bordered select-sm max-w-xs" onchange="this.form.submit()">
-            <option value="all" <%= "selected" if @filter == "all" %>><%= t("notes.filters.all") %></option>
-            <option value="active" <%= "selected" if @filter == "active" %>><%= t("notes.filters.active") %></option>
-            <option value="completed" <%= "selected" if @filter == "completed" %>><%= t("notes.filters.completed") %></option>
-            <option value="overdue" <%= "selected" if @filter == "overdue" %>><%= t("notes.filters.overdue") %></option>
-          </select>
-        <% end %>
-      </div>
+    <div class="flex items-center justify-end mb-6">
       <button type="button" class="btn btn-primary btn-sm" data-action="modal#open">
         <%= t("notes.add_note") %>
       </button>

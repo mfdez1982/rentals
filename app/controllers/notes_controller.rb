@@ -2,8 +2,7 @@ class NotesController < ApplicationController
   before_action :set_note, only: [:edit, :update, :mark_complete, :destroy]
 
   def index
-    @filter = params[:filter] || "all"
-    @notes = filtered_notes.order(due_date: :asc, created_at: :desc)
+    @notes = Note.where(landlord: current_landlord).order(due_date: :asc, created_at: :desc)
     @new_note = Note.new(landlord: current_landlord)
   end
 
@@ -44,19 +43,6 @@ class NotesController < ApplicationController
     @note = Note.where(landlord: current_landlord).find(params[:id])
   end
 
-  def filtered_notes
-    base_scope = Note.where(landlord: current_landlord)
-    case @filter
-    when "completed"
-      base_scope.completed
-    when "overdue"
-      base_scope.overdue
-    when "active"
-      base_scope.active
-    else
-      base_scope
-    end
-  end
 
   def note_params
     params.require(:note).permit(:title, :description, :due_date, :noteable_type, :noteable_id)
