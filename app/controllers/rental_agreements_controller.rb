@@ -1,12 +1,13 @@
 class RentalAgreementsController < ApplicationController
+  include AgreementShowLoadable
+
   before_action :set_property
   before_action :set_agreement, only: [:show, :edit, :update, :destroy]
   before_action -> { redirect_unless_turbo_frame_request(property_path(@property)) }, only: [:new]
   before_action -> { redirect_unless_turbo_frame_request(property_rental_agreement_path(@property, @agreement)) }, only: [:edit]
 
   def show
-    @payments = @agreement.payments.order(due_date: :asc).to_a
-    @notes = @agreement.notes.active.order(due_date: :asc, created_at: :desc)
+    load_agreement_show_data
   end
 
   def new
@@ -35,6 +36,10 @@ class RentalAgreementsController < ApplicationController
   def update
     if @agreement.update(agreement_params)
       redirect_to params[:inline] ? property_rental_agreement_path(@property, @agreement) : property_path(@property)
+    elsif params[:inline]
+      load_agreement_show_data
+      @editing_agreement = @agreement
+      render template: "rental_agreements/show", status: :unprocessable_entity
     else
       render :edit, status: :unprocessable_entity
     end

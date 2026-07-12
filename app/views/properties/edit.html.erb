@@ -2,8 +2,7 @@
   <div class="card bg-base-100 border border-base-300 shadow-lg max-w-lg w-full">
     <div class="card-body">
       <%= turbo_frame_tag "property_edit_frame" do %>
-        <h3 class="font-bold text-lg mb-4"><%= t("properties.edit_property") %></h3>
-        <%= render "form", property: @property, inline: true %>
+        <%= render "edit_modal_content", property: @property %>
       <% end %>
     </div>
   </div>

@@ -1,4 +1,6 @@
 class ExpensesController < ApplicationController
+  include PropertyShowLoadable
+
   before_action :set_property
   before_action :set_expense, only: [:edit, :update, :destroy]
   before_action -> { redirect_unless_turbo_frame_request(property_path(@property)) }, only: [:edit]
@@ -8,12 +10,8 @@ class ExpensesController < ApplicationController
     if @expense.save
       redirect_to property_path(@property)
     else
-      @agreements = @property.rental_agreements.sorted
-      @new_agreement = @property.rental_agreements.build
-      @expenses = @property.expenses.order(date: :desc)
+      load_property_show_data
       @new_expense = @expense
-      @property_notes = @property.notes.active.order(due_date: :asc, created_at: :desc)
-      @agreement_notes = Note.where(noteable_type: "RentalAgreement", noteable_id: @property.rental_agreements.pluck(:id)).active.order(due_date: :asc, created_at: :desc)
       render template: "properties/show", status: :unprocessable_entity
     end
   end
@@ -25,7 +23,9 @@ class ExpensesController < ApplicationController
     if @expense.update(expense_params)
       redirect_to property_path(@property)
     else
-      render :edit, status: :unprocessable_entity
+      load_property_show_data
+      @editing_expense = @expense
+      render template: "properties/show", status: :unprocessable_entity
     end
   end
 

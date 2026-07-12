@@ -2,9 +2,7 @@
   <div class="card bg-base-100 border border-base-300 shadow-lg max-w-lg w-full">
     <div class="card-body">
       <%= turbo_frame_tag "agreement_edit_frame" do %>
-        <h3 class="font-bold text-lg mb-4"><%= t("rental_agreements.edit_agreement") %></h3>
-        <%= render "form", property: @property, agreement: @agreement,
-              form_data: { turbo_frame: "_top" }, cancel_action: "modal#close", inline: true %>
+        <%= render "edit_modal_content", property: @property, agreement: @agreement %>
       <% end %>
     </div>
   </div>

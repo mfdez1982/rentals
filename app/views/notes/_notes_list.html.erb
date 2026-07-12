@@ -1,3 +1,4 @@
+<% note_frame_id = local_assigns[:note_frame_id] %>
 <div data-controller="modal">
 <div class="overflow-x-auto">
   <table class="table table-zebra w-full">
@@ -43,11 +44,12 @@
                 <%= button_to mark_complete_note_path(note), method: :patch,
                     class: "icon-btn",
                     title: t("notes.mark_complete"),
-                    style: "display:inline-flex; color:inherit; cursor:pointer; background:none; border:none; padding:0;" do %>
+                    style: "display:inline-flex; color:inherit; cursor:pointer; background:none; border:none; padding:0;",
+                    form: (note_frame_id ? { data: { turbo_frame: note_frame_id } } : {}) do %>
                   <%= heroicon "check", variant: :outline %>
                 <% end %>
               <% end %>
-              <%= link_to edit_note_path(note),
+              <%= link_to edit_note_path(note, frame: note_frame_id),
                   class: "icon-btn",
                   title: t("notes.edit"),
                   data: { turbo_frame: "note_edit_frame", action: "click->modal#openFrame" },
@@ -57,7 +59,8 @@
               <%= button_to note_path(note), method: :delete, data: { confirm: t("notes.confirm_delete", default: "Are you sure?") },
                   class: "icon-btn",
                   title: t("notes.delete"),
-                  style: "display:inline-flex; color:inherit; cursor:pointer; background:none; border:none; padding:0;" do %>
+                  style: "display:inline-flex; color:inherit; cursor:pointer; background:none; border:none; padding:0;",
+                  form: (note_frame_id ? { data: { turbo_frame: note_frame_id } } : {}) do %>
                 <%= heroicon "trash", variant: :outline %>
               <% end %>
             </div>

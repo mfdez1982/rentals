@@ -2,170 +2,197 @@
   <%= link_to "← #{@property.name}", property_path(@property), class: "btn btn-ghost btn-sm" %>
 </div>
 
-<div class="mb-6" data-controller="modal">
-  <div class="flex items-center gap-3">
-    <h1 class="text-2xl font-bold">
-      <%= format_date(@agreement.start_date) %> – <%= format_date(@agreement.end_date) %>
-    </h1>
-  </div>
-  <div class="flex flex-wrap items-center gap-3 mt-2">
-    <span class="text-base-content/70"><%= number_to_currency(@agreement.rent_amount) %><%= t('rental_agreements.monthly_suffix') %></span>
-    <%= link_to edit_property_rental_agreement_path(@property, @agreement, inline: true),
-        class: "icon-btn",
-        title: t("forms.buttons.edit"),
-        "aria-label": t("forms.buttons.edit"),
-        style: "display:inline-flex; color:inherit; cursor:pointer;",
-        data: { turbo_frame: "agreement_edit_frame", action: "click->modal#openFrame" } do %>
-      <%= heroicon "pencil", variant: :outline %>
-    <% end %>
-    <span class="badge badge-sm <%= @agreement.status_badge_class %>"><%= @agreement.status %></span>
-  </div>
-
-  <dialog class="modal" data-modal-target="dialog">
-    <div class="modal-box max-w-lg">
-      <button type="button" class="btn btn-sm btn-circle btn-ghost absolute right-2 top-2" data-action="modal#close">✕</button>
-      <%= turbo_frame_tag "agreement_edit_frame" %>
+<%= turbo_frame_tag dom_id(@agreement, :header) do %>
+  <div class="mb-6" data-controller="modal">
+    <div class="flex items-center gap-3">
+      <h1 class="text-2xl font-bold">
+        <%= format_date(@agreement.start_date) %> – <%= format_date(@agreement.end_date) %>
+      </h1>
     </div>
-    <form method="dialog" class="modal-backdrop">
-      <button></button>
-    </form>
-  </dialog>
-</div>
-
-<!-- Payments Section -->
-<div class="card bg-base-100 shadow-sm" data-controller="modal">
-  <div class="card-body">
-    <!-- Toolbar -->
-    <div class="flex items-center justify-between mb-6">
-      <h2 class="card-title text-base"><%= t("payments.payments") %></h2>
-      <button type="button" class="btn btn-primary btn-sm" data-action="modal#open">
-        <%= t("payments.add_payments") %>
-      </button>
-    </div>
-
-    <div data-controller="modal">
-      <%= turbo_frame_tag dom_id(@agreement, :payments) do %>
-        <% overdue = @payments.select(&:overdue?) %>
-        <% if overdue.any? %>
-          <div class="badge badge-error gap-1 mb-4">
-            <%= t("payments.overdue_badge", count: overdue.size) %>
-          </div>
-        <% end %>
-
-        <% if @payments.any? %>
-          <div class="overflow-x-auto">
-            <table class="table table-zebra">
-              <thead>
-                <tr>
-                  <th><%= t("payments.table_headers.due_date") %></th>
-                  <th><%= t("payments.table_headers.paid_date") %></th>
-                  <th><%= t("payments.table_headers.amount") %></th>
-                  <th></th>
-                </tr>
-              </thead>
-              <tbody>
-                <% @payments.each do |payment| %>
-                  <%= render "payments/payment", property: @property, agreement: @agreement, payment: payment %>
-                <% end %>
-              </tbody>
-            </table>
-          </div>
-        <% else %>
-          <div class="text-center py-8 text-base-content/50">
-            <p class="text-sm"><%= t("payments.no_payments") %></p>
-          </div>
-        <% end %>
+    <div class="flex flex-wrap items-center gap-3 mt-2">
+      <span class="text-base-content/70"><%= number_to_currency(@agreement.rent_amount) %><%= t('rental_agreements.monthly_suffix') %></span>
+      <%= link_to edit_property_rental_agreement_path(@property, @agreement, inline: true),
+          class: "icon-btn",
+          title: t("forms.buttons.edit"),
+          "aria-label": t("forms.buttons.edit"),
+          style: "display:inline-flex; color:inherit; cursor:pointer;",
+          data: { turbo_frame: "agreement_edit_frame", action: "click->modal#openFrame" } do %>
+        <%= heroicon "pencil", variant: :outline %>
       <% end %>
+      <span class="badge badge-sm <%= @agreement.status_badge_class %>"><%= @agreement.status %></span>
+    </div>
 
-      <!-- Payment Edit Modal -->
-      <dialog class="modal" data-modal-target="dialog">
-        <div class="modal-box max-w-lg">
-          <button type="button" class="btn btn-sm btn-circle btn-ghost absolute right-2 top-2" data-action="modal#close">✕</button>
-          <%= turbo_frame_tag "payment_edit_frame" %>
+    <dialog class="modal" data-modal-target="dialog">
+      <div class="modal-box max-w-lg">
+        <button type="button" class="btn btn-sm btn-circle btn-ghost absolute right-2 top-2" data-action="modal#close">✕</button>
+        <%= turbo_frame_tag "agreement_edit_frame" do %>
+          <% if @editing_agreement %>
+            <%= render "edit_modal_content", property: @property, agreement: @editing_agreement %>
+          <% end %>
+        <% end %>
+      </div>
+      <form method="dialog" class="modal-backdrop">
+        <button></button>
+      </form>
+    </dialog>
+  </div>
+<% end %>
+
+<!-- Navigation Tabs & Content (Tab-Managed) -->
+<div data-controller="tabs" data-tabs-active-tab-value="payments">
+  <nav class="flex gap-8 border-b border-base-300 mb-6">
+    <%= link_to t("payments.payments"), "#",
+        data: { tabs_tab: "payments", action: "click->tabs#selectTab" } %>
+
+    <%= link_to t("notes.my_notes"), "#",
+        data: { tabs_tab: "notas", action: "click->tabs#selectTab" } %>
+  </nav>
+
+  <!-- Payments Section -->
+  <div data-tab-section="payments">
+    <div class="card bg-base-100 shadow-sm" data-controller="modal">
+      <div class="card-body">
+        <!-- Toolbar -->
+        <div class="flex items-center justify-between mb-6">
+          <h2 class="card-title text-base"><%= t("payments.payments") %></h2>
+          <button type="button" class="btn btn-primary btn-sm" data-action="modal#open">
+            <%= t("payments.add_payments") %>
+          </button>
         </div>
-        <form method="dialog" class="modal-backdrop">
-          <button></button>
-        </form>
-      </dialog>
-    </div>
 
-    <!-- Payments Modal -->
-    <dialog class="modal" data-modal-target="dialog">
-      <div class="modal-box max-w-lg">
-        <button type="button" class="btn btn-sm btn-circle btn-ghost absolute right-2 top-2" data-action="modal#close">✕</button>
-        <h3 class="font-bold text-lg mb-4"><%= t("payments.add_payments") %></h3>
-        <%= render "payments/create_recurring_form", property: @property, agreement: @agreement %>
-      </div>
-      <form method="dialog" class="modal-backdrop">
-        <button></button>
-      </form>
-    </dialog>
-  </div>
-</div>
+        <%= turbo_frame_tag dom_id(@agreement, :payments) do %>
+          <div data-controller="modal">
+            <% overdue = @payments.select(&:overdue?) %>
+            <% if overdue.any? %>
+              <div class="badge badge-error gap-1 mb-4">
+                <%= t("payments.overdue_badge", count: overdue.size) %>
+              </div>
+            <% end %>
 
-<!-- Notes Section -->
-<div class="card bg-base-100 shadow-sm mt-6" data-controller="notes modal">
-  <div class="card-body">
-    <!-- Toolbar -->
-    <div class="flex items-center justify-between mb-6">
-      <h2 class="card-title text-base"><%= t("notes.my_notes") %></h2>
-      <button type="button" class="btn btn-primary btn-sm" data-action="modal#open">
-        <%= t("notes.add_note") %>
-      </button>
-    </div>
+            <% if @payments.any? %>
+              <div class="overflow-x-auto">
+                <table class="table table-zebra">
+                  <thead>
+                    <tr>
+                      <th><%= t("payments.table_headers.due_date") %></th>
+                      <th><%= t("payments.table_headers.paid_date") %></th>
+                      <th><%= t("payments.table_headers.amount") %></th>
+                      <th></th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <% @payments.each do |payment| %>
+                      <%= render "payments/payment", property: @property, agreement: @agreement, payment: payment %>
+                    <% end %>
+                  </tbody>
+                </table>
+              </div>
+            <% else %>
+              <div class="text-center py-8 text-base-content/50">
+                <p class="text-sm"><%= t("payments.no_payments") %></p>
+              </div>
+            <% end %>
 
-    <div class="overflow-x-auto">
-      <% if @notes.any? %>
-        <%= render "notes/notes_list", notes: @notes %>
-      <% else %>
-        <table class="table table-zebra w-full">
-          <thead>
-            <tr>
-              <th><%= t("notes.title") %></th>
-              <th><%= t("notes.related_to", default: "Related to") %></th>
-              <th><%= t("notes.due_date") %></th>
-              <th><%= t("general.actions", default: "Actions") %></th>
-            </tr>
-          </thead>
-          <tbody></tbody>
-        </table>
-      <% end %>
-    </div>
-
-    <!-- Notes Modal -->
-    <dialog class="modal" data-modal-target="dialog">
-      <div class="modal-box max-w-lg">
-        <button type="button" class="btn btn-sm btn-circle btn-ghost absolute right-2 top-2" data-action="modal#close">✕</button>
-        <h3 class="font-bold text-lg mb-4"><%= t("notes.add_note") %></h3>
-
-        <%= form_with(model: Note.new(landlord: current_landlord), local: true) do |form| %>
-          <%= form.hidden_field :noteable_type, value: "RentalAgreement" %>
-          <%= form.hidden_field :noteable_id, value: @agreement.id %>
-
-          <div class="space-y-4 mb-6">
-            <div class="form-control">
-              <%= form.label :title %>
-              <%= form.text_field :title, placeholder: t("notes.title"), class: "input input-bordered w-full input-sm" %>
-            </div>
-            <div class="form-control">
-              <%= form.label :description %>
-              <%= form.text_field :description, placeholder: t("notes.description"), class: "input input-bordered w-full input-sm" %>
-            </div>
-            <div class="form-control">
-              <%= form.label :due_date, t("notes.due_date") %>
-              <%= form.date_field :due_date, class: "input input-bordered w-full input-sm" %>
-            </div>
+            <!-- Payment Edit Modal -->
+            <dialog class="modal" data-modal-target="dialog">
+              <div class="modal-box max-w-lg">
+                <button type="button" class="btn btn-sm btn-circle btn-ghost absolute right-2 top-2" data-action="modal#close">✕</button>
+                <%= turbo_frame_tag "payment_edit_frame" do %>
+                  <% if @editing_payment %>
+                    <%= render "payments/edit_modal_content", property: @property, agreement: @agreement, payment: @editing_payment %>
+                  <% end %>
+                <% end %>
+              </div>
+              <form method="dialog" class="modal-backdrop">
+                <button></button>
+              </form>
+            </dialog>
           </div>
 
-          <div class="flex gap-2 pt-2">
-            <%= form.submit t("forms.buttons.submit"), class: "btn btn-primary" %>
-            <button type="button" class="btn btn-ghost" data-action="modal#close"><%= t("forms.buttons.cancel") %></button>
-          </div>
+          <!-- Payments Modal -->
+          <dialog class="modal" data-modal-target="dialog">
+            <div class="modal-box max-w-lg">
+              <button type="button" class="btn btn-sm btn-circle btn-ghost absolute right-2 top-2" data-action="modal#close">✕</button>
+              <h3 class="font-bold text-lg mb-4"><%= t("payments.add_payments") %></h3>
+              <%= render "payments/create_recurring_form", property: @property, agreement: @agreement %>
+            </div>
+            <form method="dialog" class="modal-backdrop">
+              <button></button>
+            </form>
+          </dialog>
         <% end %>
       </div>
-      <form method="dialog" class="modal-backdrop">
-        <button></button>
-      </form>
-    </dialog>
+    </div>
+  </div>
+
+  <!-- Notes Section -->
+  <div data-tab-section="notas">
+    <div class="card bg-base-100 shadow-sm" data-controller="notes modal">
+      <div class="card-body">
+        <!-- Toolbar -->
+        <div class="flex items-center justify-between mb-6">
+          <h2 class="card-title text-base"><%= t("notes.my_notes") %></h2>
+          <button type="button" class="btn btn-primary btn-sm" data-action="modal#open">
+            <%= t("notes.add_note") %>
+          </button>
+        </div>
+
+        <%= turbo_frame_tag dom_id(@agreement, :notes) do %>
+          <div class="overflow-x-auto">
+            <% if @notes.any? %>
+              <%= render "notes/notes_list", notes: @notes, note_frame_id: dom_id(@agreement, :notes) %>
+            <% else %>
+              <table class="table table-zebra w-full">
+                <thead>
+                  <tr>
+                    <th><%= t("notes.title") %></th>
+                    <th><%= t("notes.related_to", default: "Related to") %></th>
+                    <th><%= t("notes.due_date") %></th>
+                    <th><%= t("general.actions", default: "Actions") %></th>
+                  </tr>
+                </thead>
+                <tbody></tbody>
+              </table>
+            <% end %>
+          </div>
+
+          <!-- Notes Modal -->
+          <dialog class="modal" data-modal-target="dialog">
+            <div class="modal-box max-w-lg">
+              <button type="button" class="btn btn-sm btn-circle btn-ghost absolute right-2 top-2" data-action="modal#close">✕</button>
+              <h3 class="font-bold text-lg mb-4"><%= t("notes.add_note") %></h3>
+
+              <%= form_with(model: Note.new(landlord: current_landlord), data: { turbo_frame: dom_id(@agreement, :notes) }) do |form| %>
+                <%= form.hidden_field :noteable_type, value: "RentalAgreement" %>
+                <%= form.hidden_field :noteable_id, value: @agreement.id %>
+
+                <div class="space-y-4 mb-6">
+                  <div class="form-control">
+                    <%= form.label :title %>
+                    <%= form.text_field :title, placeholder: t("notes.title"), class: "input input-bordered w-full input-sm" %>
+                  </div>
+                  <div class="form-control">
+                    <%= form.label :description %>
+                    <%= form.text_field :description, placeholder: t("notes.description"), class: "input input-bordered w-full input-sm" %>
+                  </div>
+                  <div class="form-control">
+                    <%= form.label :due_date, t("notes.due_date") %>
+                    <%= form.date_field :due_date, class: "input input-bordered w-full input-sm" %>
+                  </div>
+                </div>
+
+                <div class="flex gap-2 pt-2">
+                  <%= form.submit t("forms.buttons.submit"), class: "btn btn-primary" %>
+                  <button type="button" class="btn btn-ghost" data-action="modal#close"><%= t("forms.buttons.cancel") %></button>
+                </div>
+              <% end %>
+            </div>
+            <form method="dialog" class="modal-backdrop">
+              <button></button>
+            </form>
+          </dialog>
+        <% end %>
+      </div>
+    </div>
   </div>
 </div>

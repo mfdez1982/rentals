@@ -2,8 +2,7 @@
   <div class="card bg-base-100 border border-base-300 shadow-lg max-w-lg w-full">
     <div class="card-body">
       <%= turbo_frame_tag "expense_edit_frame" do %>
-        <h3 class="font-bold text-lg mb-4"><%= t("expenses.edit_expense") %></h3>
-        <%= render "form", property: @property, expense: @expense %>
+        <%= render "edit_modal_content", property: @property, expense: @expense %>
       <% end %>
     </div>
   </div>

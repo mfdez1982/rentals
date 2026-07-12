@@ -1,4 +1,6 @@
 class PaymentsController < ApplicationController
+  include AgreementShowLoadable
+
   before_action :set_property
   before_action :set_agreement
   before_action :set_payment, only: [:edit, :update, :destroy]
@@ -29,7 +31,9 @@ class PaymentsController < ApplicationController
     if @payment.update(payment_params)
       redirect_to property_rental_agreement_path(@property, @agreement)
     else
-      render :edit, status: :unprocessable_entity
+      load_agreement_show_data
+      @editing_payment = @payment
+      render template: "rental_agreements/show", status: :unprocessable_entity
     end
   end
 

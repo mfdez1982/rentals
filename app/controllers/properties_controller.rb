@@ -1,4 +1,6 @@
 class PropertiesController < ApplicationController
+  include PropertyShowLoadable
+
   before_action :set_property, only: [:show, :edit, :update, :destroy, :tax_report]
   before_action -> { redirect_unless_turbo_frame_request(property_path(@property)) }, only: [:edit]
 
@@ -8,18 +10,7 @@ class PropertiesController < ApplicationController
   end
 
   def show
-    @agreements = @property.rental_agreements.sorted
-    @new_agreement = @property.rental_agreements.build
-    @expenses = @property.expenses.order(date: :desc)
-    @new_expense = @property.expenses.build
-    @property_notes = @property.notes.active.order(due_date: :asc, created_at: :desc)
-    @agreement_notes = Note.where(noteable_type: "RentalAgreement", noteable_id: @property.rental_agreements.pluck(:id)).active.order(due_date: :asc, created_at: :desc)
-
-    # Load tax report data for the tab
-    @year = Date.today.year
-    @report = TaxReportGenerator.new(@property, @year).generate
-    start_year = [@property.earliest_tax_year, Date.today.year].min
-    @year_options = (start_year..Date.today.year + 1).to_a.reverse
+    load_property_show_data
   end
 
   def tax_report
@@ -45,6 +36,10 @@ class PropertiesController < ApplicationController
   def update
     if @property.update(property_params)
       redirect_to params[:inline] ? property_path(@property) : properties_path
+    elsif params[:inline]
+      load_property_show_data
+      @editing_property = @property
+      render template: "properties/show", status: :unprocessable_entity
     else
       render :edit, status: :unprocessable_entity
     end

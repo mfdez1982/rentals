@@ -1,4 +1,4 @@
-<%= form_with model: [property, agreement], data: local_assigns.fetch(:form_data, {}) do |f| %>
+<%= form_with model: [property, agreement], data: local_assigns.fetch(:form_data, { turbo_frame: dom_id(property, :agreements) }) do |f| %>
   <div class="space-y-4 max-w-md">
     <% if local_assigns[:inline] %>
       <input type="hidden" name="inline" value="true">
