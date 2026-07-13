@@ -124,8 +124,9 @@ en:
     overdue_payments: Overdue Payments
     monthly_rent: "Monthly Rent"
     next_payment_due: "Next Payment Due"
-    days_overdue: "%{count} day overdue"
-    days_overdue_plural: "%{count} days overdue"
+    days_overdue:
+      one: "%{count} day overdue"
+      other: "%{count} days overdue"
     no_properties: No properties yet.
     no_properties_hint: Add your first one above to get started.
     form:

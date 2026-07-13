@@ -36,9 +36,15 @@ RSpec.describe "Expenses", type: :request do
   describe "GET /properties/:property_id/expenses/:id/edit" do
     let(:expense) { create(:expense, property: property) }
 
-    it "returns the edit form" do
-      get edit_property_expense_path(property, expense)
+    it "returns the edit form inside a turbo frame request" do
+      get edit_property_expense_path(property, expense),
+          headers: { "Turbo-Frame" => "expense_edit_frame" }
       expect(response).to have_http_status(:ok)
+    end
+
+    it "redirects to the property when not a turbo frame request" do
+      get edit_property_expense_path(property, expense)
+      expect(response).to redirect_to(property_path(property))
     end
   end
 

@@ -20,8 +20,8 @@ RSpec.describe "Properties Index Card Grid", type: :request do
     it "displays empty state when no properties exist" do
       get properties_path
       expect(response).to be_successful
-      expect(response.body).to include(t("properties.no_properties"))
-      expect(response.body).to include(t("properties.no_properties_hint"))
+      expect(response.body).to include(I18n.t("properties.no_properties"))
+      expect(response.body).to include(I18n.t("properties.no_properties_hint"))
       expect(response.body).to include("btn btn-primary")
     end
 
@@ -111,7 +111,7 @@ RSpec.describe "Properties Index Card Grid", type: :request do
       card = doc.css("[data-testid='property-card-#{property.id}']").first
       badges = card.css("span[class*='badge']")
 
-      expect(badges.map(&:text).join).to include(t("properties.rented"))
+      expect(badges.map(&:text).join).to include(I18n.t("properties.rented"))
     end
 
     it "displays 'Available' badge for property without active rental agreement" do
@@ -121,7 +121,7 @@ RSpec.describe "Properties Index Card Grid", type: :request do
       card = doc.css("[data-testid='property-card-#{property.id}']").first
       badges = card.css("span[class*='badge']")
 
-      expect(badges.map(&:text).join).to include(t("properties.available"))
+      expect(badges.map(&:text).join).to include(I18n.t("properties.available"))
     end
 
     it "displays 'Overdue Payments' badge when property has overdue payments" do
@@ -137,7 +137,7 @@ RSpec.describe "Properties Index Card Grid", type: :request do
       card = doc.css("[data-testid='property-card-#{property.id}']").first
       badges = card.css("span[class*='badge']")
 
-      expect(badges.map(&:text).join).to include(t("properties.overdue_payments"))
+      expect(badges.map(&:text).join).to include(I18n.t("properties.overdue_payments"))
     end
 
     it "displays multiple badges correctly" do
@@ -154,8 +154,8 @@ RSpec.describe "Properties Index Card Grid", type: :request do
       badges = card.css("span[class*='badge']")
 
       expect(badges.count).to eq(2)
-      expect(badges.map(&:text).join).to include(t("properties.rented"))
-      expect(badges.map(&:text).join).to include(t("properties.overdue_payments"))
+      expect(badges.map(&:text).join).to include(I18n.t("properties.rented"))
+      expect(badges.map(&:text).join).to include(I18n.t("properties.overdue_payments"))
     end
   end
 
@@ -184,7 +184,7 @@ RSpec.describe "Properties Index Card Grid", type: :request do
       card = doc.css("[data-testid='property-card-#{property.id}']").first
       card_text = card.text
 
-      expect(card_text).to include(Date.today.strftime("%b %d"))
+      expect(card_text).to include(I18n.l(Date.today + 5.days, format: :short))
     end
 
     it "displays days overdue when next payment is overdue" do
@@ -210,7 +210,7 @@ RSpec.describe "Properties Index Card Grid", type: :request do
       card = doc.css("[data-testid='property-card-#{property.id}']").first
       card_text = card.text
 
-      expect(card_text).not_to include(t("properties.monthly_rent"))
+      expect(card_text).not_to include(I18n.t("properties.monthly_rent"))
     end
   end
 
@@ -243,7 +243,11 @@ RSpec.describe "Properties Index Card Grid", type: :request do
       delete_button = card.css("button.btn-circle").first
 
       expect(delete_button).to be_present
-      expect(delete_button.attr("onclick")).to include("event.stopPropagation()")
+      # The delete button lives in its own button_to form, outside the card's
+      # navigation links, so clicking it never follows the card link.
+      expect(delete_button.ancestors("a")).to be_empty
+      delete_form = delete_button.ancestors("form").first
+      expect(delete_form.attr("action")).to eq(property_path(property))
     end
   end
 
@@ -315,13 +319,13 @@ RSpec.describe "Properties Index Card Grid", type: :request do
       create(:property, landlord: landlord)
       get properties_path
       expect(response.body).to include("btn btn-primary")
-      expect(response.body).to include(t("properties.add_property"))
+      expect(response.body).to include(I18n.t("properties.add_property"))
     end
 
     it "displays add property button when no properties exist" do
       get properties_path
       expect(response.body).to include("btn btn-primary")
-      expect(response.body).to include(t("properties.add_property"))
+      expect(response.body).to include(I18n.t("properties.add_property"))
     end
 
     it "modal appears with property form" do
