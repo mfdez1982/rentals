@@ -47,7 +47,10 @@
       "Bash(npm list *)",
       "WebFetch(domain:localhost)",
       "Bash(node --check app/javascript/controllers/tabs_controller.js)",
-      "Bash(echo \"exit:$?\")"
+      "Bash(echo \"exit:$?\")",
+      "Bash(xargs ls -la)",
+      "Bash(bundle exec *)",
+      "Bash(bundle show *)"
     ]
   },
   "enabledMcpjsonServers": [
