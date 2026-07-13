@@ -20,12 +20,11 @@
     </div>
   </td>
   <td class="text-right">
-    <div style="display:inline-flex; align-items:center; gap:8px;">
+    <div class="inline-flex items-center gap-2">
       <%= button_to property_rental_agreement_path(property, agreement),
           method: :delete,
           class: "icon-btn",
           title: t("forms.buttons.delete"),
-          style: "display:inline-flex; color:inherit; cursor:pointer; background:none; border:none; padding:0;",
           form: { data: {
             turbo_confirm: t("rental_agreements.delete_confirm"),
             turbo_frame: dom_id(property, :agreements)

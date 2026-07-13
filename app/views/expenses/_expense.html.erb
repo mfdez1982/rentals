@@ -4,11 +4,10 @@
   <td><%= expense.description %></td>
   <td><%= number_to_currency(expense.amount) %></td>
   <td class="text-right">
-    <div style="display:inline-flex; align-items:center; gap:8px;">
+    <div class="inline-flex items-center gap-2">
       <%= link_to edit_property_expense_path(property, expense),
           class: "icon-btn",
           title: t("forms.buttons.edit"),
-          style: "display:inline-flex; color:inherit; cursor:pointer;",
           data: { turbo_frame: "expense_edit_frame", action: "click->modal#openFrame" } do %>
         <%= heroicon "pencil", variant: :outline %>
       <% end %>
@@ -16,7 +15,6 @@
           method: :delete,
           class: "icon-btn",
           title: t("forms.buttons.delete"),
-          style: "display:inline-flex; color:inherit; cursor:pointer; background:none; border:none; padding:0;",
           form: { data: {
             turbo_confirm: t("expenses.delete_confirm"),
             turbo_frame: dom_id(property, :expenses)
@@ -25,7 +23,6 @@
       <% end %>
       <% if expense.invoice_url.present? %>
         <a href="<%= expense.invoice_url %>" class="icon-btn" title="<%= t('expenses.view_invoice') %>"
-           style="display:inline-flex; color:inherit; cursor:pointer;"
            target="_blank" rel="noopener">
           <%= heroicon "document-text", variant: :outline %>
         </a>

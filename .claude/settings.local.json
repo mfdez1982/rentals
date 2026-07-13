@@ -42,7 +42,10 @@
       "Bash(bin/rails routes *)",
       "mcp__playwright__browser_close",
       "Bash(pre-commit run *)",
-      "Bash(grep -E \"\\\\.\\(js|ts\\)$\")"
+      "Bash(grep -E \"\\\\.\\(js|ts\\)$\")",
+      "Skill(run)",
+      "Bash(npm list *)",
+      "WebFetch(domain:localhost)"
     ]
   },
   "enabledMcpjsonServers": [

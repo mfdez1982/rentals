@@ -1,6 +1,66 @@
 @import "tailwindcss";
 
+/* Vendored daisyUI 5.6.17/18 — no Node/npm in this devcontainer, so we can't use
+   `@plugin "daisyui"`. daisyUI ships a precompiled, dependency-free CSS build for
+   exactly this case. Pinned by hand; re-download to upgrade. */
+@import "./daisyui/daisyui.css";
+@import "./daisyui/themes.css";
+
+.icon-btn {
+  display: inline-flex;
+  color: inherit;
+  cursor: pointer;
+  background: none;
+  border: none;
+  padding: 0;
+}
 .icon-btn svg {
   width: 20px;
   height: 20px;
+}
+
+/* The cookie consent banner ships with a max z-index so it always sits above page
+   content, but that also puts it above its own preferences modal/overlay when the
+   two are open at once. Pin the banner below the preferences modal explicitly. */
+.cm-wrapper {
+  z-index: 40;
+}
+.pm-wrapper {
+  z-index: 50;
+}
+
+/* Softer palette pass: page background, deeper primary green, soft card
+   shadows instead of hard borders, muted badge tints, subtler zebra rows. */
+body.bg-base-200 {
+  background-color: #F7F5F0;
+}
+
+[data-theme="emerald"] {
+  --color-primary: #1F5C43;
+  --color-primary-content: #ffffff;
+}
+
+.card.shadow-sm,
+.card.shadow-md,
+.card.shadow-lg,
+.card.shadow-xl,
+.card.shadow-2xl {
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+}
+.card.hover\:shadow-lg:hover {
+  box-shadow: 0 8px 28px rgba(0, 0, 0, 0.08);
+}
+.card.border-base-300,
+.card.card-bordered:not(.border-error) {
+  border-width: 0;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+}
+
+.badge-success { --badge-color: #DCF3E3; --badge-fg: #1F5C43; }
+.badge-warning { --badge-color: #FCEFD2; --badge-fg: #8A5A00; }
+.badge-error   { --badge-color: #FBE2E2; --badge-fg: #9B2226; }
+.badge-info    { --badge-color: #DCEEFB; --badge-fg: #1D5A80; }
+
+.table-zebra tbody tr:nth-child(2n) {
+  background-color: color-mix(in oklab, var(--color-primary) 4%, var(--color-base-100));
 }

@@ -30,25 +30,22 @@
         </div>
       </div>
 
-      <div class="flex gap-2 flex-shrink-0" style="display:inline-flex; align-items:center;">
+      <div class="inline-flex items-center gap-2 flex-shrink-0">
         <% if note.active? && note.activity? %>
           <%= button_to mark_complete_note_path(note), method: :patch,
               class: "icon-btn",
-              title: t("notes.mark_complete"),
-              style: "display:inline-flex; color:inherit; cursor:pointer; background:none; border:none; padding:0;" do %>
+              title: t("notes.mark_complete") do %>
             <%= heroicon "check", variant: :outline %>
           <% end %>
         <% end %>
         <%= link_to edit_note_path(note),
             class: "icon-btn",
-            title: t("notes.edit"),
-            style: "display:inline-flex; color:inherit; cursor:pointer;" do %>
+            title: t("notes.edit") do %>
           <%= heroicon "pencil", variant: :outline %>
         <% end %>
         <%= button_to note_path(note), method: :delete, data: { confirm: t("notes.confirm_delete", default: "Are you sure?") },
             class: "icon-btn",
-            title: t("notes.delete"),
-            style: "display:inline-flex; color:inherit; cursor:pointer; background:none; border:none; padding:0;" do %>
+            title: t("notes.delete") do %>
           <%= heroicon "trash", variant: :outline %>
         <% end %>
       </div>

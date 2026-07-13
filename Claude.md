@@ -143,9 +143,7 @@ This project runs in a devcontainer. Claude cannot install packages or system de
 The user runs all Rails commands themselves (server, migrations, seeds, tests, generators, etc.). Claude only writes and edits files — never executes `bin/rails`, `bin/rspec`, or similar.
 
 ## Browsing the running app with Playwright
-The Rails server runs on the **host** machine (`bin/rails s`), not inside this devcontainer, and the Playwright MCP server also runs on the host (reachable from the container at `host.docker.internal:3001`). Because the Playwright browser itself executes on the host, navigate using `http://localhost:3000` (not `host.docker.internal:3000` — that fails with `ERR_NAME_NOT_RESOLVED` since it's resolved from inside the browser's own host context, not the container's).
-- Confirm with the user that `bin/rails s` is running on the host before attempting to navigate.
-- Use `http://localhost:3000/...` as the base URL for all `mcp__playwright__browser_*` tool calls.
+The Rails server runs in the devcontainer (`bin/rails s`). Use `http://localhost:3000` as the base URL for all navigation and Playwright interactions.
 
 ## Testing
 - **RSpec unit/controller tests:** `bin/rspec`
