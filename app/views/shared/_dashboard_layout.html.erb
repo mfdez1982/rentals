@@ -1,6 +1,7 @@
 <!-- Navigation Tabs -->
 <% properties_active = request.path_info.start_with?("/properties") %>
 <% notes_active = request.path_info.start_with?("/notes") %>
+<% my_rentals_active = request.path_info.start_with?("/my_rentals") %>
 
 <nav class="flex gap-8 border-b border-base-300 mb-6">
   <%= link_to t("properties.my_properties"), properties_path,
@@ -8,6 +9,11 @@
 
   <%= link_to t("notes.my_notes"), notes_path,
       class: "tab-link#{' tab-link-active' if notes_active}" %>
+
+  <% if current_user&.tenant? %>
+    <%= link_to t("my_rentals.index_title"), my_rentals_path,
+        class: "tab-link#{' tab-link-active' if my_rentals_active}" %>
+  <% end %>
 </nav>
 
 <!-- Main Content -->

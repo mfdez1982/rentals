@@ -190,8 +190,6 @@ es:
     log_in: Iniciar sesión
     sign_up: Registrarse
     language: Idioma
-    my_properties: Mis Propiedades
-    my_rentals: Mis Alquileres
 
   # Landing Page
   landing:

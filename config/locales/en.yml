@@ -70,8 +70,6 @@ en:
     log_in: Log in
     sign_up: Sign up
     language: Language
-    my_properties: My Properties
-    my_rentals: My Rentals
 
   # Landing Page
   landing:
