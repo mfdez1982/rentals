@@ -24,6 +24,12 @@
     </div>
 
     <% if user_signed_in? %>
+      <% unless current_user.admin? %>
+        <%= link_to t("navigation.my_properties"), properties_path, class: "btn btn-ghost btn-sm" %>
+        <% if current_user.tenant? %>
+          <%= link_to t("navigation.my_rentals"), my_rentals_path, class: "btn btn-ghost btn-sm" %>
+        <% end %>
+      <% end %>
       <span class="text-sm text-base-content/70"><%= current_user.email %></span>
       <%= link_to t("navigation.log_out"), destroy_user_session_path,
           data: { turbo_method: :delete },

@@ -1,0 +1,57 @@
+<div class="mb-6">
+  <%= link_to "← #{t('my_rentals.back_to_index')}", my_rentals_path, class: "btn btn-ghost btn-sm" %>
+</div>
+
+<div class="mb-6">
+  <div class="flex flex-wrap items-center gap-3">
+    <h1 class="text-2xl font-bold"><%= @property.name %></h1>
+    <span class="badge badge-sm <%= agreement_status_badge_class(@agreement) %>"><%= agreement_status(@agreement) %></span>
+  </div>
+  <p class="text-base-content/70 mt-1">
+    <%= format_date(@agreement.start_date) %> – <%= format_date(@agreement.end_date) %>
+  </p>
+  <p class="text-base-content/70">
+    <%= number_to_currency(@agreement.rent_amount) %><%= t("rental_agreements.monthly_suffix") %>
+  </p>
+  <p class="text-sm text-base-content/60 mt-2">
+    <%= t("my_rentals.landlord_contact", name: @property.landlord.name) %>
+  </p>
+</div>
+
+<div class="card bg-base-100 shadow-sm">
+  <div class="card-body">
+    <h2 class="card-title text-base mb-4"><%= t("payments.payments") %></h2>
+
+    <% if @payments.any? %>
+      <div class="overflow-x-auto">
+        <table class="table table-zebra">
+          <thead>
+            <tr>
+              <th><%= t("payments.table_headers.due_date") %></th>
+              <th><%= t("payments.table_headers.paid_date") %></th>
+              <th><%= t("payments.table_headers.amount") %></th>
+            </tr>
+          </thead>
+          <tbody>
+            <% @payments.each do |payment| %>
+              <tr>
+                <td>
+                  <%= format_date(payment.due_date) %>
+                  <% if payment.overdue? %>
+                    <span class="badge badge-sm badge-error ml-2"><%= t("my_rentals.overdue") %></span>
+                  <% end %>
+                </td>
+                <td><%= payment.paid_date.present? ? format_date(payment.paid_date) : t("payments.unpaid") %></td>
+                <td><%= number_to_currency(payment.amount) %></td>
+              </tr>
+            <% end %>
+          </tbody>
+        </table>
+      </div>
+    <% else %>
+      <div class="text-center py-8 text-base-content/50">
+        <p class="text-sm"><%= t("my_rentals.no_payments") %></p>
+      </div>
+    <% end %>
+  </div>
+</div>

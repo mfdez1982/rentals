@@ -1,0 +1,8 @@
+<%= t("agreement_tenant_mailer.notify_existing_user.greeting") %>
+
+<%= t("agreement_tenant_mailer.notify_existing_user.body_text",
+      property_name: @property.name,
+      start_date: format_date(@agreement.start_date),
+      end_date: format_date(@agreement.end_date)) %>
+
+<%= t("agreement_tenant_mailer.notify_existing_user.cta") %>: <%= @root_url %>

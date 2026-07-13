@@ -1,5 +1,5 @@
 Rails.application.routes.draw do
-  devise_for :users
+  devise_for :users, controllers: { registrations: "users/registrations" }
 
   admin_constraint = lambda { |request| request.env["warden"].authenticate(scope: :user)&.admin? }
 
@@ -25,6 +25,8 @@ Rails.application.routes.draw do
     end
   end
 
+  resources :my_rentals, only: [:index, :show]
+
   resources :properties do
     member do
       get :tax_report
@@ -36,6 +38,20 @@ Rails.application.routes.draw do
           post :create_recurring
         end
       end
+      resources :agreement_tenants, only: [:create, :destroy] do
+        member do
+          post :retry
+          post :acknowledge
+        end
+      end
+    end
+  end
+
+  resources :tenant_invitations, only: [] do
+    member do
+      post :accept
+      post :reject
+      post :dismiss
     end
   end
 

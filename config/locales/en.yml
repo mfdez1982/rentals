@@ -70,6 +70,8 @@ en:
     log_in: Log in
     sign_up: Sign up
     language: Language
+    my_properties: My Properties
+    my_rentals: My Rentals
 
   # Landing Page
   landing:
@@ -300,3 +302,81 @@ en:
     deleted: Note deleted
     marked_complete: Note marked as complete
     creation_failed: Could not create note
+
+  # Tenants (agreement invitations)
+  agreement_tenants:
+    tab_label: Tenants
+    no_tenants: No tenants invited yet.
+    table_headers:
+      email: Email
+      status: Status
+    status:
+      pending: Pending
+      accepted: Accepted
+      rejected: Rejected
+      removed: Removed
+    kill_invite: Kill invite
+    kill_invite_confirm: "Cancel this invitation? This cannot be undone."
+    remove: Remove
+    remove_confirm: "Remove this tenant from the agreement? This cannot be undone."
+    retry: Retry
+    form:
+      email_label: Tenant email
+      email_placeholder: e.g. tenant@example.com
+      submit: Invite tenant
+    invited: Invitation sent
+    already_pending: This email already has a pending invitation
+    already_accepted: This email is already an accepted tenant
+    removed: Tenant removed from the agreement
+    invite_killed: Invitation cancelled
+    acknowledged: Notification dismissed
+    errors:
+      email_blank: Please enter an email address
+
+  # Tenant-side invitation actions (accept/reject/dismiss)
+  tenant_invitations:
+    accepted: You have accepted the tenant invitation
+    rejected: You have declined the tenant invitation
+    dismissed: Notification dismissed
+    expired: This invitation has expired
+
+  # Tenant dashboard (read-only view of agreements the user is an accepted tenant of)
+  my_rentals:
+    index_title: My Rentals
+    no_rentals: You have no rentals yet.
+    no_rentals_hint: Once a landlord invites you and you accept, your rentals will show up here.
+    back_to_index: My Rentals
+    landlord_contact: "Landlord: %{name}"
+    overdue: Overdue
+    no_payments: No payments recorded yet for this rental.
+
+  # Banners shown in the layout to tenants and landlords
+  tenant_banners:
+    invitation_text: "%{landlord_name} invited you to the rental agreement from %{start_date} to %{end_date} at %{property_name}."
+    removed_text: "You were removed from the rental agreement from %{start_date} to %{end_date} at %{property_name}."
+    accepted_text: "%{invited_email} accepted the invitation to the rental agreement from %{start_date} to %{end_date} at %{property_name}."
+    rejected_text: "%{invited_email} declined the invitation to the rental agreement from %{start_date} to %{end_date} at %{property_name}."
+    accept: Accept
+    reject: Reject
+    dismiss: Dismiss
+
+  # Tenant invitation emails
+  agreement_tenant_mailer:
+    invite_new_user:
+      subject: "You've been invited as a tenant for %{property_name}"
+      greeting: Hello,
+      body_html: "You have been invited to be a tenant for <strong>%{property_name}</strong>, for the rental period from %{start_date} to %{end_date}. Create an account to accept this invitation."
+      body_text: "You have been invited to be a tenant for %{property_name}, for the rental period from %{start_date} to %{end_date}. Create an account to accept this invitation."
+      cta: Create your account
+      ignore: If you were not expecting this invitation, you can safely ignore this email.
+    notify_existing_user:
+      subject: "You've been invited as a tenant for %{property_name}"
+      greeting: Hello,
+      body_html: "You have been invited to be a tenant for <strong>%{property_name}</strong>, for the rental period from %{start_date} to %{end_date}. Log in to your account to accept or reject this invitation."
+      body_text: "You have been invited to be a tenant for %{property_name}, for the rental period from %{start_date} to %{end_date}. Log in to your account to accept or reject this invitation."
+      cta: Log in to your account
+    removed:
+      subject: "You've been removed as a tenant for %{property_name}"
+      greeting: Hello,
+      body_html: "You have been removed as a tenant for <strong>%{property_name}</strong>, for the rental period from %{start_date} to %{end_date}."
+      body_text: "You have been removed as a tenant for %{property_name}, for the rental period from %{start_date} to %{end_date}."

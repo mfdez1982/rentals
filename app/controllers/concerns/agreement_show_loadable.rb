@@ -7,5 +7,6 @@ module AgreementShowLoadable
   def load_agreement_show_data
     @payments = @agreement.payments.order(due_date: :asc).to_a
     @notes = @agreement.notes.active.order(due_date: :asc, created_at: :desc)
+    @agreement_tenants = @agreement.agreement_tenants.order(created_at: :desc)
   end
 end

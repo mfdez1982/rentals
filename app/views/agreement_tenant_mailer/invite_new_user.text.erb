@@ -1,0 +1,10 @@
+<%= t("agreement_tenant_mailer.invite_new_user.greeting") %>
+
+<%= t("agreement_tenant_mailer.invite_new_user.body_text",
+      property_name: @property.name,
+      start_date: format_date(@agreement.start_date),
+      end_date: format_date(@agreement.end_date)) %>
+
+<%= t("agreement_tenant_mailer.invite_new_user.cta") %>: <%= @registration_url %>
+
+<%= t("agreement_tenant_mailer.invite_new_user.ignore") %>

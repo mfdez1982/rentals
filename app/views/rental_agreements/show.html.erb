@@ -39,6 +39,9 @@
 
     <%= link_to t("notes.my_notes"), "#",
         data: { tabs_tab: "notas", action: "click->tabs#selectTab" } %>
+
+    <%= link_to t("agreement_tenants.tab_label"), "#",
+        data: { tabs_tab: "tenants", action: "click->tabs#selectTab" } %>
   </nav>
 
   <!-- Payments Section -->
@@ -125,6 +128,80 @@
           <!-- Notes Modal -->
           <%= render layout: "shared/modal", locals: { title: t("notes.add_note"), box_class: "max-w-lg" } do %>
             <%= render "notes/form", note: Note.new(landlord: current_landlord), noteable: @agreement, frame: dom_id(@agreement, :notes) %>
+          <% end %>
+        <% end %>
+      </div>
+    </div>
+  </div>
+
+  <!-- Tenants Section -->
+  <div data-tab-section="tenants">
+    <div class="card bg-base-100 shadow-sm">
+      <div class="card-body">
+        <h2 class="card-title text-base mb-4"><%= t("agreement_tenants.tab_label") %></h2>
+
+        <%= turbo_frame_tag dom_id(@agreement, :tenants) do %>
+          <% if @agreement_tenants.any? %>
+            <div class="overflow-x-auto mb-6">
+              <table class="table table-zebra">
+                <thead>
+                  <tr>
+                    <th><%= t("agreement_tenants.table_headers.email") %></th>
+                    <th><%= t("agreement_tenants.table_headers.status") %></th>
+                    <th></th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <% @agreement_tenants.each do |agreement_tenant| %>
+                    <tr>
+                      <td><%= agreement_tenant.invited_email %></td>
+                      <td>
+                        <span class="badge badge-sm <%= agreement_tenant_status_badge_class(agreement_tenant) %>">
+                          <%= t("agreement_tenants.status.#{agreement_tenant.status}") %>
+                        </span>
+                      </td>
+                      <td>
+                        <div class="flex items-center gap-2">
+                          <% if agreement_tenant.pending? %>
+                            <%= button_to t("agreement_tenants.kill_invite"),
+                                property_rental_agreement_agreement_tenant_path(@property, @agreement, agreement_tenant),
+                                method: :delete,
+                                class: "btn btn-ghost btn-xs",
+                                form: { data: { turbo_confirm: t("agreement_tenants.kill_invite_confirm") } } %>
+                          <% elsif agreement_tenant.accepted? %>
+                            <%= button_to t("agreement_tenants.remove"),
+                                property_rental_agreement_agreement_tenant_path(@property, @agreement, agreement_tenant),
+                                method: :delete,
+                                class: "btn btn-error btn-xs",
+                                form: { data: { turbo_confirm: t("agreement_tenants.remove_confirm") } } %>
+                          <% elsif agreement_tenant.rejected? %>
+                            <%= button_to t("agreement_tenants.retry"),
+                                retry_property_rental_agreement_agreement_tenant_path(@property, @agreement, agreement_tenant),
+                                method: :post,
+                                class: "btn btn-primary btn-xs" %>
+                          <% end %>
+                        </div>
+                      </td>
+                    </tr>
+                  <% end %>
+                </tbody>
+              </table>
+            </div>
+          <% else %>
+            <div class="text-center py-8 text-base-content/50">
+              <p class="text-sm"><%= t("agreement_tenants.no_tenants") %></p>
+            </div>
+          <% end %>
+
+          <%= form_with url: property_rental_agreement_agreement_tenants_path(@property, @agreement), method: :post, scope: :agreement_tenant, class: "max-w-md" do |f| %>
+            <div class="form-control mb-3">
+              <label for="agreement_tenant_invited_email" class="label"><%= t("agreement_tenants.form.email_label") %></label>
+              <%= f.email_field :invited_email, id: "agreement_tenant_invited_email",
+                  class: "input input-bordered w-full", placeholder: t("agreement_tenants.form.email_placeholder") %>
+            </div>
+            <div>
+              <%= f.submit t("agreement_tenants.form.submit"), class: "btn btn-primary" %>
+            </div>
           <% end %>
         <% end %>
       </div>

@@ -2,6 +2,8 @@ class RentalAgreement < ApplicationRecord
   belongs_to :property
   has_many :payments, dependent: :destroy
   has_many :notes, as: :noteable, dependent: :destroy
+  has_many :agreement_tenants, dependent: :destroy
+  has_many :tenants, -> { where(agreement_tenants: { status: :accepted }) }, through: :agreement_tenants, source: :user
 
   validates :start_date, :end_date, :rent_amount, presence: true
   validates :rent_amount, numericality: { greater_than: 0 }, allow_nil: true
@@ -28,6 +30,10 @@ class RentalAgreement < ApplicationRecord
 
   def has_overdue_payments?
     payments.any?(&:overdue?)
+  end
+
+  def accepted_agreement_tenants
+    agreement_tenants.where(status: :accepted)
   end
 
   private

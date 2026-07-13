@@ -1,0 +1,8 @@
+<p><%= t("agreement_tenant_mailer.removed.greeting") %></p>
+
+<p>
+  <%= t("agreement_tenant_mailer.removed.body_html",
+        property_name: @property.name,
+        start_date: format_date(@agreement.start_date),
+        end_date: format_date(@agreement.end_date)) %>
+</p>

@@ -50,7 +50,8 @@
       "Bash(echo \"exit:$?\")",
       "Bash(xargs ls -la)",
       "Bash(bundle exec *)",
-      "Bash(bundle show *)"
+      "Bash(bundle show *)",
+      "Bash(bin/rails db:migrate *)"
     ]
   },
   "enabledMcpjsonServers": [

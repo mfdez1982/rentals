@@ -190,6 +190,8 @@ es:
     log_in: Iniciar sesión
     sign_up: Registrarse
     language: Idioma
+    my_properties: Mis Propiedades
+    my_rentals: Mis Alquileres
 
   # Landing Page
   landing:
@@ -420,3 +422,81 @@ es:
     deleted: Nota eliminada
     marked_complete: Nota marcada como completada
     creation_failed: No se pudo crear la nota
+
+  # Inquilinos (invitaciones de contrato)
+  agreement_tenants:
+    tab_label: Inquilinos
+    no_tenants: Aún no se ha invitado a ningún inquilino.
+    table_headers:
+      email: Correo electrónico
+      status: Estado
+    status:
+      pending: Pendiente
+      accepted: Aceptado
+      rejected: Rechazado
+      removed: Eliminado
+    kill_invite: Cancelar invitación
+    kill_invite_confirm: "¿Cancelar esta invitación? Esta acción no se puede deshacer."
+    remove: Eliminar
+    remove_confirm: "¿Eliminar a este inquilino del contrato? Esta acción no se puede deshacer."
+    retry: Reintentar
+    form:
+      email_label: Correo del inquilino
+      email_placeholder: ej. inquilino@example.com
+      submit: Invitar inquilino
+    invited: Invitación enviada
+    already_pending: Este correo ya tiene una invitación pendiente
+    already_accepted: Este correo ya es un inquilino aceptado
+    removed: Inquilino eliminado del contrato
+    invite_killed: Invitación cancelada
+    acknowledged: Notificación descartada
+    errors:
+      email_blank: Por favor introduce una dirección de correo electrónico
+
+  # Acciones del inquilino sobre la invitación (aceptar/rechazar/descartar)
+  tenant_invitations:
+    accepted: Has aceptado la invitación como inquilino
+    rejected: Has rechazado la invitación como inquilino
+    dismissed: Notificación descartada
+    expired: Esta invitación ha caducado
+
+  # Panel del inquilino (vista de solo lectura de los contratos donde el usuario es inquilino aceptado)
+  my_rentals:
+    index_title: Mis Alquileres
+    no_rentals: Aún no tienes alquileres.
+    no_rentals_hint: Cuando un arrendador te invite y aceptes, tus alquileres aparecerán aquí.
+    back_to_index: Mis Alquileres
+    landlord_contact: "Arrendador: %{name}"
+    overdue: Vencido
+    no_payments: Aún no hay pagos registrados para este alquiler.
+
+  # Avisos mostrados en el layout a inquilinos y arrendadores
+  tenant_banners:
+    invitation_text: "%{landlord_name} te ha invitado al contrato de alquiler del %{start_date} al %{end_date} en %{property_name}."
+    removed_text: "Has sido eliminado del contrato de alquiler del %{start_date} al %{end_date} en %{property_name}."
+    accepted_text: "%{invited_email} aceptó la invitación al contrato de alquiler del %{start_date} al %{end_date} en %{property_name}."
+    rejected_text: "%{invited_email} rechazó la invitación al contrato de alquiler del %{start_date} al %{end_date} en %{property_name}."
+    accept: Aceptar
+    reject: Rechazar
+    dismiss: Descartar
+
+  # Emails de invitación a inquilinos
+  agreement_tenant_mailer:
+    invite_new_user:
+      subject: "Has sido invitado como inquilino de %{property_name}"
+      greeting: Hola,
+      body_html: "Has sido invitado a ser inquilino de <strong>%{property_name}</strong>, para el período de alquiler del %{start_date} al %{end_date}. Crea una cuenta para aceptar esta invitación."
+      body_text: "Has sido invitado a ser inquilino de %{property_name}, para el período de alquiler del %{start_date} al %{end_date}. Crea una cuenta para aceptar esta invitación."
+      cta: Crea tu cuenta
+      ignore: Si no esperabas esta invitación, puedes ignorar este correo con tranquilidad.
+    notify_existing_user:
+      subject: "Has sido invitado como inquilino de %{property_name}"
+      greeting: Hola,
+      body_html: "Has sido invitado a ser inquilino de <strong>%{property_name}</strong>, para el período de alquiler del %{start_date} al %{end_date}. Inicia sesión en tu cuenta para aceptar o rechazar esta invitación."
+      body_text: "Has sido invitado a ser inquilino de %{property_name}, para el período de alquiler del %{start_date} al %{end_date}. Inicia sesión en tu cuenta para aceptar o rechazar esta invitación."
+      cta: Inicia sesión en tu cuenta
+    removed:
+      subject: "Has sido eliminado como inquilino de %{property_name}"
+      greeting: Hola,
+      body_html: "Has sido eliminado como inquilino de <strong>%{property_name}</strong>, para el período de alquiler del %{start_date} al %{end_date}."
+      body_text: "Has sido eliminado como inquilino de %{property_name}, para el período de alquiler del %{start_date} al %{end_date}."

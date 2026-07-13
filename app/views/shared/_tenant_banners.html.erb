@@ -1,0 +1,56 @@
+<% if pending_tenant_invitations.present? %>
+  <% pending_tenant_invitations.each do |invitation| %>
+    <% agreement = invitation.rental_agreement %>
+    <% property = agreement.property %>
+    <div class="alert alert-info mb-4 flex-col sm:flex-row items-start sm:items-center gap-2" role="alert">
+      <span>
+        <%= t("tenant_banners.invitation_text",
+              landlord_name: property.landlord.name,
+              start_date: format_date(agreement.start_date),
+              end_date: format_date(agreement.end_date),
+              property_name: property.name) %>
+      </span>
+      <div class="flex gap-2 shrink-0">
+        <%= button_to t("tenant_banners.accept"), accept_tenant_invitation_path(invitation), method: :post, class: "btn btn-primary btn-sm" %>
+        <%= button_to t("tenant_banners.reject"), reject_tenant_invitation_path(invitation), method: :post, class: "btn btn-ghost btn-sm" %>
+      </div>
+    </div>
+  <% end %>
+<% end %>
+
+<% if tenant_removal_notices.present? %>
+  <% tenant_removal_notices.each do |invitation| %>
+    <% agreement = invitation.rental_agreement %>
+    <% property = agreement.property %>
+    <div class="alert alert-warning mb-4 flex-col sm:flex-row items-start sm:items-center gap-2" role="alert">
+      <span>
+        <%= t("tenant_banners.removed_text",
+              start_date: format_date(agreement.start_date),
+              end_date: format_date(agreement.end_date),
+              property_name: property.name) %>
+      </span>
+      <div class="flex gap-2 shrink-0">
+        <%= button_to t("tenant_banners.dismiss"), dismiss_tenant_invitation_path(invitation), method: :post, class: "btn btn-ghost btn-sm" %>
+      </div>
+    </div>
+  <% end %>
+<% end %>
+
+<% if landlord_tenant_notifications.present? %>
+  <% landlord_tenant_notifications.each do |invitation| %>
+    <% agreement = invitation.rental_agreement %>
+    <% property = agreement.property %>
+    <div class="alert alert-info mb-4 flex-col sm:flex-row items-start sm:items-center gap-2" role="alert">
+      <span>
+        <%= t("tenant_banners.#{invitation.status}_text",
+              invited_email: invitation.invited_email,
+              start_date: format_date(agreement.start_date),
+              end_date: format_date(agreement.end_date),
+              property_name: property.name) %>
+      </span>
+      <div class="flex gap-2 shrink-0">
+        <%= button_to t("tenant_banners.dismiss"), acknowledge_property_rental_agreement_agreement_tenant_path(property, agreement, invitation), method: :post, class: "btn btn-ghost btn-sm" %>
+      </div>
+    </div>
+  <% end %>
+<% end %>

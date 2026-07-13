@@ -10,7 +10,25 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_07_09_000001) do
+ActiveRecord::Schema[8.1].define(version: 2026_07_13_000001) do
+  create_table "agreement_tenants", force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.string "invitation_token", null: false
+    t.datetime "invited_at", null: false
+    t.string "invited_email", null: false
+    t.datetime "landlord_acknowledged_at"
+    t.integer "rental_agreement_id", null: false
+    t.datetime "responded_at"
+    t.integer "status", default: 0, null: false
+    t.datetime "tenant_acknowledged_at"
+    t.datetime "updated_at", null: false
+    t.integer "user_id"
+    t.index ["invitation_token"], name: "index_agreement_tenants_on_invitation_token", unique: true
+    t.index ["rental_agreement_id", "invited_email"], name: "index_agreement_tenants_live_unique", unique: true, where: "status IN (0,1)"
+    t.index ["rental_agreement_id"], name: "index_agreement_tenants_on_rental_agreement_id"
+    t.index ["user_id"], name: "index_agreement_tenants_on_user_id"
+  end
+
   create_table "expenses", force: :cascade do |t|
     t.decimal "amount", precision: 10, scale: 2, null: false
     t.integer "category", null: false
@@ -91,6 +109,8 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_09_000001) do
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
   end
 
+  add_foreign_key "agreement_tenants", "rental_agreements"
+  add_foreign_key "agreement_tenants", "users"
   add_foreign_key "expenses", "properties"
   add_foreign_key "landlords", "users"
   add_foreign_key "notes", "landlords"

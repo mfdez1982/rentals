@@ -1,0 +1,31 @@
+<div class="mb-6">
+  <h1 class="text-2xl font-bold"><%= t("my_rentals.index_title") %></h1>
+</div>
+
+<% if @agreements.any? %>
+  <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4" data-testid="my-rentals-grid">
+    <% @agreements.each do |agreement| %>
+      <%= link_to my_rental_path(agreement), class: "card bg-base-100 shadow-sm hover:shadow-md transition-shadow" do %>
+        <div class="card-body">
+          <div class="flex items-center justify-between">
+            <h2 class="card-title text-base"><%= agreement.property.name %></h2>
+            <span class="badge badge-sm <%= agreement_status_badge_class(agreement) %>"><%= agreement_status(agreement) %></span>
+          </div>
+          <p class="text-sm text-base-content/70">
+            <%= format_date(agreement.start_date) %> – <%= format_date(agreement.end_date) %>
+          </p>
+          <p class="text-base-content/70">
+            <%= number_to_currency(agreement.rent_amount) %><%= t("rental_agreements.monthly_suffix") %>
+          </p>
+        </div>
+      <% end %>
+    <% end %>
+  </div>
+<% else %>
+  <div class="flex items-center justify-center min-h-96">
+    <div class="text-center">
+      <p class="text-lg text-base-content/60 mb-4"><%= t("my_rentals.no_rentals") %></p>
+      <p class="text-sm text-base-content/40"><%= t("my_rentals.no_rentals_hint") %></p>
+    </div>
+  </div>
+<% end %>

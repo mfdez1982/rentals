@@ -1,0 +1,12 @@
+<p><%= t("agreement_tenant_mailer.invite_new_user.greeting") %></p>
+
+<p>
+  <%= t("agreement_tenant_mailer.invite_new_user.body_html",
+        property_name: @property.name,
+        start_date: format_date(@agreement.start_date),
+        end_date: format_date(@agreement.end_date)) %>
+</p>
+
+<p><%= link_to t("agreement_tenant_mailer.invite_new_user.cta"), @registration_url %></p>
+
+<p><%= t("agreement_tenant_mailer.invite_new_user.ignore") %></p>
