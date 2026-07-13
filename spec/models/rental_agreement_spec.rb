@@ -82,18 +82,6 @@ RSpec.describe RentalAgreement, type: :model do
       boundary = build(:rental_agreement, start_date: Date.today, end_date: Date.today + 1)
       expect(boundary).to be_active
     end
-
-    it "returns a translated status label" do
-      expect(active.status).to eq(I18n.t("rental_agreements.status_active"))
-      expect(upcoming.status).to eq(I18n.t("rental_agreements.status_upcoming"))
-      expect(expired.status).to eq(I18n.t("rental_agreements.status_expired"))
-    end
-
-    it "returns the matching badge class" do
-      expect(active.status_badge_class).to eq("badge-success")
-      expect(upcoming.status_badge_class).to eq("badge-info")
-      expect(expired.status_badge_class).to eq("badge-ghost")
-    end
   end
 
   describe "#has_overdue_payments?" do

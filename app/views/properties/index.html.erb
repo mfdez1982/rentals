@@ -1,5 +1,5 @@
 <%= render "shared/dashboard_layout" do %>
-  <div data-controller="properties modal">
+  <div data-controller="modal">
     <div class="flex items-center justify-between mb-6">
       <button type="button" class="btn btn-primary btn-sm" data-action="modal#open">
         <%= t("properties.add_property") %>
@@ -9,7 +9,7 @@
     <% if @properties.any? %>
       <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4" data-testid="properties-grid">
         <% @properties.each do |property| %>
-          <%= turbo_frame_tag dom_id(property), data: { row_url: property_path(property) } do %>
+          <%= turbo_frame_tag dom_id(property) do %>
             <%= render "property_card", property: property %>
           <% end %>
         <% end %>
@@ -27,15 +27,8 @@
     <% end %>
 
     <!-- Add Property Modal -->
-    <dialog class="modal" data-modal-target="dialog">
-      <div class="modal-box max-w-lg">
-        <button type="button" class="btn btn-sm btn-circle btn-ghost absolute right-2 top-2" data-action="modal#close">✕</button>
-        <h3 class="font-bold text-lg mb-4"><%= t("properties.add_property") %></h3>
-        <%= render "form", property: @new_property %>
-      </div>
-      <form method="dialog" class="modal-backdrop">
-        <button></button>
-      </form>
-    </dialog>
+    <%= render layout: "shared/modal", locals: { title: t("properties.add_property"), box_class: "max-w-lg" } do %>
+      <%= render "form", property: @new_property %>
+    <% end %>
   </div>
 <% end %>

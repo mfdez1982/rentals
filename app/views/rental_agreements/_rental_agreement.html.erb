@@ -9,8 +9,8 @@
   <td><%= number_to_currency(agreement.rent_amount) %></td>
   <td>
     <div class="flex items-center gap-2">
-      <span class="badge badge-sm <%= agreement.status_badge_class %>">
-        <%= agreement.status %>
+      <span class="badge badge-sm <%= agreement_status_badge_class(agreement) %>">
+        <%= agreement_status(agreement) %>
       </span>
       <% if agreement.has_overdue_payments? %>
         <span class="badge badge-sm badge-error">

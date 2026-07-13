@@ -30,16 +30,15 @@ class TaxReportGenerator
   end
 
   def overlapping_agreements_in_year
-    @property.rental_agreements.select do |agreement|
-      # Handle nil end_date (ongoing agreements) and ensure start_date exists
-      agreement.start_date && (agreement.end_date.nil? || agreement.end_date >= year_start_date) && agreement.start_date <= year_end_date
-    end
+    # RentalAgreement validates presence of start_date/end_date, so every row
+    # has both; a plain range overlap query is safe.
+    @property.rental_agreements
+             .where("start_date <= ? AND end_date >= ?", year_end_date, year_start_date)
   end
 
   def active_days_for_agreement(agreement)
     agreement_start = [agreement.start_date, year_start_date].max
-    # Handle nil end_date (treat as year_end_date if ongoing)
-    agreement_end = [agreement.end_date || year_end_date, year_end_date].min
+    agreement_end = [agreement.end_date, year_end_date].min
     (agreement_end - agreement_start).to_i + 1
   end
 
@@ -73,14 +72,12 @@ class TaxReportGenerator
   end
 
   def expenses_in_year
-    @property.expenses.select do |expense|
-      expense.date && expense.date >= year_start_date && expense.date <= year_end_date
-    end
+    @property.expenses.where(date: year_start_date..year_end_date)
   end
 
   def payments_in_year
-    @property.rental_agreements.flat_map(&:payments).select do |payment|
-      payment.due_date && payment.due_date >= year_start_date && payment.due_date <= year_end_date
-    end
+    Payment.joins(:rental_agreement)
+           .where(rental_agreements: { property_id: @property.id })
+           .where(due_date: year_start_date..year_end_date)
   end
 end

@@ -31,7 +31,6 @@ Derived state (never stored as a column):
 - `property.has_overdue_payments?` — any agreement has overdue payments
 - `property.active_rental_agreement` — returns the currently active agreement (if any)
 - `property.next_unpaid_payment` — gets the soonest unpaid payment from any agreement
-- `property.max_days_overdue` — calculates maximum days overdue across all payments
 
 ## Implemented features
 - Property management with derived rented/available status
@@ -53,32 +52,29 @@ Every query must be scoped to `current_landlord`. Never rely on the view alone. 
 `current_landlord` is defined in `ApplicationController` as `current_user&.landlord`. In development, it auto-signs-in `dev@example.com` if that user exists.
 
 ## Turbo Frame patterns
-These are non-obvious and hard to reconstruct from the code alone — read this before touching any inline-edit or agreements flow.
+These are non-obvious and hard to reconstruct from the code alone — read this before touching any show page or modal-editing flow.
 
-### Properties index — inline edit
-Each property row is wrapped in `turbo_frame_tag dom_id(property)`:
-- Clicking **Edit** navigates the frame to `edit_property_path`, which returns a frame with a form using `form_data: { turbo_frame: "_top" }`. Submit breaks out to `_top` and does a full-page redirect to `properties_path`.
-- Clicking **Cancel** navigates the frame to `property_path(property)`. `show.html.erb` contains a hidden `turbo_frame_tag dom_id(@property), style: "display:none"` that renders the property row — Turbo extracts it to restore the row.
-- The `properties` Stimulus controller closes other open edit frames: `data-controller="properties"` on the table, `data: { action: "click->properties#openEdit" }` on Edit links, `data: { row_url: property_path(property) }` on each frame.
+### Modal editing (current pattern, replaces old row inline-edit)
+All add/edit UI now lives in DaisyUI `<dialog>` modals rendered by the shared `shared/_modal` layout (`render layout: "shared/modal", locals: { title:, box_class: }`), controlled by the single `modal` Stimulus controller (`app/javascript/controllers/modal_controller.js`):
+- `data-controller="modal"` on a wrapping element, `data-modal-target="dialog"` on the `<dialog>`.
+- `data-action="click->modal#open"` on a plain "Add X" button just opens the dialog (`modal#open`).
+- Edit links instead use `data: { turbo_frame: "<name>_edit_frame", action: "click->modal#openFrame" }` — `openFrame` opens the dialog *and* lets Turbo intercept the click to load the edit form into a same-page named frame (`property_edit_frame`, `expense_edit_frame`, `payment_edit_frame`, `agreement_edit_frame`, `note_edit_frame`), each nested inside its own modal's `shared/_modal` box.
+- `dialogTargetConnected` in `modal_controller.js` fires whenever a `<dialog>` element is (re)connected — including when a Turbo Frame swap replaces the section frame it lives in after a create/edit submit. If the freshly rendered dialog contains a `[role="alert"]` (validation errors), it reopens itself automatically; a clean re-render (success) stays closed. It does NOT fire for the nested edit-frame GET that merely loads the form, so opening via `openFrame` is never mistaken for a submit result.
+- Cancel buttons just `data-action="modal#close"`.
 
-### Properties show — rental agreements
-`show.html.erb` has two frames:
-1. **Hidden row frame** `turbo_frame_tag dom_id(@property), style: "display:none"` — renders the `_property` partial invisibly. Used only by the index inline-edit cancel/restore flow.
-2. **Outer agreements frame** `turbo_frame_tag dom_id(@property, :agreements)` — wraps the entire agreements section (table + new-agreement form). Frame ID e.g. `agreements_property_1`.
-   - **Create**: new form is inside this frame → auto-targets it → success redirect to `property_path` refreshes the outer frame.
-   - **Delete**: `button_to` with `form: { data: { turbo_frame: dom_id(property, :agreements) } }` targets the outer frame → success redirect refreshes the list.
-   - **Renew**: link with `data: { turbo_frame: dom_id(property, :agreements) }` navigates the outer frame to `new_path?source_id=X`. `new.html.erb` wraps its content in the outer frame. The `new` action pre-fills `start_date = source.end_date + 1.day` and `rent_amount` when `params[:source_id]` is given.
-   - **Inline edit**: each row is wrapped in `turbo_frame_tag dom_id(agreement), data: { row_url: property_path(@property) }`. Clicking Edit navigates the inner frame to `edit.html.erb`. Success redirect to `property_path` → Turbo finds the inner frame nested inside the outer frame and refreshes it.
-   - The `rental-agreements` Stimulus controller (same logic as `properties`) handles closing other open edit rows.
+### Section frames and validation-failure re-render
+Each show page tab wraps its table + form in one section frame per resource: `dom_id(@property, :header|:agreements|:expenses|:notes|:tax_report)` on `properties/show.html.erb`, `dom_id(@agreement, :header|:payments|:notes)` on `rental_agreements/show.html.erb`. Create/update forms live inside their section frame, so a normal Turbo submit (success or failure) only replaces that frame.
+- On validation failure, `ExpensesController`, `RentalAgreementsController`, `PropertiesController`, and `PaymentsController` don't re-render their own template — they `render template: "properties/show"` (or `"rental_agreements/show"`) so Turbo can extract the *same* section frame with errors in place. This requires every ivar the target `show` template needs, which `PropertyShowLoadable#load_property_show_data` and `AgreementShowLoadable#load_agreement_show_data` (both in `app/controllers/concerns/`) rebuild.
+- The tax report tab is lazy-loaded, not part of that ivar rebuild: `turbo_frame_tag dom_id(@property, :tax_report), src: tax_report_property_path(@property), loading: :lazy` fetches `PropertiesController#tax_report` only when the tab frame becomes visible.
 
-### Agreement show — payments
-`rental_agreements/show.html.erb` uses the same outer/inner frame pattern:
-- **Outer frame** `dom_id(@agreement, :payments)` wraps the payments table + Add Payment form.
-- **Create**: form auto-targets the outer frame; success/failure redirect/render refreshes it.
-- **Delete**: `button_to` with `form: { data: { turbo_frame: dom_id(agreement, :payments) } }` targets outer frame.
-- **Inline edit**: each payment row is wrapped in `turbo_frame_tag dom_id(payment), data: { row_url: property_rental_agreement_path(...) }`. Edit navigates the inner frame; success redirect → Turbo finds the inner frame nested inside the outer frame.
-- The `payments` Stimulus controller (same `openEdit` logic) closes other open edit rows.
-- On `PaymentsController#create` failure: sets `@payments` and `@new_payment`, then `render template: "rental_agreements/show"` so Turbo extracts the outer frame with errors.
+### Tabs
+`shared/_dashboard_layout` pages use `data-controller="tabs" data-tabs-active-tab-value="<name>"` on the wrapper, with nav links (`data: { tabs_tab: "<name>", action: "click->tabs#selectTab" }`) and matching `data-tab-section="<name>"` panels. The `tabs` Stimulus controller (`app/javascript/controllers/tabs_controller.js`) toggles panel visibility and swaps the `tab-link-active` class — no server round-trip, all tabs' content is present in the DOM at once (except the lazy tax-report frame above).
+
+### Edit pages as modal fallback / direct navigation
+`properties/edit.html.erb`, `expenses/edit.html.erb`, `payments/edit.html.erb`, `rental_agreements/edit.html.erb`, `notes/edit.html.erb` are thin wrappers: `render layout: "shared/frame_page", locals: { frame_id: "<name>_edit_frame" }` around the same `_edit_modal_content` partial used inside the modal. `shared/_frame_page` gives a centered card shell with the named turbo frame inside, so the same edit view works both loaded into a modal via Turbo Frame navigation and as a full-page direct visit.
+
+### Notes
+`notes/_notes_list.html.erb` is shared by the property tab, agreement tab, and the standalone `notes/index.html.erb` — takes `notes:` and optional `note_frame_id:` locals, renders the table (or empty state) plus a `note_edit_frame` modal. `notes/_form.html.erb` is likewise shared for new-note creation across all three call sites, taking `note:`, `noteable:` (nil for general notes), and `frame:` locals.
 
 ## Coding conventions
 - Standard Rails conventions; thin controllers, logic in models or service objects
@@ -132,7 +128,7 @@ en:
 - **Components:** use DaisyUI semantic components (card, table, badge, navbar, btn, input, alert).
 - **Mobile:** forms and tables must not overflow on small widths.
 - **Accessibility:** labels associated with inputs via `for`/`id` or wrapping.
-- **Avatar colors:** Property avatars use deterministic color assignment from a fixed palette (6 colors: success, warning, error, info, primary, secondary). Color is derived by hashing the property name to an index — same property name always gets the same color across renders and sessions. See `app/helpers/avatar_helper.rb` for implementation. This ensures visual consistency without requiring image uploads or database storage.
+- **Avatar colors:** Property avatars use deterministic color assignment from a fixed palette (6 colors: success, warning, error, info, primary, secondary). Color is derived by hashing the property name (`Digest::MD5`, stable across processes/restarts) to an index — same property name always gets the same color across renders and sessions. See `app/helpers/avatar_helper.rb` for implementation. This ensures visual consistency without requiring image uploads or database storage.
 
 ## Workflow
 Before writing any code, always present your analysis and implementation plan and wait for the user's approval. Never jump straight into writing files.

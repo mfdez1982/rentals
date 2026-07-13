@@ -12,7 +12,7 @@
 
     <div>
       <%= f.label :date, t("expenses.date"), class: "label mb-1" %>
-      <%= f.date_field :date, class: "input input-bordered w-full" %>
+      <%= f.date_field :date, class: "input input-bordered w-full", required: true %>
     </div>
 
     <div>
@@ -20,13 +20,13 @@
       <%= f.select :category,
             Expense.categories.keys.map { |k| [t("expenses.categories.#{k}"), k] },
             { include_blank: t("expenses.select_category") },
-            class: "select select-bordered w-full" %>
+            class: "select select-bordered w-full", required: true %>
     </div>
 
     <div>
       <%= f.label :amount, t("expenses.amount"), class: "label mb-1" %>
       <%= f.number_field :amount, class: "input input-bordered w-full",
-            step: "0.01", min: "0.01", placeholder: t("expenses.amount_placeholder") %>
+            step: "0.01", min: "0.01", placeholder: t("expenses.amount_placeholder"), required: true %>
     </div>
 
     <div>

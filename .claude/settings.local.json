@@ -45,7 +45,9 @@
       "Bash(grep -E \"\\\\.\\(js|ts\\)$\")",
       "Skill(run)",
       "Bash(npm list *)",
-      "WebFetch(domain:localhost)"
+      "WebFetch(domain:localhost)",
+      "Bash(node --check app/javascript/controllers/tabs_controller.js)",
+      "Bash(echo \"exit:$?\")"
     ]
   },
   "enabledMcpjsonServers": [

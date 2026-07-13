@@ -8,11 +8,9 @@ RSpec.describe AvatarHelper, type: :helper do
       expect(helper.avatar_for_property(property)[:initials]).to eq("C")
     end
 
-    it "returns a color class and hex from the fixed palette, as a matched pair" do
+    it "returns a color class from the fixed palette" do
       avatar = helper.avatar_for_property(property)
-      entry = AvatarHelper::AVATAR_COLORS.find { |c| c[:class] == avatar[:color_class] }
-      expect(entry).to be_present
-      expect(entry[:hex]).to eq(avatar[:color_hex])
+      expect(AvatarHelper::AVATAR_COLORS).to include(avatar[:color_class])
     end
 
     it "is deterministic for the same name within a process, case-insensitively" do
@@ -20,10 +18,13 @@ RSpec.describe AvatarHelper, type: :helper do
       expect(helper.avatar_for_property(property)[:color_class]).to eq(same[:color_class])
     end
 
-    # NOTE: cross-process stability is documented in CLAUDE.md but currently
-    # broken (String#hash is seeded per process — REFACTOR_REPORT.md P1.1).
-    # It cannot be asserted from within a single test process; once fixed with
-    # a stable digest, add an example asserting the exact palette entry for a
-    # known name.
+    it "is deterministic across processes (stable digest, not String#hash)" do
+      # String#hash is randomly seeded per process, so this can only be verified
+      # by recomputing the same stable-digest formula the helper uses (MD5,
+      # not String#hash) and checking it matches — a real cross-process
+      # assertion would require a separate Ruby invocation.
+      expected_index = Digest::MD5.hexdigest("casa verde").to_i(16) % AvatarHelper::AVATAR_COLORS.length
+      expect(helper.avatar_for_property(property)[:color_class]).to eq(AvatarHelper::AVATAR_COLORS[expected_index])
+    end
   end
 end

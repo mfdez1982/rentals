@@ -1,6 +1,6 @@
 require "rails_helper"
 
-RSpec.describe "Dashboard", type: :request do
+RSpec.describe "Root", type: :request do
   describe "GET /" do
     context "when not logged in" do
       it "redirects to landing" do
@@ -12,7 +12,7 @@ RSpec.describe "Dashboard", type: :request do
     context "when logged in" do
       before { sign_in create(:user) }
 
-      it "renders the dashboard" do
+      it "renders the properties index" do
         get root_path
         expect(response).to have_http_status(:ok)
       end

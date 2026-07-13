@@ -1,0 +1,12 @@
+<dialog class="modal" data-modal-target="dialog">
+  <div class="modal-box<%= " #{local_assigns[:box_class]}" if local_assigns[:box_class].present? %>">
+    <button type="button" class="btn btn-sm btn-circle btn-ghost absolute right-2 top-2" data-action="modal#close">✕</button>
+    <% if local_assigns[:title].present? %>
+      <h3 class="font-bold text-lg mb-4"><%= title %></h3>
+    <% end %>
+    <%= yield %>
+  </div>
+  <form method="dialog" class="modal-backdrop">
+    <button></button>
+  </form>
+</dialog>

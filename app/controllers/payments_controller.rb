@@ -11,17 +11,22 @@ class PaymentsController < ApplicationController
     count = [[params[:count].to_i, 1].max, 12].min
     amount = params[:amount]
 
-    count.times do |i|
-      @agreement.payments.create!(
-        due_date: start_date >> i,
-        amount: amount
-      )
+    ActiveRecord::Base.transaction do
+      count.times do |i|
+        @agreement.payments.create!(
+          due_date: start_date >> i,
+          amount: amount
+        )
+      end
     end
 
     redirect_to property_rental_agreement_path(@property, @agreement)
   rescue ActiveRecord::RecordInvalid => e
     redirect_to property_rental_agreement_path(@property, @agreement),
       alert: t("payments.create_error", error: e.message)
+  rescue ArgumentError, TypeError
+    redirect_to property_rental_agreement_path(@property, @agreement),
+      alert: t("payments.invalid_start_date")
   end
 
   def edit
@@ -43,10 +48,6 @@ class PaymentsController < ApplicationController
   end
 
   private
-
-  def set_property
-    @property = current_landlord.properties.find(params[:property_id])
-  end
 
   def set_agreement
     @agreement = @property.rental_agreements.find(params[:rental_agreement_id])

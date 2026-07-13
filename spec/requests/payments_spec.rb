@@ -49,13 +49,43 @@ RSpec.describe "Payments", type: :request do
       expect(agreement.payments.count).to eq(0)
     end
 
-    # KNOWN BUG (see REFACTOR_REPORT.md P1.2): a blank/invalid start date raises
-    # ArgumentError (500 in production). This example pins the CURRENT behavior;
-    # invert it into a graceful-handling expectation when the bug is fixed.
-    it "currently raises ArgumentError on a blank start date" do
+    # FIXED (see REFACTOR_REPORT.md P1.2): a blank/invalid start date used to raise
+    # ArgumentError (500 in production). It is now rescued and redirects back with
+    # a translated alert, creating no payments.
+    it "redirects with an alert instead of raising on a blank start date" do
       expect {
         post recurring_path, params: { start_date: "", count: "3", amount: "700.00" }
-      }.to raise_error(ArgumentError)
+      }.not_to raise_error
+      expect(response).to redirect_to(agreement_path)
+      expect(flash[:alert]).to be_present
+      expect(agreement.payments.count).to eq(0)
+    end
+
+    it "redirects with an alert instead of raising on a garbage start date" do
+      expect {
+        post recurring_path, params: { start_date: "not-a-date", count: "3", amount: "700.00" }
+      }.not_to raise_error
+      expect(response).to redirect_to(agreement_path)
+      expect(flash[:alert]).to be_present
+      expect(agreement.payments.count).to eq(0)
+    end
+
+    # FIXED (see REFACTOR_REPORT.md P1.2): the creation loop is now wrapped in a
+    # transaction, so a mid-loop validation failure leaves no partial data behind.
+    # `Payment#valid?` is stubbed to fail on the 2nd of 3 iterations so the 1st
+    # would otherwise already be committed without the transaction fix.
+    it "leaves no partial data when a later payment in the batch fails validation" do
+      attempt = 0
+      allow_any_instance_of(Payment).to receive(:valid?).and_wrap_original do |original, *args|
+        attempt += 1
+        attempt == 2 ? false : original.call(*args)
+      end
+
+      post recurring_path, params: { start_date: "2026-08-01", count: "3", amount: "700.00" }
+
+      expect(response).to redirect_to(agreement_path)
+      expect(flash[:alert]).to be_present
+      expect(agreement.payments.count).to eq(0)
     end
 
     it "cannot create payments on another landlord's agreement" do

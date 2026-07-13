@@ -1,0 +1,9 @@
+<div class="min-h-screen bg-base-100 flex items-center justify-center py-12 px-4">
+  <div class="card bg-base-100 border border-base-300 shadow-lg <%= local_assigns[:width_class] || "max-w-lg" %> w-full">
+    <div class="card-body">
+      <%= turbo_frame_tag frame_id do %>
+        <%= yield %>
+      <% end %>
+    </div>
+  </div>
+</div>

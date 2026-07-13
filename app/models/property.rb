@@ -7,7 +7,7 @@ class Property < ApplicationRecord
   validates :name, presence: true
 
   def rented?
-    rental_agreements.active.exists?
+    rental_agreements.any?(&:active?)
   end
 
   def has_overdue_payments?
@@ -21,24 +21,12 @@ class Property < ApplicationRecord
   end
 
   def active_rental_agreement
-    rental_agreements.active.first
+    rental_agreements.detect(&:active?)
   end
 
   def next_unpaid_payment
     rental_agreements.flat_map(&:payments)
                      .select { |p| p.paid_date.nil? }
                      .min_by(&:due_date)
-  end
-
-  def max_days_overdue
-    overdue_payments = rental_agreements.flat_map(&:payments).select(&:overdue?)
-    return 0 if overdue_payments.empty?
-    overdue_payments.map { |p| (Date.today - p.due_date).to_i }.max
-  end
-
-  private
-
-  def overdue_payments
-    rental_agreements.flat_map(&:payments).select(&:overdue?)
   end
 end

@@ -26,20 +26,6 @@ class RentalAgreement < ApplicationRecord
     end_date.present? && end_date < Date.today
   end
 
-  def status
-    if active?   then I18n.t("rental_agreements.status_active")
-    elsif upcoming? then I18n.t("rental_agreements.status_upcoming")
-    else I18n.t("rental_agreements.status_expired")
-    end
-  end
-
-  def status_badge_class
-    if active?   then "badge-success"
-    elsif upcoming? then "badge-info"
-    else "badge-ghost"
-    end
-  end
-
   def has_overdue_payments?
     payments.any?(&:overdue?)
   end

@@ -48,6 +48,11 @@ es:
         restrict_dependent_destroy:
           has_one: "No se puede eliminar el registro porque existe un %{record} dependiente"
           has_many: "No se puede eliminar el registro porque existen %{record} dependientes"
+      models:
+        expense:
+          attributes:
+            invoice_url:
+              invalid_url: "debe ser una URL válida"
     attributes:
       user:
         email: Correo electrónico
@@ -62,6 +67,7 @@ es:
       short: "%d %b"
       long: "%d de %B de %Y"
       db: "%Y-%m-%d"
+      numeric: "%d/%m/%Y"
     month_names:
       - ~
       - enero
@@ -302,11 +308,8 @@ es:
       count: Número de meses
       amount: Cantidad
     create_error: "No se pudieron crear los pagos: %{error}"
+    invalid_start_date: "Por favor, introduce una fecha de inicio válida."
 
-  # Dashboard
-  dashboard:
-    title: Panel de Control
-    welcome: "Bienvenido, %{name}."
 
   # Tax Report
   tax_report:

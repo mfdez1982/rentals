@@ -36,10 +36,6 @@ class ExpensesController < ApplicationController
 
   private
 
-  def set_property
-    @property = current_landlord.properties.find(params[:property_id])
-  end
-
   def set_expense
     @expense = @property.expenses.find(params[:id])
   end

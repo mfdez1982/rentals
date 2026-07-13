@@ -1,9 +1,3 @@
-<div class="min-h-screen bg-base-100 flex items-center justify-center py-12 px-4">
-  <div class="card bg-base-100 border border-base-300 shadow-lg max-w-lg w-full">
-    <div class="card-body">
-      <%= turbo_frame_tag "property_edit_frame" do %>
-        <%= render "edit_modal_content", property: @property %>
-      <% end %>
-    </div>
-  </div>
-</div>
+<%= render layout: "shared/frame_page", locals: { frame_id: "property_edit_frame" } do %>
+  <%= render "edit_modal_content", property: @property %>
+<% end %>

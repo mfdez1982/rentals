@@ -2,6 +2,6 @@ module ApplicationHelper
     include Heroicons::Helper
 
     def format_date(date)
-      date.strftime("%d/%m/%Y") if date.present?
+      l(date, format: :numeric) if date.present?
     end
 end

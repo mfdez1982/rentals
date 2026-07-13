@@ -21,6 +21,10 @@ class ApplicationController < ActionController::Base
   end
   helper_method :current_landlord
 
+  def set_property
+    @property = current_landlord.properties.find(params[:property_id])
+  end
+
   def available_locales
     [:en, :es]
   end

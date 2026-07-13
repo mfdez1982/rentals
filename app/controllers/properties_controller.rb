@@ -5,7 +5,7 @@ class PropertiesController < ApplicationController
   before_action -> { redirect_unless_turbo_frame_request(property_path(@property)) }, only: [:edit]
 
   def index
-    @properties = current_landlord.properties
+    @properties = current_landlord.properties.includes(rental_agreements: :payments)
     @new_property = Property.new
   end
 
@@ -25,7 +25,7 @@ class PropertiesController < ApplicationController
     if @new_property.save
       redirect_to properties_path
     else
-      @properties = current_landlord.properties.where.not(id: nil)
+      @properties = current_landlord.properties.reload
       render :index, status: :unprocessable_entity
     end
   end

@@ -1,8 +1,9 @@
 class NotesController < ApplicationController
   before_action :set_note, only: [:edit, :update, :mark_complete, :destroy]
+  before_action -> { redirect_unless_turbo_frame_request(notes_path) }, only: [:edit]
 
   def index
-    @notes = Note.where(landlord: current_landlord).order(due_date: :asc, created_at: :desc)
+    @notes = current_landlord.notes.order(due_date: :asc, created_at: :desc)
     @new_note = Note.new(landlord: current_landlord)
   end
 
@@ -16,7 +17,6 @@ class NotesController < ApplicationController
   end
 
   def edit
-    redirect_unless_turbo_frame_request(notes_path)
     @return_frame = params[:frame]
   end
 
@@ -50,7 +50,7 @@ class NotesController < ApplicationController
   private
 
   def set_note
-    @note = Note.where(landlord: current_landlord).find(params[:id])
+    @note = current_landlord.notes.find(params[:id])
   end
 
 

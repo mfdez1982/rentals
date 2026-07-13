@@ -19,6 +19,16 @@
   height: 20px;
 }
 
+.tab-link {
+  @apply text-sm pb-3 transition-colors inline-block text-base-content/60 font-normal;
+}
+.tab-link:not(.tab-link-active):hover {
+  @apply text-base-content;
+}
+.tab-link-active {
+  @apply text-primary font-bold border-b-2 border-primary;
+}
+
 /* The cookie consent banner ships with a max z-index so it always sits above page
    content, but that also puts it above its own preferences modal/overlay when the
    two are open at once. Pin the banner below the preferences modal explicitly. */

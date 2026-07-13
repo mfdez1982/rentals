@@ -16,5 +16,5 @@ class Expense < ApplicationRecord
   validates :amount, presence: true, numericality: { greater_than: 0 }
   validates :category, presence: true
   validates :invoice_url, allow_blank: true,
-    format: { with: %r{\Ahttps?://.+}i, message: "must be a valid URL" }
+    format: { with: %r{\Ahttps?://.+}i, message: :invalid_url }
 end

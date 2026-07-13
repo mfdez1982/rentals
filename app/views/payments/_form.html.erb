@@ -12,7 +12,7 @@
 
     <div>
       <%= f.label :due_date, t("payments.due_date"), class: "label mb-1" %>
-      <%= f.date_field :due_date, class: "input input-bordered w-full" %>
+      <%= f.date_field :due_date, class: "input input-bordered w-full", required: true %>
     </div>
 
     <div>
@@ -25,7 +25,7 @@
     <div>
       <%= f.label :amount, t("payments.amount"), class: "label mb-1" %>
       <%= f.number_field :amount, class: "input input-bordered w-full",
-            step: "0.01", min: "0.01", placeholder: t("payments.amount_placeholder") %>
+            step: "0.01", min: "0.01", placeholder: t("payments.amount_placeholder"), required: true %>
     </div>
 
     <div class="flex gap-2 pt-2">

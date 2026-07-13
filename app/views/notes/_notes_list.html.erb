@@ -1,13 +1,14 @@
 <% note_frame_id = local_assigns[:note_frame_id] %>
 <div data-controller="modal">
 <div class="overflow-x-auto">
+  <% if notes.any? %>
   <table class="table table-zebra w-full">
     <thead>
       <tr>
         <th><%= t("notes.title") %></th>
-        <th><%= t("notes.related_to", default: "Related to") %></th>
+        <th><%= t("notes.related_to") %></th>
         <th><%= t("notes.due_date") %></th>
-        <th><%= t("general.actions", default: "Actions") %></th>
+        <th><%= t("general.actions") %></th>
       </tr>
     </thead>
     <tbody>
@@ -54,7 +55,7 @@
                   data: { turbo_frame: "note_edit_frame", action: "click->modal#openFrame" } do %>
                 <%= heroicon "pencil", variant: :outline %>
               <% end %>
-              <%= button_to note_path(note), method: :delete, data: { confirm: t("notes.confirm_delete", default: "Are you sure?") },
+              <%= button_to note_path(note), method: :delete, data: { confirm: t("notes.confirm_delete") },
                   class: "icon-btn",
                   title: t("notes.delete"),
                   form: (note_frame_id ? { data: { turbo_frame: note_frame_id } } : {}) do %>
@@ -66,15 +67,14 @@
       <% end %>
     </tbody>
   </table>
+  <% else %>
+  <div class="text-center py-8 text-base-content/50">
+    <p class="text-sm"><%= t("notes.no_notes") %></p>
+  </div>
+  <% end %>
 </div>
 
-<dialog class="modal" data-modal-target="dialog">
-  <div class="modal-box">
-    <button type="button" class="btn btn-sm btn-circle btn-ghost absolute right-2 top-2" data-action="modal#close">✕</button>
-    <%= turbo_frame_tag "note_edit_frame" %>
-  </div>
-  <form method="dialog" class="modal-backdrop">
-    <button></button>
-  </form>
-</dialog>
+<%= render layout: "shared/modal" do %>
+  <%= turbo_frame_tag "note_edit_frame" %>
+<% end %>
 </div>

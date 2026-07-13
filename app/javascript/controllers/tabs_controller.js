@@ -4,6 +4,7 @@ export default class extends Controller {
   static values = { activeTab: String }
 
   connect() {
+    this.element.querySelectorAll("nav a[data-tabs-tab]").forEach(tab => tab.classList.add("tab-link"))
     this.showTab(this.activeTabValue)
     this.updateTabStyles()
   }
@@ -26,12 +27,7 @@ export default class extends Controller {
     const activeTab = this.activeTabValue
 
     this.element.querySelectorAll("nav a[data-tabs-tab]").forEach(tab => {
-      const isActive = tab.dataset.tabsTab === activeTab
-      if (isActive) {
-        tab.className = "text-sm pb-3 transition-colors inline-block text-primary font-bold border-b-2 border-primary"
-      } else {
-        tab.className = "text-sm pb-3 transition-colors inline-block text-base-content/60 font-normal hover:text-base-content"
-      }
+      tab.classList.toggle("tab-link-active", tab.dataset.tabsTab === activeTab)
     })
   }
 }

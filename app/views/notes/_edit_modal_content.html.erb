@@ -18,19 +18,19 @@
 
   <div class="form-control w-full mb-4">
     <%= form.label :title %>
-    <%= form.text_field :title, class: "input input-bordered w-full" %>
+    <%= form.text_field :title, class: "input input-bordered w-full", required: true %>
   </div>
 
   <div class="form-control w-full mb-4">
     <%= form.label :description %>
-    <%= form.text_area :description, rows: 4, class: "textarea textarea-bordered w-full" %>
+    <%= form.text_area :description, rows: 4, class: "textarea textarea-bordered w-full", required: true %>
   </div>
 
   <div class="form-control w-full mb-6">
     <%= form.label :due_date, t("notes.due_date") %>
     <%= form.date_field :due_date, class: "input input-bordered w-full" %>
     <label class="label">
-      <span class="label-text-alt"><%= t("notes.due_date_hint", default: "Leave empty for a regular note") %></span>
+      <span class="label-text-alt"><%= t("notes.due_date_hint") %></span>
     </label>
   </div>
 
