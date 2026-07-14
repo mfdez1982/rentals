@@ -41,6 +41,7 @@ class ExpensesController < ApplicationController
   end
 
   def expense_params
-    params.require(:expense).permit(:date, :amount, :category, :description, :invoice_url)
+    params.require(:expense).permit(:date, :amount, :category, :description, :invoice_url,
+      :collectable, :period_start, :period_end)
   end
 end

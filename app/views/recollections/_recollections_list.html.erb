@@ -1,0 +1,67 @@
+<div class="mt-8">
+  <h3 class="font-semibold text-base mb-3"><%= t("recollections.title") %></h3>
+
+  <% if recollections.any? %>
+    <div class="overflow-x-auto">
+      <table class="table table-zebra">
+        <thead>
+          <tr>
+            <th><%= t("recollections.table_headers.expense") %></th>
+            <th><%= t("recollections.table_headers.period") %></th>
+            <th><%= t("recollections.table_headers.tenant") %></th>
+            <th><%= t("recollections.table_headers.amount") %></th>
+            <th><%= t("recollections.table_headers.due_date") %></th>
+            <th><%= t("recollections.table_headers.status") %></th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody>
+          <% recollections.each do |recollection| %>
+            <tr>
+              <td>
+                <%= t("expenses.categories.#{recollection.expense.category}") %>
+                <% if recollection.expense.description.present? %>
+                  <span class="text-base-content/60">— <%= recollection.expense.description %></span>
+                <% end %>
+              </td>
+              <td><%= format_date(recollection.period_start) %> – <%= format_date(recollection.period_end) %></td>
+              <td><%= recollection.agreement_tenant&.invited_email || t("recollections.no_tenant") %></td>
+              <td><%= number_to_currency(recollection.amount) %></td>
+              <td><%= recollection.due_date.present? ? format_date(recollection.due_date) : t("recollections.no_due_date") %></td>
+              <td>
+                <% if recollection.paid? %>
+                  <span class="badge badge-sm badge-success"><%= t("recollections.status.paid") %></span>
+                <% elsif recollection.overdue? %>
+                  <span class="badge badge-sm badge-error"><%= t("recollections.status.overdue") %></span>
+                <% else %>
+                  <span class="badge badge-sm badge-warning"><%= t("recollections.status.pending") %></span>
+                <% end %>
+              </td>
+              <td class="text-right">
+                <div class="inline-flex items-center gap-2">
+                  <% if recollection.pending? %>
+                    <%= button_to t("recollections.mark_paid"), mark_paid_property_recollection_path(property, recollection),
+                        method: :patch,
+                        class: "btn btn-ghost btn-xs",
+                        form: { data: { turbo_frame: dom_id(property, :recollections) } } %>
+                  <% end %>
+                  <%= button_to t("forms.buttons.delete"), property_recollection_path(property, recollection),
+                      method: :delete,
+                      class: "btn btn-ghost btn-xs text-error",
+                      form: { data: {
+                        turbo_confirm: t("recollections.delete_confirm"),
+                        turbo_frame: dom_id(property, :recollections)
+                      } } %>
+                </div>
+              </td>
+            </tr>
+          <% end %>
+        </tbody>
+      </table>
+    </div>
+  <% else %>
+    <div class="text-center py-8 text-base-content/50">
+      <p class="text-sm"><%= t("recollections.no_recollections") %></p>
+    </div>
+  <% end %>
+</div>

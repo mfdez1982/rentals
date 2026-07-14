@@ -12,5 +12,6 @@ module PropertyShowLoadable
     @new_expense = @property.expenses.build
     @property_notes = @property.notes.active.order(due_date: :asc, created_at: :desc)
     @agreement_notes = Note.where(noteable_type: "RentalAgreement", noteable_id: @property.rental_agreements.pluck(:id)).active.order(due_date: :asc, created_at: :desc)
+    @recollections = @property.recollections.includes(:rental_agreement, :agreement_tenant, :expense).order(created_at: :desc)
   end
 end

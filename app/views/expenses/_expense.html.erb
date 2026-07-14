@@ -3,8 +3,18 @@
   <td><%= t("expenses.categories.#{expense.category}") %></td>
   <td><%= expense.description %></td>
   <td><%= number_to_currency(expense.amount) %></td>
+  <td>
+    <% if expense.collectable? %>
+      <span class="badge badge-info badge-sm"><%= t("expenses.collectable_badge") %></span>
+    <% end %>
+  </td>
   <td class="text-right">
     <div class="inline-flex items-center gap-2">
+      <% if expense.collectable? %>
+        <%= link_to t("recollections.recollect"),
+            new_property_expense_recollection_path(property, expense),
+            class: "btn btn-ghost btn-xs" %>
+      <% end %>
       <%= link_to edit_property_expense_path(property, expense),
           class: "icon-btn",
           title: t("forms.buttons.edit"),

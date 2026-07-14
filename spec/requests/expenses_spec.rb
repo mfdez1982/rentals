@@ -23,6 +23,28 @@ RSpec.describe "Expenses", type: :request do
       expect(response).to have_http_status(:unprocessable_entity)
     end
 
+    it "creates a collectable expense with its period" do
+      post property_expenses_path(property), params: {
+        expense: {
+          date: "2026-07-01", amount: "500.00", category: "utilities",
+          collectable: "1", period_start: "2026-07-01", period_end: "2026-07-31"
+        }
+      }
+      expect(response).to redirect_to(property_path(property))
+      expense = property.expenses.last
+      expect(expense).to be_collectable
+      expect(expense.period_start).to eq(Date.new(2026, 7, 1))
+      expect(expense.period_end).to eq(Date.new(2026, 7, 31))
+    end
+
+    it "renders the property show with errors when collectable but missing a period" do
+      post property_expenses_path(property), params: {
+        expense: { date: "2026-07-01", amount: "500.00", category: "utilities", collectable: "1" }
+      }
+      expect(response).to have_http_status(:unprocessable_entity)
+      expect(property.expenses.count).to eq(0)
+    end
+
     it "cannot add an expense to another landlord's property" do
       other = create(:property)
       expect {

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_07_13_000001) do
+ActiveRecord::Schema[8.1].define(version: 2026_07_14_000002) do
   create_table "agreement_tenants", force: :cascade do |t|
     t.datetime "created_at", null: false
     t.string "invitation_token", null: false
@@ -32,10 +32,13 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_13_000001) do
   create_table "expenses", force: :cascade do |t|
     t.decimal "amount", precision: 10, scale: 2, null: false
     t.integer "category", null: false
+    t.boolean "collectable", default: false, null: false
     t.datetime "created_at", null: false
     t.date "date", null: false
     t.string "description"
     t.string "invoice_url"
+    t.date "period_end"
+    t.date "period_start"
     t.bigint "property_id", null: false
     t.datetime "updated_at", null: false
     t.index ["property_id"], name: "index_expenses_on_property_id"
@@ -86,6 +89,25 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_13_000001) do
     t.index ["landlord_id"], name: "index_properties_on_landlord_id"
   end
 
+  create_table "recollections", force: :cascade do |t|
+    t.integer "agreement_tenant_id"
+    t.decimal "amount", precision: 10, scale: 2, null: false
+    t.datetime "created_at", null: false
+    t.date "due_date"
+    t.integer "expense_id", null: false
+    t.date "paid_date"
+    t.date "period_end", null: false
+    t.date "period_start", null: false
+    t.integer "rental_agreement_id", null: false
+    t.integer "status", default: 0, null: false
+    t.datetime "updated_at", null: false
+    t.index ["agreement_tenant_id"], name: "index_recollections_on_agreement_tenant_id"
+    t.index ["expense_id", "rental_agreement_id", "agreement_tenant_id"], name: "index_recollections_on_expense_agreement_tenant_unique", unique: true
+    t.index ["expense_id", "rental_agreement_id"], name: "index_recollections_on_expense_agreement_no_payer_unique", unique: true, where: "agreement_tenant_id IS NULL"
+    t.index ["expense_id"], name: "index_recollections_on_expense_id"
+    t.index ["rental_agreement_id"], name: "index_recollections_on_rental_agreement_id"
+  end
+
   create_table "rental_agreements", force: :cascade do |t|
     t.datetime "created_at", null: false
     t.date "end_date", null: false
@@ -116,5 +138,8 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_13_000001) do
   add_foreign_key "notes", "landlords"
   add_foreign_key "payments", "rental_agreements"
   add_foreign_key "properties", "landlords"
+  add_foreign_key "recollections", "agreement_tenants"
+  add_foreign_key "recollections", "expenses"
+  add_foreign_key "recollections", "rental_agreements"
   add_foreign_key "rental_agreements", "properties"
 end

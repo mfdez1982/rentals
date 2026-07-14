@@ -1,0 +1,101 @@
+<div class="min-h-screen bg-base-100 flex items-center justify-center py-12 px-4">
+  <div class="card bg-base-100 border border-base-300 shadow-lg max-w-2xl w-full">
+    <div class="card-body">
+      <h1 class="text-xl font-bold mb-1"><%= t("recollections.new_title") %></h1>
+      <p class="text-base-content/60 mb-6"><%= @property.name %></p>
+
+      <div class="bg-base-200 rounded-lg p-4 mb-6">
+        <div class="flex flex-wrap gap-x-6 gap-y-1 text-sm">
+          <div><span class="text-base-content/60"><%= t("expenses.category") %>:</span> <%= t("expenses.categories.#{@expense.category}") %></div>
+          <div><span class="text-base-content/60"><%= t("expenses.amount") %>:</span> <%= number_to_currency(@expense.amount) %></div>
+          <div><span class="text-base-content/60"><%= t("recollections.expense_period") %>:</span> <%= format_date(@expense.period_start) %> – <%= format_date(@expense.period_end) %></div>
+        </div>
+        <% if @expense.description.present? %>
+          <div class="text-sm mt-1"><%= @expense.description %></div>
+        <% end %>
+      </div>
+
+      <% if @recollection_errors.present? %>
+        <div role="alert" class="alert alert-error mb-4">
+          <ul class="list-disc list-inside text-sm">
+            <% @recollection_errors.full_messages.each do |msg| %>
+              <li><%= msg %></li>
+            <% end %>
+          </ul>
+        </div>
+      <% end %>
+
+      <% if @generator.no_overlapping_agreements? %>
+        <div class="text-center py-8 text-base-content/50">
+          <p class="text-sm"><%= t("recollections.no_overlapping_agreements_explanation") %></p>
+        </div>
+        <div class="pt-4">
+          <%= link_to t("forms.buttons.cancel"), property_path(@property), class: "btn btn-ghost" %>
+        </div>
+      <% elsif @preview.empty? %>
+        <div class="text-center py-8 text-base-content/50">
+          <p class="text-sm"><%= t("recollections.everything_already_recollected") %></p>
+        </div>
+        <div class="pt-4">
+          <%= link_to t("forms.buttons.cancel"), property_path(@property), class: "btn btn-ghost" %>
+        </div>
+      <% else %>
+        <%= form_with url: property_expense_recollections_path(@property, @expense), method: :post do |f| %>
+          <div class="space-y-6">
+            <% @preview.each_with_index do |slice, i| %>
+              <div class="border border-base-300 rounded-lg p-4">
+                <div class="flex flex-wrap items-baseline justify-between gap-2 mb-3">
+                  <div class="font-medium">
+                    <%= t("recollections.agreement_period", start_date: format_date(slice.rental_agreement.start_date), end_date: format_date(slice.rental_agreement.end_date)) %>
+                  </div>
+                  <div class="text-sm text-base-content/60">
+                    <%= t("recollections.overlap_period", start_date: format_date(slice.period_start), end_date: format_date(slice.period_end)) %>
+                    &middot; <%= t("recollections.slice_amount", amount: number_to_currency(slice.amount)) %>
+                  </div>
+                </div>
+
+                <%= hidden_field_tag "slices[#{i}][rental_agreement_id]", slice.rental_agreement.id %>
+
+                <div class="mb-4">
+                  <label class="label mb-1"><%= t("recollections.due_date") %></label>
+                  <%= date_field_tag "slices[#{i}][due_date]", nil, class: "input input-bordered w-full" %>
+                </div>
+
+                <% if slice.suggested_shares.size == 1 && slice.suggested_shares.first.agreement_tenant.nil? %>
+                  <p class="text-sm text-base-content/60 mb-2"><%= t("recollections.no_tenant_hint") %></p>
+                  <%= hidden_field_tag "slices[#{i}][shares][0][agreement_tenant_id]", "" %>
+                  <%= hidden_field_tag "slices[#{i}][shares][0][include]", "1" %>
+                  <div>
+                    <label class="label mb-1"><%= t("recollections.amount") %></label>
+                    <%= number_field_tag "slices[#{i}][shares][0][amount]", slice.suggested_shares.first.amount,
+                          step: "0.01", min: "0.01", class: "input input-bordered w-full" %>
+                  </div>
+                <% else %>
+                  <p class="text-sm text-base-content/60 mb-2"><%= t("recollections.all_unchecked_hint") %></p>
+                  <div class="space-y-3">
+                    <% slice.suggested_shares.each_with_index do |share, j| %>
+                      <div class="flex flex-wrap items-center gap-3">
+                        <%= hidden_field_tag "slices[#{i}][shares][#{j}][agreement_tenant_id]", share.agreement_tenant.id %>
+                        <label class="label cursor-pointer gap-2 flex-1 min-w-0">
+                          <%= check_box_tag "slices[#{i}][shares][#{j}][include]", "1", true %>
+                          <span class="label-text truncate"><%= share.agreement_tenant.invited_email %></span>
+                        </label>
+                        <%= number_field_tag "slices[#{i}][shares][#{j}][amount]", share.amount,
+                              step: "0.01", min: "0.01", class: "input input-bordered w-32" %>
+                      </div>
+                    <% end %>
+                  </div>
+                <% end %>
+              </div>
+            <% end %>
+
+            <div class="flex gap-2 pt-2">
+              <%= f.submit t("recollections.generate"), class: "btn btn-primary" %>
+              <%= link_to t("forms.buttons.cancel"), property_path(@property), class: "btn btn-ghost" %>
+            </div>
+          </div>
+        <% end %>
+      <% end %>
+    </div>
+  </div>
+</div>

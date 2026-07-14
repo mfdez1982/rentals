@@ -283,6 +283,51 @@ es:
       end_date_after_start: debe ser después de la fecha de inicio
       overlapping: se superpone con un contrato existente para esta propiedad
 
+  # Recollections
+  recollections:
+    title: Recobros
+    recollect: Recobrar
+    new_title: Recobrar Gasto
+    expense_period: Período del gasto
+    agreement_period: "Contrato: %{start_date} – %{end_date}"
+    overlap_period: "Solapamiento: %{start_date} – %{end_date}"
+    slice_amount: "Importe prorrateado: %{amount}"
+    due_date: Fecha de vencimiento (opcional)
+    amount: Cantidad
+    generate: Generar recobros
+    no_tenant_hint: Este contrato no tiene ningún inquilino aceptado, por lo que se creará un único cargo sin asignar por el importe total.
+    all_unchecked_hint: Desmarca un inquilino para excluirlo de este cargo. Si desmarcas a todos, se creará en su lugar un único cargo sin asignar por el importe total.
+    no_overlapping_agreements_explanation: Ningún contrato de alquiler cubre este período. Añade o ajusta un contrato primero, y vuelve a intentarlo.
+    everything_already_recollected: Todos los contratos solapados ya tienen recobros para este gasto.
+    not_collectable: Este gasto no es recobrable.
+    no_overlapping_agreements: Ningún contrato de alquiler cubre el período de este gasto.
+    nothing_to_generate: No había nada que generar — todos los contratos solapados ya tienen un recobro, o se excluyeron todas las cuotas.
+    created:
+      one: "1 recobro creado."
+      other: "%{count} recobros creados."
+    marked_paid: Recobro marcado como pagado.
+    deleted: Recobro eliminado.
+    delete_confirm: "¿Eliminar este recobro? Esta acción no se puede deshacer."
+    mark_paid: Marcar pagado
+    no_recollections: Aún no hay recobros.
+    no_tenant: "—"
+    no_due_date: "—"
+    table_headers:
+      expense: Gasto
+      period: Período
+      tenant: Inquilino
+      amount: Cantidad
+      due_date: Fecha de Vencimiento
+      status: Estado
+    status:
+      paid: Pagado
+      overdue: Vencido
+      pending: Pendiente
+    errors:
+      period_end_before_start: debe ser igual o posterior a la fecha de inicio del período
+      property_mismatch: debe pertenecer a la misma propiedad que el gasto
+      tenant_mismatch: debe pertenecer al contrato de alquiler seleccionado
+
   # Payments
   payments:
     payments: Pagos
@@ -350,6 +395,13 @@ es:
     invoice_url_placeholder: "https://..."
     delete_confirm: "¿Eliminar este gasto? Esta acción no se puede deshacer."
     view_invoice: Ver factura
+    collectable: Recobrar de los inquilinos
+    collectable_hint: "(prorratear este gasto entre los contratos de alquiler solapados)"
+    collectable_badge: Recobrable
+    period_start: Inicio del Período
+    period_end: Fin del Período
+    errors:
+      period_end_before_start: debe ser igual o posterior a la fecha de inicio del período
     categories:
       tax: Impuestos
       insurance: Seguro
@@ -467,6 +519,22 @@ es:
     landlord_contact: "Arrendador: %{name}"
     overdue: Vencido
     no_payments: Aún no hay pagos registrados para este alquiler.
+    recollections:
+      title: Cantidades a Reembolsar
+      table_headers:
+        concept: Concepto
+        period: Periodo
+        amount: Cantidad
+        due_date: Fecha de Vencimiento
+        status: Estado
+      no_due_date: "—"
+      status:
+        pending: Pendiente
+        paid: Pagado
+        overdue: Vencido
+      pending_badge:
+        one: "%{count} cargo pendiente"
+        other: "%{count} cargos pendientes"
 
   # Avisos mostrados en el layout a inquilinos y arrendadores
   tenant_banners:

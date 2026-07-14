@@ -3,6 +3,7 @@ class Property < ApplicationRecord
   has_many :rental_agreements, dependent: :destroy
   has_many :expenses, dependent: :destroy
   has_many :notes, as: :noteable, dependent: :destroy
+  has_many :recollections, through: :expenses
 
   validates :name, presence: true
 

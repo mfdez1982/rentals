@@ -55,3 +55,49 @@
     <% end %>
   </div>
 </div>
+
+<% if @recollections.any? %>
+  <div class="card bg-base-100 shadow-sm mt-6">
+    <div class="card-body">
+      <h2 class="card-title text-base mb-4"><%= t("my_rentals.recollections.title") %></h2>
+
+      <div class="overflow-x-auto">
+        <table class="table table-zebra">
+          <thead>
+            <tr>
+              <th><%= t("my_rentals.recollections.table_headers.concept") %></th>
+              <th><%= t("my_rentals.recollections.table_headers.period") %></th>
+              <th><%= t("my_rentals.recollections.table_headers.amount") %></th>
+              <th><%= t("my_rentals.recollections.table_headers.due_date") %></th>
+              <th><%= t("my_rentals.recollections.table_headers.status") %></th>
+            </tr>
+          </thead>
+          <tbody>
+            <% @recollections.each do |recollection| %>
+              <tr>
+                <td>
+                  <%= t("expenses.categories.#{recollection.expense.category}") %>
+                  <% if recollection.expense.description.present? %>
+                    <span class="text-base-content/60">— <%= recollection.expense.description %></span>
+                  <% end %>
+                </td>
+                <td><%= format_date(recollection.period_start) %> – <%= format_date(recollection.period_end) %></td>
+                <td><%= number_to_currency(recollection.amount) %></td>
+                <td><%= recollection.due_date.present? ? format_date(recollection.due_date) : t("my_rentals.recollections.no_due_date") %></td>
+                <td>
+                  <% if recollection.paid? %>
+                    <span class="badge badge-sm badge-success"><%= t("my_rentals.recollections.status.paid") %></span>
+                  <% elsif recollection.overdue? %>
+                    <span class="badge badge-sm badge-error"><%= t("my_rentals.recollections.status.overdue") %></span>
+                  <% else %>
+                    <span class="badge badge-sm badge-warning"><%= t("my_rentals.recollections.status.pending") %></span>
+                  <% end %>
+                </td>
+              </tr>
+            <% end %>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+<% end %>

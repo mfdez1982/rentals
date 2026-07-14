@@ -31,7 +31,14 @@ Rails.application.routes.draw do
     member do
       get :tax_report
     end
-    resources :expenses, only: [:create, :edit, :update, :destroy]
+    resources :expenses, only: [:create, :edit, :update, :destroy] do
+      resources :recollections, only: [:new, :create]
+    end
+    resources :recollections, only: [:destroy] do
+      member do
+        patch :mark_paid
+      end
+    end
     resources :rental_agreements, only: [:new, :create, :show, :edit, :update, :destroy] do
       resources :payments, only: [:edit, :update, :destroy] do
         collection do

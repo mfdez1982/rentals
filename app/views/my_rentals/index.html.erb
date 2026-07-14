@@ -6,7 +6,14 @@
           <div class="card-body">
             <div class="flex items-center justify-between">
               <h2 class="card-title text-base"><%= agreement.property.name %></h2>
-              <span class="badge badge-sm <%= agreement_status_badge_class(agreement) %>"><%= agreement_status(agreement) %></span>
+              <div class="flex items-center gap-2">
+                <% if @pending_recollection_counts[agreement.id].to_i > 0 %>
+                  <span class="badge badge-sm badge-warning">
+                    <%= t("my_rentals.recollections.pending_badge", count: @pending_recollection_counts[agreement.id]) %>
+                  </span>
+                <% end %>
+                <span class="badge badge-sm <%= agreement_status_badge_class(agreement) %>"><%= agreement_status(agreement) %></span>
+              </div>
             </div>
             <p class="text-sm text-base-content/70">
               <%= format_date(agreement.start_date) %> – <%= format_date(agreement.end_date) %>

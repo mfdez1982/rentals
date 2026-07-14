@@ -4,6 +4,7 @@ class RentalAgreement < ApplicationRecord
   has_many :notes, as: :noteable, dependent: :destroy
   has_many :agreement_tenants, dependent: :destroy
   has_many :tenants, -> { where(agreement_tenants: { status: :accepted }) }, through: :agreement_tenants, source: :user
+  has_many :recollections, dependent: :restrict_with_error
 
   validates :start_date, :end_date, :rent_amount, presence: true
   validates :rent_amount, numericality: { greater_than: 0 }, allow_nil: true

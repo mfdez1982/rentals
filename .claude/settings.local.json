@@ -51,7 +51,11 @@
       "Bash(xargs ls -la)",
       "Bash(bundle exec *)",
       "Bash(bundle show *)",
-      "Bash(bin/rails db:migrate *)"
+      "Bash(bin/rails db:migrate *)",
+      "Bash(node -e \"console.log\\(require.resolve\\('playwright'\\)\\)\")",
+      "Bash(node -e \"console.log\\(require.resolve\\('@playwright/test'\\)\\)\")",
+      "Bash(npm root *)",
+      "Bash(find / -maxdepth 6 -iname \"playwright\" -type d)"
     ]
   },
   "enabledMcpjsonServers": [

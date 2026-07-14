@@ -115,6 +115,7 @@
                   <th><%= t("expenses.description") %></th>
                   <th><%= t("expenses.amount") %></th>
                   <th></th>
+                  <th></th>
                 </tr>
               </thead>
               <tbody>
@@ -128,6 +129,10 @@
           <div class="text-center py-8 text-base-content/50">
             <p class="text-sm"><%= t("expenses.no_expenses", year: Date.today.year) %></p>
           </div>
+        <% end %>
+
+        <%= turbo_frame_tag dom_id(@property, :recollections) do %>
+          <%= render "recollections/recollections_list", property: @property, recollections: @recollections %>
         <% end %>
 
         <!-- Expense Edit Modal -->

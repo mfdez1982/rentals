@@ -163,6 +163,51 @@ en:
       end_date_after_start: must be after start date
       overlapping: overlaps with an existing agreement for this property
 
+  # Recollections
+  recollections:
+    title: Recollections
+    recollect: Recollect
+    new_title: Recollect Expense
+    expense_period: Expense period
+    agreement_period: "Agreement: %{start_date} – %{end_date}"
+    overlap_period: "Overlap: %{start_date} – %{end_date}"
+    slice_amount: "Prorated amount: %{amount}"
+    due_date: Due date (optional)
+    amount: Amount
+    generate: Generate recollections
+    no_tenant_hint: This agreement has no accepted tenant, so a single unassigned charge will be created for the full amount.
+    all_unchecked_hint: Uncheck a tenant to exclude them from this charge. If you uncheck every tenant, a single unassigned charge will be created for the full amount instead.
+    no_overlapping_agreements_explanation: No tenancy covers this period. Add or adjust a rental agreement first, then try again.
+    everything_already_recollected: All overlapping agreements already have recollections for this expense.
+    not_collectable: This expense is not collectable.
+    no_overlapping_agreements: No rental agreement covers this expense's period.
+    nothing_to_generate: There was nothing to generate — every overlapping agreement already has a recollection, or all shares were excluded.
+    created:
+      one: "1 recollection created."
+      other: "%{count} recollections created."
+    marked_paid: Recollection marked as paid.
+    deleted: Recollection deleted.
+    delete_confirm: "Delete this recollection? This cannot be undone."
+    mark_paid: Mark paid
+    no_recollections: No recollections yet.
+    no_tenant: "—"
+    no_due_date: "—"
+    table_headers:
+      expense: Expense
+      period: Period
+      tenant: Tenant
+      amount: Amount
+      due_date: Due Date
+      status: Status
+    status:
+      paid: Paid
+      overdue: Overdue
+      pending: Pending
+    errors:
+      period_end_before_start: must be on or after the period start date
+      property_mismatch: must belong to the same property as the expense
+      tenant_mismatch: must belong to the selected rental agreement
+
   # Payments
   payments:
     payments: Payments
@@ -230,6 +275,13 @@ en:
     invoice_url_placeholder: "https://..."
     delete_confirm: "Delete this expense? This cannot be undone."
     view_invoice: View invoice
+    collectable: Recollect from tenants
+    collectable_hint: "(prorate this expense across overlapping rental agreements)"
+    collectable_badge: Collectable
+    period_start: Period Start
+    period_end: Period End
+    errors:
+      period_end_before_start: must be on or after the period start date
     categories:
       tax: Tax
       insurance: Insurance
@@ -347,6 +399,22 @@ en:
     landlord_contact: "Landlord: %{name}"
     overdue: Overdue
     no_payments: No payments recorded yet for this rental.
+    recollections:
+      title: Amounts to Repay
+      table_headers:
+        concept: Concept
+        period: Period
+        amount: Amount
+        due_date: Due Date
+        status: Status
+      no_due_date: "—"
+      status:
+        pending: Pending
+        paid: Paid
+        overdue: Overdue
+      pending_badge:
+        one: "%{count} pending charge"
+        other: "%{count} pending charges"
 
   # Banners shown in the layout to tenants and landlords
   tenant_banners:

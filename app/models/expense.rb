@@ -1,5 +1,6 @@
 class Expense < ApplicationRecord
   belongs_to :property
+  has_many :recollections, dependent: :restrict_with_error
 
   enum :category, {
     tax: 0,
@@ -17,4 +18,18 @@ class Expense < ApplicationRecord
   validates :category, presence: true
   validates :invoice_url, allow_blank: true,
     format: { with: %r{\Ahttps?://.+}i, message: :invalid_url }
+  validates :period_start, :period_end, presence: true, if: :collectable?
+  validate :period_end_after_start, if: :collectable?
+
+  def period_days
+    return nil if period_start.blank? || period_end.blank?
+    (period_end - period_start).to_i + 1
+  end
+
+  private
+
+  def period_end_after_start
+    return unless period_start && period_end
+    errors.add(:period_end, I18n.t("expenses.errors.period_end_before_start")) if period_end < period_start
+  end
 end

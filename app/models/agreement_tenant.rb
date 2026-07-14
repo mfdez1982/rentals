@@ -3,6 +3,7 @@ class AgreementTenant < ApplicationRecord
 
   belongs_to :rental_agreement
   belongs_to :user, optional: true
+  has_many :recollections, dependent: :nullify
 
   enum :status, { pending: 0, accepted: 1, rejected: 2, removed: 3 }, default: :pending
 

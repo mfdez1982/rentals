@@ -1,5 +1,5 @@
 <%= form_with model: [property, expense], data: local_assigns.fetch(:form_data, { turbo_frame: dom_id(property, :expenses) }) do |f| %>
-  <div class="space-y-4 max-w-md">
+  <div class="space-y-4 max-w-md" data-controller="toggle">
     <% if expense.errors.any? %>
       <div role="alert" class="alert alert-error">
         <ul class="list-disc list-inside text-sm">
@@ -43,6 +43,24 @@
       <% end %>
       <%= f.url_field :invoice_url, class: "input input-bordered w-full",
             placeholder: t("expenses.invoice_url_placeholder") %>
+    </div>
+
+    <div class="form-control">
+      <label class="label cursor-pointer justify-start gap-2">
+        <%= f.check_box :collectable, class: "checkbox", data: { toggle_target: "checkbox", action: "toggle#update" } %>
+        <span class="label-text"><%= t("expenses.collectable") %></span>
+      </label>
+      <span class="text-base-content/60 text-sm"><%= t("expenses.collectable_hint") %></span>
+    </div>
+
+    <div data-toggle-target="wrapper" class="<%= "hidden" unless expense.collectable? %>">
+      <%= f.label :period_start, t("expenses.period_start"), class: "label mb-1" %>
+      <%= f.date_field :period_start, class: "input input-bordered w-full" %>
+    </div>
+
+    <div data-toggle-target="wrapper" class="<%= "hidden" unless expense.collectable? %>">
+      <%= f.label :period_end, t("expenses.period_end"), class: "label mb-1" %>
+      <%= f.date_field :period_end, class: "input input-bordered w-full" %>
     </div>
 
     <div class="flex gap-2 pt-2">
