@@ -19,14 +19,25 @@
   height: 20px;
 }
 
+/* Plain CSS rather than @apply: daisyUI is vendored as a precompiled build, so
+   Tailwind's engine doesn't know its theme colors as utility classes. */
 .tab-link {
-  @apply text-sm pb-3 transition-colors inline-block text-base-content/60 font-normal;
+  display: inline-block;
+  font-size: 0.875rem;
+  line-height: 1.25rem;
+  font-weight: 400;
+  padding-bottom: 0.75rem;
+  color: color-mix(in oklab, var(--color-base-content) 60%, transparent);
+  border-bottom: 2px solid transparent;
+  transition: color 150ms;
 }
 .tab-link:not(.tab-link-active):hover {
-  @apply text-base-content;
+  color: var(--color-base-content);
 }
 .tab-link-active {
-  @apply text-primary font-bold border-b-2 border-primary;
+  color: var(--color-primary);
+  font-weight: 700;
+  border-bottom-color: var(--color-primary);
 }
 
 /* The cookie consent banner ships with a max z-index so it always sits above page
