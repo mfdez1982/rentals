@@ -42,16 +42,19 @@
                   <% if recollection.pending? %>
                     <%= button_to t("recollections.mark_paid"), mark_paid_property_recollection_path(property, recollection),
                         method: :patch,
-                        class: "btn btn-ghost btn-xs",
+                        class: "btn btn-primary btn-xs",
                         form: { data: { turbo_frame: dom_id(property, :recollections) } } %>
                   <% end %>
-                  <%= button_to t("forms.buttons.delete"), property_recollection_path(property, recollection),
+                  <%= button_to property_recollection_path(property, recollection),
                       method: :delete,
-                      class: "btn btn-ghost btn-xs text-error",
+                      class: "icon-btn",
+                      title: t("forms.buttons.delete"),
                       form: { data: {
                         turbo_confirm: t("recollections.delete_confirm"),
                         turbo_frame: dom_id(property, :recollections)
-                      } } %>
+                      } } do %>
+                    <%= heroicon "trash", variant: :outline %>
+                  <% end %>
                 </div>
               </td>
             </tr>

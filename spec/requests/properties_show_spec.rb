@@ -30,6 +30,18 @@ RSpec.describe "Properties show & tax report", type: :request do
       expect(response.body).to include("Deposit pending")
     end
 
+    it "targets the Recollect link at _top so it escapes the expenses frame" do
+      create(:expense, property: property, collectable: true,
+             period_start: "2026-03-01", period_end: "2026-03-31")
+
+      get property_path(property)
+
+      link = Nokogiri::HTML(response.body)
+        .at_css("a[href='#{new_property_expense_recollection_path(property, property.expenses.first)}']")
+      expect(link).to be_present
+      expect(link["data-turbo-frame"]).to eq("_top")
+    end
+
     it "cannot show another landlord's property" do
       other = create(:property)
       expect { get property_path(other) }.to raise_error(ActiveRecord::RecordNotFound)
