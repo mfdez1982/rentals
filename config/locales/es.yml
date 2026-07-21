@@ -366,7 +366,7 @@ es:
     pro_rata_ratio_hint: "de los gastos son deducibles"
     total_gross_income: Ingresos Brutos Totales
     total_gross_income_hint: "de todos los pagos en %{year}"
-    deductible_expenses: Gastos Deducibles
+    deductible_expenses: Gastos
     no_expenses: "No hay gastos registrados para %{year}."
     table_headers:
       date: Fecha

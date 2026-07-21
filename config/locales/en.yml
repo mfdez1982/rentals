@@ -246,7 +246,7 @@ en:
     pro_rata_ratio_hint: "of expenses are deductible"
     total_gross_income: Total Gross Income
     total_gross_income_hint: "from all payments in %{year}"
-    deductible_expenses: Deductible Expenses
+    deductible_expenses: Expenses
     no_expenses: "No expenses recorded for %{year}."
     table_headers:
       date: Date
