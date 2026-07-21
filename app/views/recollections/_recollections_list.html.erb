@@ -40,15 +40,23 @@
               <td class="text-right">
                 <div class="inline-flex items-center gap-2">
                   <% if recollection.pending? %>
-                    <%= button_to t("recollections.mark_paid"), mark_paid_property_recollection_path(property, recollection),
+                    <%= button_to mark_paid_property_recollection_path(property, recollection),
                         method: :patch,
-                        class: "btn btn-primary btn-xs",
-                        form: { data: { turbo_frame: dom_id(property, :recollections) } } %>
+                        class: "icon-btn",
+                        title: t("recollections.mark_paid"),
+                        aria: { label: t("recollections.mark_paid") },
+                        form: { data: { turbo_frame: dom_id(property, :recollections) } } do %>
+                      <%= heroicon "check-circle", variant: :outline %>
+                    <% end %>
                   <% else %>
-                    <%= button_to t("recollections.mark_unpaid"), mark_unpaid_property_recollection_path(property, recollection),
+                    <%= button_to mark_unpaid_property_recollection_path(property, recollection),
                         method: :patch,
-                        class: "btn btn-primary btn-xs",
-                        form: { data: { turbo_frame: dom_id(property, :recollections) } } %>
+                        class: "icon-btn",
+                        title: t("recollections.mark_unpaid"),
+                        aria: { label: t("recollections.mark_unpaid") },
+                        form: { data: { turbo_frame: dom_id(property, :recollections) } } do %>
+                      <%= heroicon "arrow-uturn-left", variant: :outline %>
+                    <% end %>
                   <% end %>
                   <%= button_to property_recollection_path(property, recollection),
                       method: :delete,
