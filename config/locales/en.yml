@@ -146,6 +146,7 @@ en:
 
   # Rental Agreements
   rental_agreements:
+    title: Rental Agreements
     new_rental_agreement: New Rental Agreement
     start_date: Start Date
     end_date: End Date

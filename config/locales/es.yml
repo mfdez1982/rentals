@@ -266,6 +266,7 @@ es:
 
   # Rental Agreements
   rental_agreements:
+    title: Contratos de Alquiler
     new_rental_agreement: Nuevo Contrato de Alquiler
     start_date: Fecha de Inicio
     end_date: Fecha de Finalización

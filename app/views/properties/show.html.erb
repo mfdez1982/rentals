@@ -29,7 +29,7 @@
 <!-- Navigation Tabs & Content (Tab-Managed) -->
 <div data-controller="tabs" data-tabs-active-tab-value="contratos">
   <nav class="flex gap-8 border-b border-base-300 mb-6">
-    <%= link_to t("rental_agreements.new_rental_agreement"), "#",
+    <%= link_to t("rental_agreements.title"), "#",
         data: { tabs_tab: "contratos", action: "click->tabs#selectTab" } %>
 
     <%= link_to t("tax_report.deductible_expenses"), "#",
@@ -48,7 +48,7 @@
       <div class="card-body">
         <!-- Toolbar -->
         <div class="flex items-center justify-between mb-6">
-          <h2 class="card-title text-base"><%= t("rental_agreements.new_rental_agreement") %></h2>
+          <h2 class="card-title text-base"><%= t("rental_agreements.title") %></h2>
           <button type="button" class="btn btn-primary btn-sm" data-action="modal#open">
             <%= t("rental_agreements.new_rental_agreement") %>
           </button>
