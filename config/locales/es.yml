@@ -306,9 +306,11 @@ es:
       one: "1 recobro creado."
       other: "%{count} recobros creados."
     marked_paid: Recobro marcado como pagado.
+    marked_unpaid: Recobro marcado como no pagado.
     deleted: Recobro eliminado.
     delete_confirm: "¿Eliminar este recobro? Esta acción no se puede deshacer."
     mark_paid: Marcar pagado
+    mark_unpaid: Marcar no pagado
     no_recollections: Aún no hay recobros.
     no_tenant: "—"
     no_due_date: "—"

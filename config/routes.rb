@@ -37,6 +37,7 @@ Rails.application.routes.draw do
     resources :recollections, only: [:destroy] do
       member do
         patch :mark_paid
+        patch :mark_unpaid
       end
     end
     resources :rental_agreements, only: [:new, :create, :show, :edit, :update, :destroy] do

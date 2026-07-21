@@ -186,9 +186,11 @@ en:
       one: "1 recollection created."
       other: "%{count} recollections created."
     marked_paid: Recollection marked as paid.
+    marked_unpaid: Recollection marked as unpaid.
     deleted: Recollection deleted.
     delete_confirm: "Delete this recollection? This cannot be undone."
     mark_paid: Mark paid
+    mark_unpaid: Mark unpaid
     no_recollections: No recollections yet.
     no_tenant: "—"
     no_due_date: "—"

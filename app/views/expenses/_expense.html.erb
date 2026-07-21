@@ -13,7 +13,7 @@
       <% if expense.collectable? %>
         <%= link_to t("recollections.recollect"),
             new_property_expense_recollection_path(property, expense),
-            class: "btn btn-ghost btn-xs",
+            class: "btn btn-primary btn-xs",
             data: { turbo_frame: "_top" } %>
       <% end %>
       <%= link_to edit_property_expense_path(property, expense),

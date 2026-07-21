@@ -136,6 +136,41 @@ RSpec.describe "Recollections", type: :request do
     end
   end
 
+  describe "PATCH /properties/:pid/recollections/:id/mark_unpaid" do
+    let(:recollection) do
+      create(:recollection, rental_agreement: agreement, expense: expense, property: property,
+             status: :paid, paid_date: Date.today)
+    end
+
+    it "reverts the recollection to pending and clears the paid date" do
+      patch mark_unpaid_property_recollection_path(property, recollection)
+      expect(response).to redirect_to(property_path(property))
+      expect(recollection.reload).to be_pending
+      expect(recollection.paid_date).to be_nil
+    end
+
+    it "renders the unmark button on a paid row and the mark-paid button on a pending one" do
+      recollection
+      # A second expense: (expense, agreement) is unique-indexed, so the pending
+      # row can't reuse the paid row's expense.
+      pending_one = create(:recollection, rental_agreement: agreement, property: property,
+                           expense: create(:expense, :collectable, property: property))
+
+      get property_path(property)
+
+      expect(response.body).to include(mark_unpaid_property_recollection_path(property, recollection))
+      expect(response.body).to include(mark_paid_property_recollection_path(property, pending_one))
+      expect(response.body).not_to include(mark_paid_property_recollection_path(property, recollection))
+    end
+
+    it "cannot mark unpaid another landlord's recollection" do
+      other_recollection = create(:recollection, status: :paid, paid_date: Date.today)
+      expect {
+        patch mark_unpaid_property_recollection_path(other_recollection.property, other_recollection)
+      }.to raise_error(ActiveRecord::RecordNotFound)
+    end
+  end
+
   describe "DELETE /properties/:pid/recollections/:id" do
     let!(:recollection) { create(:recollection, rental_agreement: agreement, expense: expense, property: property) }
 

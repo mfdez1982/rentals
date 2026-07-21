@@ -44,6 +44,11 @@
                         method: :patch,
                         class: "btn btn-primary btn-xs",
                         form: { data: { turbo_frame: dom_id(property, :recollections) } } %>
+                  <% else %>
+                    <%= button_to t("recollections.mark_unpaid"), mark_unpaid_property_recollection_path(property, recollection),
+                        method: :patch,
+                        class: "btn btn-primary btn-xs",
+                        form: { data: { turbo_frame: dom_id(property, :recollections) } } %>
                   <% end %>
                   <%= button_to property_recollection_path(property, recollection),
                       method: :delete,

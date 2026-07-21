@@ -3,7 +3,7 @@ class RecollectionsController < ApplicationController
 
   before_action :set_property
   before_action :set_expense, only: [:new, :create]
-  before_action :set_recollection, only: [:destroy, :mark_paid]
+  before_action :set_recollection, only: [:destroy, :mark_paid, :mark_unpaid]
 
   def new
     unless @expense.collectable?
@@ -43,6 +43,11 @@ class RecollectionsController < ApplicationController
   def mark_paid
     @recollection.update(status: :paid, paid_date: Date.today)
     redirect_to property_path(@property), notice: t("recollections.marked_paid")
+  end
+
+  def mark_unpaid
+    @recollection.update(status: :pending, paid_date: nil)
+    redirect_to property_path(@property), notice: t("recollections.marked_unpaid")
   end
 
   def destroy
