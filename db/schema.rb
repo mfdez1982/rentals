@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_07_23_140854) do
+ActiveRecord::Schema[8.1].define(version: 2026_07_23_152205) do
   create_table "agreement_tenants", force: :cascade do |t|
     t.datetime "created_at", null: false
     t.string "invitation_token", null: false
@@ -123,6 +123,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_23_140854) do
     t.integer "active_rental_days", null: false
     t.datetime "created_at", null: false
     t.json "expense_lines", default: [], null: false
+    t.string "name"
     t.decimal "pro_rata_ratio", precision: 5, scale: 4, null: false
     t.integer "property_id", null: false
     t.integer "total_days", null: false

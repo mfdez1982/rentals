@@ -3,7 +3,12 @@
 </div>
 
 <div class="mb-6 flex items-baseline justify-between gap-3 flex-wrap">
-  <h1 class="text-2xl font-bold"><%= @property.name %> — <%= t("tax_report.title") %> <%= @tax_report.year %></h1>
+  <div>
+    <h1 class="text-2xl font-bold"><%= @property.name %> — <%= t("tax_report.title") %> <%= @tax_report.year %></h1>
+    <% if @tax_report.name.present? %>
+      <p class="text-base-content/70 mt-1"><%= @tax_report.name %></p>
+    <% end %>
+  </div>
   <span class="text-xs text-base-content/50"><%= t("tax_report.generated_on", date: l(@tax_report.created_at, format: :short)) %></span>
 </div>
 

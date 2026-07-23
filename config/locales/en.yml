@@ -257,6 +257,7 @@ en:
       description: Description
       original_amount: Original Amount
       deductible_amount: Deductible Amount
+      name: Name
       year: Year
       generated_at: Generated
       gross_income: Gross Income
@@ -266,6 +267,10 @@ en:
     generate: Generate
     generated: "Tax report generated."
     deleted: "Tax report deleted."
+    renamed: "Tax report renamed."
+    name: Name
+    name_placeholder: e.g. 2026 annual filing
+    edit_name: Rename report
     invalid_year: "Please select a valid year."
     saved_reports: Saved Reports
     no_saved_reports: "No tax reports generated yet. Select a year and click \"Generate\"."

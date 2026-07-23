@@ -12,9 +12,15 @@ RSpec.describe TaxReport, type: :model do
     expect(report.errors[:total_gross_income]).to be_present
   end
 
-  it "cannot be updated once persisted (immutable snapshot)" do
+  it "cannot have its figures updated once persisted (immutable snapshot)" do
     report = create(:tax_report)
     expect { report.update!(year: 2099) }.to raise_error(ActiveRecord::ReadOnlyRecord)
+  end
+
+  it "allows the name to be edited after creation" do
+    report = create(:tax_report)
+    expect { report.update!(name: "2026 filing") }.not_to raise_error
+    expect(report.reload.name).to eq("2026 filing")
   end
 
   it "can still be destroyed" do

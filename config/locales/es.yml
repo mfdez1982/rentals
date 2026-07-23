@@ -377,6 +377,7 @@ es:
       description: Descripción
       original_amount: Cantidad Original
       deductible_amount: Cantidad Deducible
+      name: Nombre
       year: Año
       generated_at: Generado
       gross_income: Ingresos Brutos
@@ -386,6 +387,10 @@ es:
     generate: Generar
     generated: "Informe fiscal generado."
     deleted: "Informe fiscal eliminado."
+    renamed: "Informe fiscal renombrado."
+    name: Nombre
+    name_placeholder: p. ej. Declaración anual 2026
+    edit_name: Renombrar informe
     invalid_year: "Por favor selecciona un año válido."
     saved_reports: Informes Guardados
     no_saved_reports: "Aún no se han generado informes fiscales. Selecciona un año y haz clic en \"Generar\"."

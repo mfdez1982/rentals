@@ -57,6 +57,26 @@ RSpec.describe "TaxReports", type: :request do
     end
   end
 
+  describe "GET /properties/:property_id/tax_reports/:id/edit" do
+    it "renders the rename form for a turbo frame request" do
+      report = create(:tax_report, property: property)
+      get edit_property_tax_report_path(property, report),
+          headers: { "Turbo-Frame" => "tax_report_edit_frame" }
+      expect(response).to have_http_status(:ok)
+      expect(response.body).to include(I18n.t("tax_report.edit_name"))
+    end
+  end
+
+  describe "PATCH /properties/:property_id/tax_reports/:id" do
+    it "updates the name without touching the snapshot figures" do
+      report = create(:tax_report, property: property, active_rental_days: 214)
+      patch property_tax_report_path(property, report), params: { tax_report: { name: "My filing" } }
+      expect(response).to redirect_to(property_tax_reports_path(property))
+      expect(report.reload.name).to eq("My filing")
+      expect(report.active_rental_days).to eq(214)
+    end
+  end
+
   describe "DELETE /properties/:property_id/tax_reports/:id" do
     it "deletes a saved report" do
       report = create(:tax_report, property: property)
