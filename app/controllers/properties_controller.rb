@@ -1,7 +1,7 @@
 class PropertiesController < ApplicationController
   include PropertyShowLoadable
 
-  before_action :set_property, only: [:show, :edit, :update, :destroy, :tax_report]
+  before_action :set_property, only: [:show, :edit, :update, :destroy]
   before_action -> { redirect_unless_turbo_frame_request(property_path(@property)) }, only: [:edit]
 
   def index
@@ -11,20 +11,6 @@ class PropertiesController < ApplicationController
 
   def show
     load_property_show_data
-  end
-
-  def tax_report
-    @year = params[:year].to_i.positive? ? params[:year].to_i : Date.today.year
-    start_year = [@property.earliest_tax_year, Date.today.year].min
-    @year_options = (start_year..Date.today.year + 1).to_a.reverse
-    @calculated = params[:calculate].present?
-
-    if @calculated
-      @report = TaxReportGenerator.new(@property, @year).generate
-      @collectable_deductible_expenses = @property.expenses.collectable.deductible
-        .where(date: Date.new(@year, 1, 1)..Date.new(@year, 12, 31))
-        .order(:date)
-    end
   end
 
   def create

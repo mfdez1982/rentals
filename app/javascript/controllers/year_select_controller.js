@@ -4,8 +4,8 @@ export default class extends Controller {
   static targets = ["year"]
   static values = { baseUrl: String }
 
-  calculate() {
-    const url = `${this.baseUrlValue}?year=${this.yearTarget.value}&calculate=1`
+  reload() {
+    const url = `${this.baseUrlValue}?year=${this.yearTarget.value}`
     const frame = this.element.closest("turbo-frame")
     if (frame) {
       frame.src = url

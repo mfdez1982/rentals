@@ -4,6 +4,7 @@ class Property < ApplicationRecord
   has_many :expenses, dependent: :destroy
   has_many :notes, as: :noteable, dependent: :destroy
   has_many :recollections, through: :expenses
+  has_many :tax_reports, dependent: :destroy
 
   validates :name, presence: true
 

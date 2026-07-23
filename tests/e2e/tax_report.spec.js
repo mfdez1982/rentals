@@ -7,20 +7,36 @@ const { createAgreement, addPayments, addExpense } = require('../support/helpers
 // out of 365, giving the same 50.41% ratio the app produces for any property
 // active for that same July-December span in a non-leap year.
 
+// Generates a report for the given year from the tax_reports index and waits
+// for the saved-reports row to appear.
+async function generateReport(page, property, year) {
+  await page.goto(`${property}/tax_reports`);
+  await page.getByLabel('Select Year:').selectOption(String(year));
+  await page.getByRole('button', { name: 'Generate' }).click();
+  await page.locator('table tbody tr', { hasText: String(year) }).first().waitFor();
+}
+
 test.describe('Tax report', () => {
-  test('a full calendar year of active rental shows a 100% pro-rata ratio', async ({ page, property }) => {
+  test('generating a full calendar year of active rental persists a 100% report', async ({ page, property }) => {
     await createAgreement(page, { startDate: '2023-01-01', endDate: '2023-12-31', rent: 1000 });
     await addPayments(page, { startDate: '2023-01-01', months: 2, amount: 1000 });
 
-    await page.goto(`${property}/tax_report?year=2023&calculate=1`);
+    await generateReport(page, property, 2023);
 
+    // The saved-reports row summarizes the report at a glance.
+    const row = page.locator('table tbody tr', { hasText: '2023' });
+    await expect(row.getByText('$2,000.00')).toBeVisible(); // 2 payments x $1,000
+
+    // Opening it shows the full persisted document.
+    await row.getByRole('link', { name: 'Open' }).click();
+    await page.waitForURL(/\/tax_reports\/\d+$/);
     await expect(page.getByText('365', { exact: true })).toBeVisible();
     await expect(page.getByText('out of 365 days in 2023')).toBeVisible();
     await expect(page.getByText('100.00%', { exact: true })).toBeVisible();
-    await expect(page.getByText('$2,000.00')).toBeVisible(); // 2 payments x $1,000
+    await expect(page.getByText('$2,000.00')).toBeVisible();
   });
 
-  test('a partial-year agreement produces the expected pro-rata ratio and deductible amount', async ({
+  test('a partial-year report persists the expected pro-rata ratio and deductible amount', async ({
     page,
     property,
   }) => {
@@ -28,7 +44,9 @@ test.describe('Tax report', () => {
     await page.goto(property); // createAgreement leaves the page on the agreement show view
     await addExpense(page, { date: '2023-08-01', category: 'Insurance', amount: 600, description: 'Insurance' });
 
-    await page.goto(`${property}/tax_report?year=2023&calculate=1`);
+    await generateReport(page, property, 2023);
+    await page.getByRole('link', { name: 'Open' }).first().click();
+    await page.waitForURL(/\/tax_reports\/\d+$/);
 
     await expect(page.getByText('184', { exact: true })).toBeVisible();
     await expect(page.getByText('out of 365 days in 2023')).toBeVisible();
@@ -40,41 +58,58 @@ test.describe('Tax report', () => {
     await expect(page.locator('tfoot')).toContainText('$302.46');
   });
 
-  test('a year with no active agreement shows zero across the board', async ({ page, property }) => {
+  test('a year with no active agreement generates a zero report', async ({ page, property }) => {
     await createAgreement(page, { startDate: '2023-01-01', endDate: '2023-12-31', rent: 1000 });
 
-    await page.goto(`${property}/tax_report?year=2019&calculate=1`);
+    await generateReport(page, property, 2019);
+    await page.getByRole('link', { name: 'Open' }).first().click();
+    await page.waitForURL(/\/tax_reports\/\d+$/);
 
-    await expect(page.getByText('0', { exact: true }).first()).toBeVisible();
     await expect(page.getByText('0.00%', { exact: true })).toBeVisible();
     await expect(page.getByText('$0.00')).toBeVisible();
     await expect(page.getByText('No expenses recorded for 2019.')).toBeVisible();
   });
 
-  test('the resting state shows only the year selector and a hint, with no report', async ({ page, property }) => {
-    await createAgreement(page, { startDate: '2023-01-01', endDate: '2023-12-31', rent: 1000 });
-    await page.goto(`${property}/tax_report?year=2023`);
-
-    await expect(page.getByRole('button', { name: 'Calculate' })).toBeVisible();
-    await expect(page.getByText('Select a year and click')).toBeVisible();
-    await expect(page.getByText('out of 365 days in 2023')).not.toBeVisible();
-  });
-
-  test('the year selector dropdown does not auto-navigate; Calculate loads the report for the selected year', async ({
+  test('a report keeps its numbers even after the underlying data changes (immutable snapshot)', async ({
     page,
     property,
   }) => {
     await createAgreement(page, { startDate: '2023-01-01', endDate: '2023-12-31', rent: 1000 });
-    await page.goto(`${property}/tax_report?year=2023&calculate=1`);
+    await addPayments(page, { startDate: '2023-01-01', months: 2, amount: 1000 });
 
-    await page.getByLabel('Select Year:').selectOption('2024');
-    await expect(page).not.toHaveURL(/year=2024/);
-    await expect(page.getByLabel('Select Year:')).toHaveValue('2024');
+    await generateReport(page, property, 2023);
 
-    await page.getByRole('button', { name: 'Calculate' }).click();
-    await expect(page).toHaveURL(/year=2024/);
-    await expect(page).toHaveURL(/calculate=1/);
-    await expect(page.getByText('out of 366 days in 2024')).toBeVisible(); // 2024 is a leap year
+    // Add more income for the same year AFTER generating.
+    await page.goto(property);
+    await addPayments(page, { startDate: '2023-06-01', months: 1, amount: 1000 });
+
+    // Re-open the original report: it still shows the snapshotted $2,000.00.
+    await page.goto(`${property}/tax_reports`);
+    await page.getByRole('link', { name: 'Open' }).first().click();
+    await page.waitForURL(/\/tax_reports\/\d+$/);
+    await expect(page.getByText('$2,000.00')).toBeVisible();
+    await expect(page.getByText('$3,000.00')).not.toBeVisible();
+  });
+
+  test('saved reports can be deleted', async ({ page, property }) => {
+    await createAgreement(page, { startDate: '2023-01-01', endDate: '2023-12-31', rent: 1000 });
+
+    await generateReport(page, property, 2023);
+    await expect(page.locator('table tbody tr', { hasText: '2023' })).toBeVisible();
+
+    page.once('dialog', (dialog) => dialog.accept());
+    await page.getByRole('button', { name: 'Delete' }).first().click();
+
+    await expect(page.getByText('No tax reports generated yet.')).toBeVisible();
+  });
+
+  test('a history of multiple reports for the same year is kept', async ({ page, property }) => {
+    await createAgreement(page, { startDate: '2023-01-01', endDate: '2023-12-31', rent: 1000 });
+
+    await generateReport(page, property, 2023);
+    await page.getByRole('button', { name: 'Generate' }).click();
+
+    await expect(page.locator('table tbody tr', { hasText: '2023' })).toHaveCount(2);
   });
 
   test('the year dropdown always includes the current and next year, even with no data', async ({
@@ -82,7 +117,7 @@ test.describe('Tax report', () => {
     property,
   }) => {
     const currentYear = new Date().getFullYear();
-    await page.goto(`${property}/tax_report`);
+    await page.goto(`${property}/tax_reports`);
 
     const options = await page.getByLabel('Select Year:').locator('option').allTextContents();
     expect(options).toEqual([String(currentYear + 1), String(currentYear)]);
@@ -91,7 +126,7 @@ test.describe('Tax report', () => {
   test('the year dropdown extends back to the earliest rental agreement on record', async ({ page, property }) => {
     const currentYear = new Date().getFullYear();
     await createAgreement(page, { startDate: '2015-06-01', endDate: '2015-12-31', rent: 800 });
-    await page.goto(`${property}/tax_report`);
+    await page.goto(`${property}/tax_reports`);
 
     const options = await page.getByLabel('Select Year:').locator('option').allTextContents();
     expect(options[0]).toBe(String(currentYear + 1));
@@ -102,7 +137,7 @@ test.describe('Tax report', () => {
   test('the year dropdown extends back to the earliest expense on record', async ({ page, property }) => {
     const currentYear = new Date().getFullYear();
     await addExpense(page, { date: '2016-03-01', category: 'Other', amount: 50 });
-    await page.goto(`${property}/tax_report`);
+    await page.goto(`${property}/tax_reports`);
 
     const options = await page.getByLabel('Select Year:').locator('option').allTextContents();
     expect(options[0]).toBe(String(currentYear + 1));

@@ -1,9 +1,0 @@
-<div class="mb-6">
-  <%= link_to t("common.my_properties_link"), properties_path, class: "btn btn-ghost btn-sm" %>
-</div>
-
-<div class="mb-6">
-  <h1 class="text-2xl font-bold"><%= @property.name %> — <%= t("tax_report.title") %></h1>
-</div>
-
-<%= render "tax_report_content", property: @property %>

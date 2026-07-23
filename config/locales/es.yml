@@ -377,10 +377,21 @@ es:
       description: Descripción
       original_amount: Cantidad Original
       deductible_amount: Cantidad Deducible
+      year: Año
+      generated_at: Generado
+      gross_income: Ingresos Brutos
+      active_days: Días Activos
     total_row: Total
     pro_rata_explanation: "La cantidad deducible se calcula multiplicando cada gasto por la proporción pro rata (%{ratio}), que representa la proporción del año durante el cual la propiedad estuvo alquilada activamente."
-    calculate: Calcular
-    resting_hint: "Selecciona un año y haz clic en \"Calcular\" para generar el informe fiscal."
+    generate: Generar
+    generated: "Informe fiscal generado."
+    deleted: "Informe fiscal eliminado."
+    invalid_year: "Por favor selecciona un año válido."
+    saved_reports: Informes Guardados
+    no_saved_reports: "Aún no se han generado informes fiscales. Selecciona un año y haz clic en \"Generar\"."
+    back_to_reports: "← Volver a informes"
+    generated_on: "Generado el %{date}"
+    confirm_delete: "¿Eliminar este informe fiscal?"
     validate_expenses_warning: "Estos gastos están marcados como deducibles a la vez que se recuperan de los inquilinos mediante Recobros, lo que podría suponer un doble beneficio."
     validate_expenses_hint: "Puedes desmarcar \"Deducible\" en la pestaña de Gastos para cualquiera de estos si no quieres deducirlos."
 
@@ -436,6 +447,9 @@ es:
   common:
     back: "←"
     my_properties_link: "← Mis Propiedades"
+    actions: Acciones
+    open: Abrir
+    delete: Eliminar
 
   # General
   general:

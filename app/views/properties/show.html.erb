@@ -41,7 +41,7 @@
     <%= link_to t("tax_report.title"), "#",
         data: { tabs_tab: "tax_report", action: "click->tabs#selectTab",
                 tabs_reset_frame: dom_id(@property, :tax_report),
-                tabs_reset_src: tax_report_property_path(@property) } %>
+                tabs_reset_src: property_tax_reports_path(@property) } %>
   </nav>
 
   <!-- Rental Agreements Section -->
@@ -190,7 +190,7 @@
         <!-- Header -->
         <h2 class="card-title text-base mb-6"><%= t("tax_report.title") %></h2>
 
-        <%= turbo_frame_tag dom_id(@property, :tax_report), src: tax_report_property_path(@property), loading: :lazy %>
+        <%= turbo_frame_tag dom_id(@property, :tax_report), src: property_tax_reports_path(@property), loading: :lazy %>
       </div>
     </div>
   </div>

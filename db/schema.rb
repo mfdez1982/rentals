@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_07_23_075933) do
+ActiveRecord::Schema[8.1].define(version: 2026_07_23_140854) do
   create_table "agreement_tenants", force: :cascade do |t|
     t.datetime "created_at", null: false
     t.string "invitation_token", null: false
@@ -119,6 +119,20 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_23_075933) do
     t.index ["property_id"], name: "index_rental_agreements_on_property_id"
   end
 
+  create_table "tax_reports", force: :cascade do |t|
+    t.integer "active_rental_days", null: false
+    t.datetime "created_at", null: false
+    t.json "expense_lines", default: [], null: false
+    t.decimal "pro_rata_ratio", precision: 5, scale: 4, null: false
+    t.integer "property_id", null: false
+    t.integer "total_days", null: false
+    t.decimal "total_gross_income", precision: 10, scale: 2, null: false
+    t.datetime "updated_at", null: false
+    t.integer "year", null: false
+    t.index ["property_id", "year"], name: "index_tax_reports_on_property_id_and_year"
+    t.index ["property_id"], name: "index_tax_reports_on_property_id"
+  end
+
   create_table "users", force: :cascade do |t|
     t.datetime "created_at", null: false
     t.string "email", default: "", null: false
@@ -143,4 +157,5 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_23_075933) do
   add_foreign_key "recollections", "expenses"
   add_foreign_key "recollections", "rental_agreements"
   add_foreign_key "rental_agreements", "properties"
+  add_foreign_key "tax_reports", "properties"
 end

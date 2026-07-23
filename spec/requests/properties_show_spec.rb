@@ -73,51 +73,34 @@ RSpec.describe "Properties show & tax report", type: :request do
     end
   end
 
-  describe "GET /properties/:id/tax_report" do
-    it "renders the resting state (year dropdown + Calculate button, no report) without the calculate param" do
+  describe "GET /properties/:id/tax_reports (generate control)" do
+    it "renders the year dropdown + Generate button" do
       create(:rental_agreement, property: property,
              start_date: Date.new(2025, 1, 1), end_date: Date.new(2025, 12, 31))
-      get tax_report_property_path(property, year: 2025)
+      get property_tax_reports_path(property, year: 2025)
       expect(response).to have_http_status(:ok)
       expect(response.body).to include('value="2025" selected')
-      expect(response.body).to include(I18n.t("tax_report.calculate"))
-      expect(response.body).to include(CGI.escapeHTML(I18n.t("tax_report.resting_hint")))
-      expect(response.body).not_to include(I18n.t("tax_report.active_rental_days"))
-      expect(response.body).not_to include(I18n.t("tax_report.deductible_expenses"))
+      expect(response.body).to include(I18n.t("tax_report.generate"))
     end
 
     it "falls back to the current year when the year param is invalid" do
-      get tax_report_property_path(property, year: "garbage")
+      get property_tax_reports_path(property, year: "garbage")
       expect(response).to have_http_status(:ok)
       expect(response.body).to include(%(value="#{Date.today.year}" selected))
     end
 
-    it "cannot render another landlord's tax report" do
-      other = create(:property)
-      expect { get tax_report_property_path(other) }.to raise_error(ActiveRecord::RecordNotFound)
-    end
-
-    it "renders the report when the calculate param is present" do
-      create(:rental_agreement, property: property,
-             start_date: Date.new(2025, 1, 1), end_date: Date.new(2025, 12, 31))
-      get tax_report_property_path(property, year: 2025, calculate: 1)
-      expect(response).to have_http_status(:ok)
-      expect(response.body).to include(I18n.t("tax_report.active_rental_days"))
-      expect(response.body).to include(I18n.t("tax_report.deductible_expenses"))
-    end
-
-    it "does not show the inline validation warning when no expense is both collectable and deductible" do
+    it "does not show the validation warning when no expense is both collectable and deductible" do
       create(:expense, property: property, date: Date.new(2025, 5, 1), deductible: true, collectable: false)
 
-      get tax_report_property_path(property, year: 2025, calculate: 1)
+      get property_tax_reports_path(property, year: 2025)
       expect(response.body).not_to include(I18n.t("tax_report.validate_expenses_warning"))
     end
 
-    it "lists offending expenses inline when one is both collectable and deductible in the selected year" do
+    it "lists offending expenses when one is both collectable and deductible in the selected year" do
       create(:expense, :collectable, property: property, deductible: true,
              date: Date.new(2025, 6, 15), description: "Water bill")
 
-      get tax_report_property_path(property, year: 2025, calculate: 1)
+      get property_tax_reports_path(property, year: 2025)
       expect(response.body).to include(I18n.t("tax_report.validate_expenses_warning"))
       expect(response.body).to include("Water bill")
     end
@@ -126,7 +109,7 @@ RSpec.describe "Properties show & tax report", type: :request do
       create(:expense, :collectable, property: property, deductible: true,
              date: Date.new(2024, 6, 15), description: "Old water bill")
 
-      get tax_report_property_path(property, year: 2025, calculate: 1)
+      get property_tax_reports_path(property, year: 2025)
       expect(response.body).not_to include(I18n.t("tax_report.validate_expenses_warning"))
     end
   end

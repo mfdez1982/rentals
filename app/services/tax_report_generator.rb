@@ -15,6 +15,19 @@ class TaxReportGenerator
     }
   end
 
+  # Persists the computed figures as an immutable TaxReport snapshot.
+  def create_report!
+    data = generate
+    @property.tax_reports.create!(
+      year: data[:year],
+      total_days: data[:total_days],
+      active_rental_days: data[:active_rental_days],
+      pro_rata_ratio: data[:pro_rata_ratio],
+      total_gross_income: data[:total_gross_income],
+      expense_lines: data[:expenses].map { |e| e.stringify_keys }
+    )
+  end
+
   private
 
   def days_in_year

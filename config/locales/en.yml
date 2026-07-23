@@ -257,10 +257,21 @@ en:
       description: Description
       original_amount: Original Amount
       deductible_amount: Deductible Amount
+      year: Year
+      generated_at: Generated
+      gross_income: Gross Income
+      active_days: Active Days
     total_row: Total
     pro_rata_explanation: "The deductible amount is calculated by multiplying each expense by the pro-rata ratio (%{ratio}), which represents the proportion of the year during which the property was actively rented."
-    calculate: Calculate
-    resting_hint: "Select a year and click \"Calculate\" to generate the tax report."
+    generate: Generate
+    generated: "Tax report generated."
+    deleted: "Tax report deleted."
+    invalid_year: "Please select a valid year."
+    saved_reports: Saved Reports
+    no_saved_reports: "No tax reports generated yet. Select a year and click \"Generate\"."
+    back_to_reports: "← Back to reports"
+    generated_on: "Generated on %{date}"
+    confirm_delete: "Delete this tax report?"
     validate_expenses_warning: "These expenses are marked as tax deductible while also being recovered from tenants via Recollections, which may be a double-dip."
     validate_expenses_hint: "You can untick \"Tax deductible\" on the Expenses tab for any of these if you don't want to deduct them."
 
@@ -316,6 +327,9 @@ en:
   common:
     back: "←"
     my_properties_link: "← My Properties"
+    actions: Actions
+    open: Open
+    delete: Delete
 
   # General
   general:

@@ -61,7 +61,11 @@
       "Bash(npx @playwright/mcp install-browser chrome-for-testing)",
       "Bash(bin/rails tailwindcss:build)",
       "Bash(bin/rails generate *)",
-      "Bash(bin/rails runner *)"
+      "Bash(bin/rails runner *)",
+      "Bash(bin/rails g *)",
+      "Bash(sed -n '/^  tax_report:/,/^  # Expenses/p' /workspace/config/locales/es.yml)",
+      "Bash(sed -n '/^  common:/,/^  [a-z#]/p' /workspace/config/locales/es.yml)",
+      "Skill(claude-in-chrome)"
     ]
   },
   "enabledMcpjsonServers": [

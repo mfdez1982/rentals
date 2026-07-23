@@ -28,9 +28,7 @@ Rails.application.routes.draw do
   resources :my_rentals, only: [:index, :show]
 
   resources :properties do
-    member do
-      get :tax_report
-    end
+    resources :tax_reports, only: [:index, :create, :show, :destroy]
     resources :expenses, only: [:create, :edit, :update, :destroy] do
       resources :recollections, only: [:new, :create]
     end
