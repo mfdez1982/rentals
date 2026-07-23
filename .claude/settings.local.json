@@ -55,7 +55,13 @@
       "Bash(node -e \"console.log\\(require.resolve\\('playwright'\\)\\)\")",
       "Bash(node -e \"console.log\\(require.resolve\\('@playwright/test'\\)\\)\")",
       "Bash(npm root *)",
-      "Bash(find / -maxdepth 6 -iname \"playwright\" -type d)"
+      "Bash(find / -maxdepth 6 -iname \"playwright\" -type d)",
+      "Bash(claude mcp *)",
+      "Read(//root/**)",
+      "Bash(npx @playwright/mcp install-browser chrome-for-testing)",
+      "Bash(bin/rails tailwindcss:build)",
+      "Bash(bin/rails generate *)",
+      "Bash(bin/rails runner *)"
     ]
   },
   "enabledMcpjsonServers": [

@@ -15,6 +15,22 @@ export default class extends Controller {
     this.activeTabValue = tab
     this.showTab(tab)
     this.updateTabStyles()
+    this.resetFrame(event.currentTarget)
+  }
+
+  // Optional per-tab hook: a tab link may declare a turbo-frame to reset to a
+  // given URL whenever it's selected, so the panel always reopens in its
+  // initial state instead of whatever it was last navigated to (e.g. the tax
+  // report frame returns to its uncalculated resting state on every visit).
+  resetFrame(link) {
+    const frameId = link.dataset.tabsResetFrame
+    const src = link.dataset.tabsResetSrc
+    if (!frameId || !src) return
+
+    const frame = document.getElementById(frameId)
+    // Setting src only reloads when it differs from the current value; if the
+    // frame is already at the reset URL it's already in its initial state.
+    if (frame && frame.getAttribute("src") !== src) frame.src = src
   }
 
   showTab(tab) {

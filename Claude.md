@@ -152,6 +152,8 @@ en:
 ## Workflow
 Before writing any code, always present your analysis and implementation plan and wait for the user's approval. Never jump straight into writing files.
 
+Keep plans at the level of intent and behavior, not implementation minutiae. Say what you'll add and how it behaves ("I'll add a Validate button that opens a popup listing the offending expenses"), but do NOT spell out low-level details like CSS/DaisyUI class names, Stimulus wiring, ivar/variable names, or exact file-by-file line edits. The user reviews the actual code after the fact — the plan is for agreeing on approach, not for pre-reading the implementation.
+
 ## Environment
 This project runs in a devcontainer. Claude cannot install packages or system dependencies — never attempt `apt-get`, `gem install`, `brew`, or similar. State what needs installing and the user will do it from the host.
 

@@ -39,7 +39,9 @@
         data: { tabs_tab: "notas", action: "click->tabs#selectTab" } %>
 
     <%= link_to t("tax_report.title"), "#",
-        data: { tabs_tab: "tax_report", action: "click->tabs#selectTab" } %>
+        data: { tabs_tab: "tax_report", action: "click->tabs#selectTab",
+                tabs_reset_frame: dom_id(@property, :tax_report),
+                tabs_reset_src: tax_report_property_path(@property) } %>
   </nav>
 
   <!-- Rental Agreements Section -->

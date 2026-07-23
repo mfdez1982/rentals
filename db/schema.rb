@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_07_14_000002) do
+ActiveRecord::Schema[8.1].define(version: 2026_07_23_075933) do
   create_table "agreement_tenants", force: :cascade do |t|
     t.datetime "created_at", null: false
     t.string "invitation_token", null: false
@@ -35,6 +35,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_14_000002) do
     t.boolean "collectable", default: false, null: false
     t.datetime "created_at", null: false
     t.date "date", null: false
+    t.boolean "deductible", default: true, null: false
     t.string "description"
     t.string "invoice_url"
     t.date "period_end"

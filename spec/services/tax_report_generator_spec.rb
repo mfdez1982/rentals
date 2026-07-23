@@ -343,6 +343,46 @@ RSpec.describe TaxReportGenerator do
         end
       end
 
+      context 'when an expense is marked non-deductible' do
+        before do
+          create(
+            :rental_agreement,
+            property: property,
+            start_date: Date.new(2025, 1, 1),
+            end_date: Date.new(2025, 12, 31),
+            rent_amount: 100.00
+          )
+
+          create(
+            :expense,
+            property: property,
+            date: Date.new(2025, 6, 1),
+            category: :tax,
+            description: 'Deductible IBI',
+            amount: 100.00,
+            deductible: true
+          )
+
+          create(
+            :expense,
+            property: property,
+            date: Date.new(2025, 6, 1),
+            category: :other,
+            description: 'Non-deductible expense',
+            amount: 100.00,
+            deductible: false
+          )
+        end
+
+        it 'excludes non-deductible expenses and includes deductible ones' do
+          report = TaxReportGenerator.new(property, 2025).generate
+          expenses = report[:expenses]
+
+          expect(expenses.count).to eq(1)
+          expect(expenses.first[:description]).to eq('Deductible IBI')
+        end
+      end
+
       context 'with decimal precision on deductible amounts' do
         before do
           create(

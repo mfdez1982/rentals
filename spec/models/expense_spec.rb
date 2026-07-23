@@ -6,6 +6,11 @@ RSpec.describe Expense, type: :model do
       expect(build(:expense)).to be_valid
     end
 
+    it "defaults deductible to true" do
+      expect(build(:expense).deductible).to eq(true)
+      expect(create(:expense).deductible).to eq(true)
+    end
+
     it "requires date, amount and category" do
       expect(build(:expense, date: nil)).not_to be_valid
       expect(build(:expense, amount: nil)).not_to be_valid
@@ -32,6 +37,18 @@ RSpec.describe Expense, type: :model do
         expect(build(:expense, invoice_url: "ftp://example.com/x")).not_to be_valid
         expect(build(:expense, invoice_url: "not a url")).not_to be_valid
       end
+    end
+  end
+
+  describe "scopes" do
+    it "returns only expenses that are both collectable and deductible" do
+      both = create(:expense, :collectable, deductible: true)
+      collectable_only = create(:expense, :collectable, deductible: false)
+      deductible_only = create(:expense, deductible: true, collectable: false)
+
+      result = Expense.collectable.deductible
+      expect(result).to include(both)
+      expect(result).not_to include(collectable_only, deductible_only)
     end
   end
 

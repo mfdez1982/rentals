@@ -15,9 +15,16 @@ class PropertiesController < ApplicationController
 
   def tax_report
     @year = params[:year].to_i.positive? ? params[:year].to_i : Date.today.year
-    @report = TaxReportGenerator.new(@property, @year).generate
     start_year = [@property.earliest_tax_year, Date.today.year].min
     @year_options = (start_year..Date.today.year + 1).to_a.reverse
+    @calculated = params[:calculate].present?
+
+    if @calculated
+      @report = TaxReportGenerator.new(@property, @year).generate
+      @collectable_deductible_expenses = @property.expenses.collectable.deductible
+        .where(date: Date.new(@year, 1, 1)..Date.new(@year, 12, 31))
+        .order(:date)
+    end
   end
 
   def create

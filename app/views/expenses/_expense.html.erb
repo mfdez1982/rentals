@@ -7,6 +7,9 @@
     <% if expense.collectable? %>
       <span class="badge badge-info badge-sm"><%= t("expenses.collectable_badge") %></span>
     <% end %>
+    <% unless expense.deductible? %>
+      <span class="badge badge-ghost badge-sm"><%= t("expenses.non_deductible_badge") %></span>
+    <% end %>
   </td>
   <td class="text-right">
     <div class="inline-flex items-center gap-2">

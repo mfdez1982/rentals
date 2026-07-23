@@ -21,6 +21,9 @@ class Expense < ApplicationRecord
   validates :period_start, :period_end, presence: true, if: :collectable?
   validate :period_end_after_start, if: :collectable?
 
+  scope :deductible, -> { where(deductible: true) }
+  scope :collectable, -> { where(collectable: true) }
+
   def period_days
     return nil if period_start.blank? || period_end.blank?
     (period_end - period_start).to_i + 1

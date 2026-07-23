@@ -379,6 +379,10 @@ es:
       deductible_amount: Cantidad Deducible
     total_row: Total
     pro_rata_explanation: "La cantidad deducible se calcula multiplicando cada gasto por la proporción pro rata (%{ratio}), que representa la proporción del año durante el cual la propiedad estuvo alquilada activamente."
+    calculate: Calcular
+    resting_hint: "Selecciona un año y haz clic en \"Calcular\" para generar el informe fiscal."
+    validate_expenses_warning: "Estos gastos están marcados como deducibles a la vez que se recuperan de los inquilinos mediante Recobros, lo que podría suponer un doble beneficio."
+    validate_expenses_hint: "Puedes desmarcar \"Deducible\" en la pestaña de Gastos para cualquiera de estos si no quieres deducirlos."
 
   # Expenses
   expenses:
@@ -401,6 +405,9 @@ es:
     collectable: Recobrar de los inquilinos
     collectable_hint: "(prorratear este gasto entre los contratos de alquiler solapados)"
     collectable_badge: Recobrable
+    deductible: "Deducible"
+    deductible_hint: "(incluir este gasto en el informe fiscal)"
+    non_deductible_badge: "No deducible"
     period_start: Inicio del Período
     period_end: Fin del Período
     errors:

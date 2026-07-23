@@ -72,7 +72,7 @@ class TaxReportGenerator
   end
 
   def expenses_in_year
-    @property.expenses.where(date: year_start_date..year_end_date)
+    @property.expenses.deductible.where(date: year_start_date..year_end_date)
   end
 
   def payments_in_year

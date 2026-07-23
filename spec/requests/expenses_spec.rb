@@ -45,6 +45,15 @@ RSpec.describe "Expenses", type: :request do
       expect(property.expenses.count).to eq(0)
     end
 
+    it "creates a non-deductible expense when deductible is unchecked" do
+      post property_expenses_path(property), params: {
+        expense: { date: "2026-07-01", amount: "500.00", category: "insurance", deductible: "0" }
+      }
+      expect(response).to redirect_to(property_path(property))
+      expense = property.expenses.last
+      expect(expense).not_to be_deductible
+    end
+
     it "cannot add an expense to another landlord's property" do
       other = create(:property)
       expect {
@@ -79,6 +88,14 @@ RSpec.describe "Expenses", type: :request do
       }
       expect(response).to redirect_to(property_path(property))
       expect(expense.reload.amount).to eq(999.00)
+    end
+
+    it "updates deductible" do
+      patch property_expense_path(property, expense), params: {
+        expense: { deductible: "0" }
+      }
+      expect(response).to redirect_to(property_path(property))
+      expect(expense.reload.deductible).to eq(false)
     end
 
     it "renders edit with errors on invalid data" do

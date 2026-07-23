@@ -259,6 +259,10 @@ en:
       deductible_amount: Deductible Amount
     total_row: Total
     pro_rata_explanation: "The deductible amount is calculated by multiplying each expense by the pro-rata ratio (%{ratio}), which represents the proportion of the year during which the property was actively rented."
+    calculate: Calculate
+    resting_hint: "Select a year and click \"Calculate\" to generate the tax report."
+    validate_expenses_warning: "These expenses are marked as tax deductible while also being recovered from tenants via Recollections, which may be a double-dip."
+    validate_expenses_hint: "You can untick \"Tax deductible\" on the Expenses tab for any of these if you don't want to deduct them."
 
   # Expenses
   expenses:
@@ -281,6 +285,9 @@ en:
     collectable: Recollect from tenants
     collectable_hint: "(prorate this expense across overlapping rental agreements)"
     collectable_badge: Collectable
+    deductible: "Tax deductible"
+    deductible_hint: "(include this expense in the tax report)"
+    non_deductible_badge: "Non-deductible"
     period_start: Period Start
     period_end: Period End
     errors:
