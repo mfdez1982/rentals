@@ -56,7 +56,7 @@
 
   <% if @tax_reports.any? %>
     <div class="overflow-x-auto">
-      <table class="table table-zebra table-sm">
+      <table class="table table-zebra">
         <thead>
           <tr>
             <th><%= t("tax_report.table_headers.year") %></th>
@@ -76,9 +76,12 @@
               <td class="text-right">
                 <div class="flex justify-end gap-2">
                   <%= link_to t("common.open"), property_tax_report_path(@property, report), class: "btn btn-primary btn-xs", data: { turbo_frame: "_top" } %>
-                  <%= button_to t("common.delete"), property_tax_report_path(@property, report), method: :delete,
-                      class: "btn btn-error btn-xs",
-                      form: { data: { turbo_confirm: t("tax_report.confirm_delete") } } %>
+                  <%= button_to property_tax_report_path(@property, report), method: :delete,
+                      class: "icon-btn",
+                      title: t("forms.buttons.delete"),
+                      form: { data: { turbo_confirm: t("tax_report.confirm_delete") } } do %>
+                    <%= heroicon "trash", variant: :outline %>
+                  <% end %>
                 </div>
               </td>
             </tr>

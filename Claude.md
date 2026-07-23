@@ -143,7 +143,8 @@ en:
 - **Navbar:** lives in `app/views/layouts/application.html.erb`. Use DaisyUI `navbar`.
 - **Forms:** fields stack vertically. Label above, full-width input below (`input input-bordered w-full`). Never put fields side by side. Action buttons on their own row at the bottom. Wrap in `max-w-md`. Checkboxes always have a visible text label next to them.
 - **Buttons:** primary = `btn btn-primary`, destructive = `btn btn-error`, cancel = `btn btn-ghost`.
-- **Tables:** per-row actions sit inline horizontally in the row, not stacked.
+- **Tables:** per-row actions sit inline horizontally in the row, not stacked. Use the standard `table table-zebra` sizing — do NOT use `table-sm` (its smaller font is inconsistent with the rest of the app).
+- **Row delete action:** ALWAYS use the bin (trash) heroicon as an `icon-btn`, never a text "Delete" button — `button_to ... class: "icon-btn"` wrapping `heroicon "trash", variant: :outline` (see `app/views/expenses/_expense.html.erb`).
 - **Components:** use DaisyUI semantic components (card, table, badge, navbar, btn, input, alert).
 - **Mobile:** forms and tables must not overflow on small widths.
 - **Accessibility:** labels associated with inputs via `for`/`id` or wrapping.
