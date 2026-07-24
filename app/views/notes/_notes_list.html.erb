@@ -40,28 +40,30 @@
             <% end %>
           </td>
           <td>
-            <div class="inline-flex items-center gap-2">
-              <% if note.active? && note.activity? %>
-                <%= button_to mark_complete_note_path(note), method: :patch,
-                    class: "icon-btn",
-                    title: t("notes.mark_complete"),
-                    form: (note_frame_id ? { data: { turbo_frame: note_frame_id } } : {}) do %>
-                  <%= heroicon "check", variant: :outline %>
+            <% if current_landlord.notes? %>
+              <div class="inline-flex items-center gap-2">
+                <% if note.active? && note.activity? %>
+                  <%= button_to mark_complete_note_path(note), method: :patch,
+                      class: "icon-btn",
+                      title: t("notes.mark_complete"),
+                      form: (note_frame_id ? { data: { turbo_frame: note_frame_id } } : {}) do %>
+                    <%= heroicon "check", variant: :outline %>
+                  <% end %>
                 <% end %>
-              <% end %>
-              <%= link_to edit_note_path(note, frame: note_frame_id),
-                  class: "icon-btn",
-                  title: t("notes.edit"),
-                  data: { turbo_frame: "note_edit_frame", action: "click->modal#openFrame" } do %>
-                <%= heroicon "pencil", variant: :outline %>
-              <% end %>
-              <%= button_to note_path(note), method: :delete, data: { confirm: t("notes.confirm_delete") },
-                  class: "icon-btn",
-                  title: t("notes.delete"),
-                  form: (note_frame_id ? { data: { turbo_frame: note_frame_id } } : {}) do %>
-                <%= heroicon "trash", variant: :outline %>
-              <% end %>
-            </div>
+                <%= link_to edit_note_path(note, frame: note_frame_id),
+                    class: "icon-btn",
+                    title: t("notes.edit"),
+                    data: { turbo_frame: "note_edit_frame", action: "click->modal#openFrame" } do %>
+                  <%= heroicon "pencil", variant: :outline %>
+                <% end %>
+                <%= button_to note_path(note), method: :delete, data: { confirm: t("notes.confirm_delete") },
+                    class: "icon-btn",
+                    title: t("notes.delete"),
+                    form: (note_frame_id ? { data: { turbo_frame: note_frame_id } } : {}) do %>
+                  <%= heroicon "trash", variant: :outline %>
+                <% end %>
+              </div>
+            <% end %>
           </td>
         </tr>
       <% end %>

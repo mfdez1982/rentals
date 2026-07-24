@@ -395,6 +395,9 @@ en:
     deleted: Note deleted
     marked_complete: Note marked as complete
     creation_failed: Could not create note
+    plan_limit_hint: Notes are available on Pro and Premium plans. Upgrade to enable notes.
+    errors:
+      plan_limit: Notes are available on Pro and Premium plans. Upgrade to enable notes.
 
   # Tenants (agreement invitations)
   agreement_tenants:

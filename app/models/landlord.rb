@@ -32,4 +32,8 @@ class Landlord < ApplicationRecord
   def tax_report?
     Flipper.enabled?(:tax_report, self)
   end
+
+  def notes?
+    Flipper.enabled?(:notes, self)
+  end
 end

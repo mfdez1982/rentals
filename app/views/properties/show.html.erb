@@ -163,10 +163,17 @@
     <!-- Toolbar -->
     <div class="flex items-center justify-between mb-6">
       <h2 class="card-title text-base"><%= t("notes.my_notes") %></h2>
-      <button type="button" class="btn btn-primary btn-sm" data-action="modal#open">
+      <button type="button" class="btn btn-primary btn-sm" data-action="modal#open" <%= "disabled" unless current_landlord.notes? %>>
         <%= t("notes.add_note") %>
       </button>
     </div>
+
+    <% unless current_landlord.notes? %>
+      <div class="alert alert-info mb-6" role="alert">
+        <%= heroicon "sparkles", variant: :outline, class: "w-6 h-6" %>
+        <span class="text-base font-medium"><%= t("notes.plan_limit_hint") %></span>
+      </div>
+    <% end %>
 
     <% all_property_notes = @property_notes + @agreement_notes %>
     <%= turbo_frame_tag dom_id(@property, :notes) do %>

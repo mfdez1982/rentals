@@ -160,9 +160,9 @@ The service is offered on **three tiers** — Free, Pro, and Premium — so a la
 
 The reasoning behind the split: most landlords in the product's audience own a single property, so a property cap alone would never prompt them to pay. The features reserved for paid tiers — the money-related ones a landlord feels the pain of doing by hand — are what make a paid plan worth it for that majority, while the property cap captures the minority who grow a larger portfolio.
 
-**How a plan is assigned today.** Each landlord is recorded on a tier, and for now that tier is set by an administrator from the back office — there is no self-service checkout yet (see section 10). A landlord's current tier is shown beside their name once signed in. The machinery that maps a tier to the features it unlocks is in place; the property cap and the tax report are enforced, and recollections is still being rolled out.
+**How a plan is assigned today.** Each landlord is recorded on a tier, and for now that tier is set by an administrator from the back office — there is no self-service checkout yet (see section 10). A landlord's current tier is shown beside their name once signed in. The machinery that maps a tier to the features it unlocks is in place; the property cap, the tax report, and notes are enforced, and recollections is still being rolled out.
 
-**Downgrading.** Nothing is deleted when a landlord drops to Free with more than the plan allows. One property (the oldest) stays fully usable; the rest are still listed, but locked — no opening, editing, or deleting them until the landlord upgrades again. Saved tax reports keep listing too, but opening, renaming, or deleting one requires Pro or Premium.
+**Downgrading.** Nothing is deleted when a landlord drops to Free with more than the plan allows. One property (the oldest) stays fully usable; the rest are still listed, but locked — no opening, editing, or deleting them until the landlord upgrades again. Saved tax reports and existing notes keep listing too, but opening, editing, completing, or deleting one requires Pro or Premium.
 
 ---
 

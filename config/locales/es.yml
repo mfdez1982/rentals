@@ -515,6 +515,9 @@ es:
     deleted: Nota eliminada
     marked_complete: Nota marcada como completada
     creation_failed: No se pudo crear la nota
+    plan_limit_hint: Las notas están disponibles en los planes Pro y Premium. Mejora tu plan para habilitar las notas.
+    errors:
+      plan_limit: Las notas están disponibles en los planes Pro y Premium. Mejora tu plan para habilitar las notas.
 
   # Inquilinos (invitaciones de contrato)
   agreement_tenants:

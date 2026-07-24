@@ -7,7 +7,13 @@ RSpec.describe NotesController, type: :controller do
   let(:landlord) { user.landlord }
   let(:note) { create(:note, landlord: landlord) }
 
-  before { sign_in user }
+  before do
+    Flipper.enable_group(:notes, :pro_and_up)
+    landlord.update!(plan: :premium)
+    sign_in user
+  end
+
+  after { Flipper.remove(:notes) }
 
   describe "GET #index" do
     it "returns success" do
@@ -155,6 +161,43 @@ RSpec.describe NotesController, type: :controller do
       sign_out user
       get :index
       expect(response).to redirect_to(new_user_session_path)
+    end
+  end
+
+  context "when the landlord is on the free plan" do
+    before { landlord.update!(plan: :free) }
+
+    it "still lists notes" do
+      note
+      get :index
+      expect(response).to have_http_status(:success)
+    end
+
+    it "blocks creating a note" do
+      expect {
+        post :create, params: { note: { title: "New Note", description: "desc" } }
+      }.not_to change(Note, :count)
+      expect(response).to redirect_to(notes_path)
+    end
+
+    it "blocks updating a note" do
+      patch :update, params: { id: note.id, note: { title: "Updated" } }
+      expect(note.reload.title).not_to eq("Updated")
+      expect(response).to redirect_to(notes_path)
+    end
+
+    it "blocks marking a note complete" do
+      patch :mark_complete, params: { id: note.id }
+      expect(note.reload).not_to be_completed
+      expect(response).to redirect_to(notes_path)
+    end
+
+    it "blocks deleting a note" do
+      note_id = note.id
+      expect {
+        delete :destroy, params: { id: note_id }
+      }.not_to change(Note, :count)
+      expect(response).to redirect_to(notes_path)
     end
   end
 end

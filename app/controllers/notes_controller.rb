@@ -1,5 +1,6 @@
 class NotesController < ApplicationController
   before_action :set_note, only: [:edit, :update, :mark_complete, :destroy]
+  before_action :ensure_notes_allowed, only: [:create, :edit, :update, :mark_complete, :destroy]
   before_action -> { redirect_unless_turbo_frame_request(notes_path) }, only: [:edit]
 
   def index
@@ -51,6 +52,12 @@ class NotesController < ApplicationController
 
   def set_note
     @note = current_landlord.notes.find(params[:id])
+  end
+
+  def ensure_notes_allowed
+    unless current_landlord.notes?
+      redirect_back_or_to notes_path, alert: t("notes.errors.plan_limit")
+    end
   end
 
 
