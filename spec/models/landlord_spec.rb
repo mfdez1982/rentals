@@ -46,14 +46,14 @@ RSpec.describe Landlord, type: :model do
     end
   end
 
-  describe "#multi_property? and #property_limit_reached?" do
+  describe "#multi_property_allowed? and #property_limit_reached?" do
     before { Flipper.enable_group(:multi_property, :pro_and_up) }
     after { Flipper.remove(:multi_property) }
 
     it "is granted to pro and premium, not free" do
-      expect(create(:landlord, plan: :free).multi_property?).to be(false)
-      expect(create(:landlord, plan: :pro).multi_property?).to be(true)
-      expect(create(:landlord, plan: :premium).multi_property?).to be(true)
+      expect(create(:landlord, plan: :free).multi_property_allowed?).to be(false)
+      expect(create(:landlord, plan: :pro).multi_property_allowed?).to be(true)
+      expect(create(:landlord, plan: :premium).multi_property_allowed?).to be(true)
     end
 
     it "is true for a free landlord with a property, false otherwise" do

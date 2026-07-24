@@ -13,12 +13,12 @@ class Landlord < ApplicationRecord
     "Landlord;#{id}"
   end
 
-  def multi_property?
+  def multi_property_allowed?
     Flipper.enabled?(:multi_property, self)
   end
 
   def property_limit_reached?
-    !multi_property? && properties.count >= 1
+    !multi_property_allowed? && properties.count >= 1
   end
 
   def active_property
@@ -26,14 +26,14 @@ class Landlord < ApplicationRecord
   end
 
   def property_locked?(property)
-    !multi_property? && property.id != active_property&.id
+    !multi_property_allowed? && property.id != active_property&.id
   end
 
-  def tax_report?
+  def tax_report_allowed?
     Flipper.enabled?(:tax_report, self)
   end
 
-  def notes?
+  def notes_allowed?
     Flipper.enabled?(:notes, self)
   end
 end

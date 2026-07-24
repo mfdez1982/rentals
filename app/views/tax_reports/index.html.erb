@@ -8,7 +8,7 @@
 
 <%= turbo_frame_tag dom_id(@property, :tax_report) do %>
   <div data-controller="modal">
-  <% tax_report_locked = !current_landlord.tax_report? %>
+  <% tax_report_locked = !current_landlord.tax_report_allowed? %>
   <% if tax_report_locked %>
     <div class="alert alert-info mb-6" role="alert">
       <%= heroicon "sparkles", variant: :outline, class: "w-6 h-6" %>

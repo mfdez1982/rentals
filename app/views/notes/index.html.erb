@@ -5,12 +5,12 @@
   <div class="card-body">
     <!-- Toolbar -->
     <div class="flex items-center justify-end mb-6">
-      <button type="button" class="btn btn-primary btn-sm" data-action="modal#open" <%= "disabled" unless current_landlord.notes? %>>
+      <button type="button" class="btn btn-primary btn-sm" data-action="modal#open" <%= "disabled" unless current_landlord.notes_allowed? %>>
         <%= t("notes.add_note") %>
       </button>
     </div>
 
-    <% unless current_landlord.notes? %>
+    <% unless current_landlord.notes_allowed? %>
       <div class="alert alert-info mb-6" role="alert">
         <%= heroicon "sparkles", variant: :outline, class: "w-6 h-6" %>
         <span class="text-base font-medium"><%= t("notes.plan_limit_hint") %></span>

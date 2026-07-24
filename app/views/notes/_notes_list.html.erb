@@ -40,7 +40,7 @@
             <% end %>
           </td>
           <td>
-            <% if current_landlord.notes? %>
+            <% if current_landlord.notes_allowed? %>
               <div class="inline-flex items-center gap-2">
                 <% if note.active? && note.activity? %>
                   <%= button_to mark_complete_note_path(note), method: :patch,

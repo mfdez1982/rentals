@@ -56,7 +56,7 @@ class TaxReportsController < ApplicationController
   end
 
   def ensure_tax_report_allowed
-    unless current_landlord.tax_report?
+    unless current_landlord.tax_report_allowed?
       redirect_to property_tax_reports_path(@property), alert: t("tax_report.errors.plan_limit")
     end
   end
