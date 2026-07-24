@@ -148,7 +148,7 @@ Flipper.enabled?(:tax_report, current_landlord)
 
 Plans are assigned from the back office — `plan` is an editable `Field::Select` on the Administrate `LandlordDashboard`.
 
-**Status:** the enum, Flipper wiring, admin assignment, and demo data are in place, but **no feature is gated yet** — the per-tier locks (starting with a `multi_property` cap and the tax-report / recollections features) are being added incrementally. The seed creates one landlord per tier — `free@example.com`, `pro@example.com`, `premium@example.com` (password `password`) — each with its own properties, agreements, payments, expenses, and notes.
+**Status:** the enum, Flipper wiring, and admin assignment are in place, and the first per-tier lock is live: the `multi_property` feature (enabled for `pro_and_up` in `config/initializers/flipper.rb`) caps free landlords at one property. `Landlord#property_limit_reached?` is the enforcement point — `PropertiesController#create` blocks a second property for a landlord where it's true, and the "Add a Property" button is disabled with an upgrade hint on the properties index for the same case. The tax-report and recollections locks are still to come. The seed creates one landlord per tier — `free@example.com`, `pro@example.com`, `premium@example.com` (password `password`) — each with its own properties, agreements, payments, expenses, and notes.
 
 ---
 
