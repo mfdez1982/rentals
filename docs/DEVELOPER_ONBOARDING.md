@@ -19,7 +19,8 @@ User (auth record, Devise + role enum: landlord | admin)
             ├─ RentalAgreement
             │     ├─ Payment
             │     └─ AgreementTenant ──▶ User (a tenant)
-            └─ Expense              (direct on Property, for the tax report)
+            ├─ Expense              (direct on Property; deductible ones feed the tax report)
+            └─ TaxReport            (persisted, immutable snapshot per property/year)
   └─ Note (belongs_to landlord; optional polymorphic noteable: Property or RentalAgreement)
 ```
 
@@ -125,7 +126,7 @@ The root path (`/`) is smart about who you are (`redirect_root_appropriately` in
 
 Non-trivial logic lives in plain Ruby service objects under `app/services/`:
 
-- **`TaxReportGenerator`** — given a property + year, computes the pro-rata deductible ratio (active rental days ÷ days in year), gross income (sum of payments due that year), and a per-expense deductible breakdown.
+- **`TaxReportGenerator`** — given a property + year, computes the pro-rata deductible ratio (active rental days ÷ days in year), gross income (sum of payments due that year), and a per-expense deductible breakdown. `#generate` returns the figures as a hash; `#create_report!` persists them as an immutable `TaxReport` snapshot (the per-expense breakdown is frozen into the `expense_lines` JSON column). Only **deductible** expenses are included — collectable (pass-through) expenses are excluded.
 - **`TenantInviter`** — creates or reactivates a pending `AgreementTenant` for an agreement + email, and sends the right email depending on whether the invitee is already a registered `User`. Returns a `Result` struct with an `outcome` (`:invited`, `:already_pending`, `:already_accepted`).
 
 ---
@@ -152,7 +153,7 @@ Payments belong to a `RentalAgreement`. Beyond single edits, there's **recurring
 
 ### D. Generate a tax report
 
-On a property's **Tax Report** tab, the frame lazy-loads `PropertiesController#tax_report` (see §5), which runs `TaxReportGenerator` for the selected year and renders the pro-rata deduction breakdown.
+On a property's **Tax Report** tab, the frame lazy-loads `TaxReportsController#index` (nested under the property — see §5). There the landlord picks a year and clicks **Generate**, which posts to `#create` and calls `TaxReportGenerator#create_report!` to persist an immutable snapshot. The index lists all saved reports; "Open" navigates (breaking out to `_top`) to `#show`. Reports can be renamed (a modal editing only the `name` — the computed figures are read-only) or deleted. If the year contains **collectable** expenses that are still marked deductible, the index shows a warning listing them so the landlord can fix them before generating (collectable pass-through costs shouldn't be deducted).
 
 ---
 
@@ -203,10 +204,10 @@ Add/edit UI lives in DaisyUI `<dialog>` modals via the shared `shared/_modal` la
 
 ```erb
 <%= turbo_frame_tag dom_id(@property, :tax_report),
-      src: tax_report_property_path(@property), loading: :lazy %>
+      src: property_tax_reports_path(@property), loading: :lazy %>
 ```
 
-This is the only tab whose content is fetched on demand rather than pre-rendered.
+This is the only tab whose content is fetched on demand rather than pre-rendered — it loads `TaxReportsController#index` (the generate control + saved-reports list) into the frame.
 
 ---
 

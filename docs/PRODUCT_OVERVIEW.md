@@ -72,7 +72,7 @@ The typical path through the product, in the order a real user encounters it.
 
 **Record expenses.** Costs are logged against the property as they occur, each with a category. Some are marked *collectable*, meaning the landlord intends to recover them from tenants — see section 5.
 
-**Pull the tax report.** At year end, a per-property, per-year summary: gross rental income, the deductible portion of each expense, and the ratio used to calculate it. Section 6 explains the calculation.
+**Pull the tax report.** At year end, the landlord generates a per-property, per-year summary — gross rental income, the deductible portion of each expense, and the ratio used to calculate it — and it is saved as a named, permanent snapshot alongside the property's earlier reports. Section 6 explains the calculation and how saved reports behave.
 
 **Keep notes.** Reminders, general or attached to a specific property or tenancy, marked complete when dealt with.
 
@@ -125,9 +125,9 @@ For a chosen property and year, the report gives the landlord what an accountant
 
 **The deductible ratio** — the heart of the calculation. Costs are only deductible for the part of the year the property was actually let. The application counts the days covered by a tenancy during that year and divides by the days in the year. A property let from 1 April to 31 December has 275 rented days out of 365, giving a ratio of **0.7534**.
 
-**Deductible expenses** — every cost recorded against the property that year, listed with its category, its full amount, and its deductible portion after the ratio is applied. A 1,000 insurance premium on the property above contributes 753.40 as deductible.
+**Deductible expenses** — every deductible cost recorded against the property that year, listed with its category, its full amount, and its deductible portion after the ratio is applied. A 1,000 insurance premium on the property above contributes 753.40 as deductible. Costs marked *collectable* — utility bills the landlord passes on to tenants, section 5 — are **not** deductible and are left out of the report; the landlord is warned if any such cost is still flagged deductible for the year, so it can be corrected before generating.
 
-The report is produced fresh each time from the underlying records, so correcting an expense or a tenancy date is immediately reflected. Any year with activity can be selected.
+**Reports are saved, not just displayed.** The landlord picks a year and generates a report, and the result is **stored as a permanent snapshot** — the figures as they stood at that moment. A property builds up a list of saved reports over time; each can be opened, given a name (e.g. "2025 filed return"), or deleted. A saved report is **frozen**: only its name can be changed afterwards, never its numbers. If an expense or a tenancy date is corrected later, existing reports are unaffected — the landlord generates a fresh one to capture the change. This preserves a record of exactly what was reported for each year rather than silently rewriting history. Any year with activity can be selected.
 
 **A necessary caveat:** this is a calculation aid, not tax advice, and it implements one common pro-rata convention. Deductibility rules vary by jurisdiction and change over time. The report is a starting point for a conversation with an accountant, not a substitute for one.
 
@@ -142,7 +142,8 @@ The constraints with real business consequences, in one place:
 - **Tenant invitations expire after 14 days** and must be re-sent after that.
 - **A tenant only gains access when they accept.** An invited-but-unanswered email address has no visibility.
 - **Utility bills are split strictly by days occupied**, and unoccupied days are absorbed by the landlord rather than passed on.
-- **Recollected amounts are never treated as rental income.**
+- **Recollected amounts are never treated as rental income**, and collectable costs are excluded from the tax report's deductions.
+- **A generated tax report is a frozen snapshot** — its figures are fixed at generation time; only its name can be edited afterwards, and later corrections require generating a new report.
 - **Recorded charges are immutable snapshots** — markable as paid or deletable, but not editable after the fact.
 - **Status is always derived, never stored.** Rented, available, overdue, active, expired — all calculated from dates each time they are displayed, so they cannot drift out of date or contradict the underlying records.
 - **Every landlord's data is isolated.** No cross-account visibility exists in any view.

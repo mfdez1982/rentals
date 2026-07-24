@@ -65,7 +65,8 @@
       "Bash(bin/rails g *)",
       "Bash(sed -n '/^  tax_report:/,/^  # Expenses/p' /workspace/config/locales/es.yml)",
       "Bash(sed -n '/^  common:/,/^  [a-z#]/p' /workspace/config/locales/es.yml)",
-      "Skill(claude-in-chrome)"
+      "Skill(claude-in-chrome)",
+      "Bash(echo \"exit $?\")"
     ]
   },
   "enabledMcpjsonServers": [
