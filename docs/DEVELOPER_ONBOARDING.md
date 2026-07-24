@@ -14,7 +14,7 @@ The domain is a straightforward ownership chain:
 
 ```
 User (auth record, Devise + role enum: landlord | admin)
-  └─ Landlord (profile, auto-created for landlord-role users)
+  └─ Landlord (profile, auto-created for landlord-role users; plan enum: free | pro | premium)
        └─ Property
             ├─ RentalAgreement
             │     ├─ Payment
@@ -40,7 +40,7 @@ This project runs in a **devcontainer**. You cannot install system packages or g
 # 1. Create and migrate the database
 bin/rails db:create db:migrate
 
-# 2. Seed development data (creates a dev landlord + sample records)
+# 2. Seed development data (dev landlord, three plan demo users, and sample records)
 bin/rails db:seed
 
 # 3. Start the server
@@ -128,6 +128,27 @@ Non-trivial logic lives in plain Ruby service objects under `app/services/`:
 
 - **`TaxReportGenerator`** — given a property + year, computes the pro-rata deductible ratio (active rental days ÷ days in year), gross income (sum of payments due that year), and a per-expense deductible breakdown. `#generate` returns the figures as a hash; `#create_report!` persists them as an immutable `TaxReport` snapshot (the per-expense breakdown is frozen into the `expense_lines` JSON column). Only **deductible** expenses are included — collectable (pass-through) expenses are excluded.
 - **`TenantInviter`** — creates or reactivates a pending `AgreementTenant` for an agreement + email, and sends the right email depending on whether the invitee is already a registered `User`. Returns a `Result` struct with an `outcome` (`:invited`, `:already_pending`, `:already_accepted`).
+- **`RecollectionGenerator`** — given a collectable `Expense`, prorates its amount across every `RentalAgreement` overlapping the expense's `period_start`/`period_end`, independently per agreement, by inclusive days against the *full* expense period (uncovered days are absorbed by the landlord, not redistributed). The landlord then picks payers per slice. Business rationale and worked examples: `docs/recollections.md`.
+
+### Recollections and Notes (model shape)
+
+A `Recollection` (`belongs_to :expense, :rental_agreement`, optional `:agreement_tenant` payer; `status` enum `pending/paid`; optional `due_date`) is a flat row — one per payer, or one with a nil payer when no tenant is charged. Generation is idempotent per `(expense, agreement)` pair (DB-unique-indexed); rows are immutable snapshots, so `Expense`/`RentalAgreement` destroy is `restrict_with_error`'d while any exist. Recollections are excluded entirely from `TaxReportGenerator` — advanced funds, not income.
+
+`Note belongs_to :landlord` with an *optional* polymorphic `noteable` (a `Property`, a `RentalAgreement`, or nil for a general note). `status` enum `active/completed`.
+
+### Plans & feature entitlements (Flipper)
+
+Each `Landlord` carries a **plan** (`enum plan: { free, pro, premium }`, default `free`) — the single source of truth for the subscription tier. Feature access is expressed with **Flipper** (`flipper` + `flipper-active_record`, DB-backed). `Landlord` implements `flipper_id`, so it works as a Flipper actor directly:
+
+```ruby
+Flipper.enabled?(:tax_report, current_landlord)
+```
+
+`config/initializers/flipper.rb` configures the ActiveRecord adapter and registers two **actor groups** keyed off the landlord's plan — `pro_and_up` (Pro or Premium) and `premium_only`. A feature is granted to a tier by enabling it for the matching group, so changing what a tier includes is a group toggle (in the initializer or the Flipper UI), **not** scattered `if landlord.pro?` checks at call sites. The tier badge beside the signed-in email is driven by `current_landlord.plan` (translated via the `plans.*` i18n keys); admins and tenant-only users have no `Landlord`, so no badge.
+
+Plans are assigned from the back office — `plan` is an editable `Field::Select` on the Administrate `LandlordDashboard`.
+
+**Status:** the enum, Flipper wiring, admin assignment, and demo data are in place, but **no feature is gated yet** — the per-tier locks (starting with a `multi_property` cap and the tax-report / recollections features) are being added incrementally. The seed creates one landlord per tier — `free@example.com`, `pro@example.com`, `premium@example.com` (password `password`) — each with its own properties, agreements, payments, expenses, and notes.
 
 ---
 
@@ -288,6 +309,7 @@ Symptom: a landlord can see or edit data that isn't theirs. Trace the controller
 | Tenancy helper | `ApplicationController#current_landlord` |
 | Show-page ivar rebuilders | `app/controllers/concerns/*_show_loadable.rb` |
 | Services | `app/services/` (`TaxReportGenerator`, `TenantInviter`) |
+| Plan entitlements | `Landlord#plan` + `config/initializers/flipper.rb` |
 | Stimulus controllers | `app/javascript/controllers/` |
 | Translations | `config/locales/{en,es}.yml` |
 | Ruby tests | `spec/` — run `bin/rspec` |

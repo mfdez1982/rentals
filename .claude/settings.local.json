@@ -67,7 +67,8 @@
       "Bash(sed -n '/^  common:/,/^  [a-z#]/p' /workspace/config/locales/es.yml)",
       "Skill(claude-in-chrome)",
       "Bash(echo \"exit $?\")",
-      "Bash(bin/rails db:seed)"
+      "Bash(bin/rails db:seed)",
+      "mcp__playwright__browser_tabs"
     ]
   },
   "enabledMcpjsonServers": [

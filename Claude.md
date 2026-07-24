@@ -1,17 +1,12 @@
 # Rentals SaaS — Project Context for Claude Code
 
+@docs/DEVELOPER_ONBOARDING.md
+@docs/PRODUCT_OVERVIEW.md
+
+The two imports above are the full technical and business context for this project — how the code is organized, the domain model, Turbo Frame patterns, and the product's reasoning and rules. Everything below this point is about **how Claude should work in this repo**, not what the app does.
+
 ## What this project is
 A multi-landlord SaaS app for personal rental property management. Small landlords (1–5 properties each) sign up, log in, and manage their own properties. Each landlord sees only their own data.
-
-## Tech stack
-- Ruby on Rails 8, PostgreSQL
-- Devise for authentication (User model; Landlord is a separate profile model)
-- ERB views — no React, no TypeScript
-- Hotwire: Turbo Frames for in-place updates, Stimulus for light JS
-- Stimulus controllers auto-discovered via `eagerLoadControllersFrom` in `app/javascript/controllers/index.js`
-- Tailwind CSS + DaisyUI 5 via CDN (theme: `emerald`)
-- ActiveStorage for file uploads (not yet used)
-- RSpec + FactoryBot for testing
 
 ## Reading the current code
 Schema, models, routes, controllers, and view structure are all readable from the source files themselves — do not keep a copy here, it only goes stale. When you need them:
@@ -20,44 +15,6 @@ Schema, models, routes, controllers, and view structure are all readable from th
 - Routes → `config/routes.rb`
 - Controllers → `app/controllers/`
 - Views → `app/views/`
-
-## Domain model (the shape, not the fields)
-`User` is the auth record (Devise + a `role` enum, default `:landlord`). `Landlord` is a separate profile model belonging to a `User`, created automatically on sign-up **only for landlord-role users** (`after_create :create_landlord, if: :landlord?`). Admins never get a Landlord. A `Landlord` has many `Property` records; a `Property` has many `RentalAgreement` records; a `RentalAgreement` has many `Payment` records. A `Property` also has many `Expense` records directly (not nested under an agreement) — used for the per-property, per-year Tax Report.
-
-**Tenants (the same `User` can be a landlord *and* a tenant).** A landlord invites tenants to a `RentalAgreement` by email. Each invite is an `AgreementTenant` (`belongs_to :rental_agreement, :user` — `user` optional until accepted; `status` enum `pending/accepted/rejected/removed`; `has_secure_token :invitation_token`; 14-day `INVITE_TTL`). When accepted, it links the invitee's `User` to the agreement (`RentalAgreement#tenants` is `agreement_tenants` with `status: accepted`, through `user`). `User#tenant?` is true once they have any accepted invitation. Invites are created/reactivated by the `TenantInviter` service.
-
-**Recollections (utility bill pass-through).** An `Expense` can be marked `collectable` (then `period_start`/`period_end` are mandatory). The landlord runs "Recollect": `RecollectionGenerator` prorates the amount across agreements overlapping the period (independently per agreement, inclusive days, against the full expense period — uncovered days are absorbed by the landlord) and the landlord picks payers per slice. A `Recollection` (`belongs_to :expense, :rental_agreement`, optional `:agreement_tenant` payer; `status` enum `pending/paid`; optional `due_date`) is a flat row: one per payer, or one with nil payer when no tenant is charged. Generation is idempotent per `(expense, agreement)` pair (DB-unique-indexed); rows are immutable snapshots — expense/agreement destroy is restricted while they exist. Recollections are advanced funds, NOT income — zero Tax Report interaction. Design rationale: `docs/recollections.md`.
-
-**Notes.** `Note belongs_to :landlord` and has an *optional* polymorphic `noteable` (a `Property` or a `RentalAgreement`, or nil for a general note). `status` enum `active/completed`; an `active` note with a past `due_date` is `overdue?`.
-
-Derived state (never stored as a column):
-- `property.rented?` — true if any agreement is active today
-- `property.active_rental_agreement` / `property.next_unpaid_payment`
-- `property.has_overdue_payments?` — any agreement has overdue payments
-- `rental_agreement.active?` / `upcoming?` / `expired?` — date-window state vs. today
-- `rental_agreement.has_overdue_payments?` — any payment is overdue
-- `payment.overdue?` — true when `paid_date` is nil and `due_date < Date.today`
-- `note.overdue?` — active note whose `due_date` is past
-- `recollection.overdue?` — pending with a past `due_date` (due date is optional)
-- `user.tenant?` — has at least one accepted `AgreementTenant`
-
-`RentalAgreement` also validates `end_date` after `start_date` **and** rejects agreements that overlap another for the same property.
-
-## Implemented features
-- Property management with derived rented/available status
-- Rental agreements per property, with renew-with-prefill (start date + rent copied from the prior agreement)
-- Payments per agreement, including bulk/recurring generation (start date + number of months) and overdue tracking
-- Deductible expenses per property, categorized (`Expense.category` enum)
-- Recollections: prorated pass-through of collectable expenses to tenants (landlord Recollect flow with per-tenant splits, mark-paid/delete; tenant "amounts to repay" in my_rentals) — see `docs/recollections.md`
-- Tax report per property/year: pro-rata deductible ratio based on active rental days, gross income, deductible expense breakdown
-- Tenant invitations: invite by email (`TenantInviter`), accept/reject/dismiss flow, expiry, and landlord/tenant notification badges (see `ApplicationController` helper methods `pending_tenant_invitations`, `tenant_removal_notices`, `landlord_tenant_notifications`)
-- Tenant-facing dashboard: `my_rentals` (index/show) for users who are tenants
-- Notes: general or attached to a property/agreement, active/completed status, overdue tracking, `mark_complete`
-- Admin backoffice: `Backoffice::` namespace (expenses, landlords, payments, properties, rental_agreements, users), guarded by an `admin_constraint` lambda in `routes.rb`
-- Devise auth (sign up/in/out, account edit, account deletion, password reset). Emailing is enabled: dev writes to `tmp/mails` (`delivery_method: :file`), test uses `:test`. No production SMTP is configured yet.
-- Role-based root routing (`redirect_root_appropriately`): admins → backoffice, tenant-only users → my_rentals, landlords → property dashboard
-- EN/ES i18n throughout
-- Cookie consent banner with granular preferences
 
 ## Multi-tenancy (critical)
 Every query must be scoped to `current_landlord`. Never rely on the view alone. Always scope from `current_landlord` down the full chain:
@@ -69,31 +26,6 @@ Every query must be scoped to `current_landlord`. Never rely on the view alone. 
 `current_landlord` is defined in `ApplicationController` as `current_user&.landlord`. In development, it auto-signs-in `dev@example.com` if that user exists.
 
 **Tenant-facing access is separate.** Tenants don't own a `Landlord`, so they reach their data through their accepted `AgreementTenant` rows, not `current_landlord` — scope those queries from `current_user` (e.g. `current_user.tenant_rental_agreements`). Don't leak a landlord's full agreement/property data into a tenant view; expose only what the tenancy grants.
-
-## Turbo Frame patterns
-These are non-obvious and hard to reconstruct from the code alone — read this before touching any show page or modal-editing flow.
-
-### Modal editing (current pattern, replaces old row inline-edit)
-All add/edit UI now lives in DaisyUI `<dialog>` modals rendered by the shared `shared/_modal` layout (`render layout: "shared/modal", locals: { title:, box_class: }`), controlled by the single `modal` Stimulus controller (`app/javascript/controllers/modal_controller.js`):
-- `data-controller="modal"` on a wrapping element, `data-modal-target="dialog"` on the `<dialog>`.
-- `data-action="click->modal#open"` on a plain "Add X" button just opens the dialog (`modal#open`).
-- Edit links instead use `data: { turbo_frame: "<name>_edit_frame", action: "click->modal#openFrame" }` — `openFrame` opens the dialog *and* lets Turbo intercept the click to load the edit form into a same-page named frame (`property_edit_frame`, `expense_edit_frame`, `payment_edit_frame`, `agreement_edit_frame`, `note_edit_frame`), each nested inside its own modal's `shared/_modal` box.
-- `dialogTargetConnected` in `modal_controller.js` fires whenever a `<dialog>` element is (re)connected — including when a Turbo Frame swap replaces the section frame it lives in after a create/edit submit. If the freshly rendered dialog contains a `[role="alert"]` (validation errors), it reopens itself automatically; a clean re-render (success) stays closed. It does NOT fire for the nested edit-frame GET that merely loads the form, so opening via `openFrame` is never mistaken for a submit result.
-- Cancel buttons just `data-action="modal#close"`.
-
-### Section frames and validation-failure re-render
-Each show page tab wraps its table + form in one section frame per resource: `dom_id(@property, :header|:agreements|:expenses|:notes|:tax_report)` on `properties/show.html.erb`, `dom_id(@agreement, :header|:payments|:notes)` on `rental_agreements/show.html.erb`. Create/update forms live inside their section frame, so a normal Turbo submit (success or failure) only replaces that frame.
-- On validation failure, `ExpensesController`, `RentalAgreementsController`, `PropertiesController`, and `PaymentsController` don't re-render their own template — they `render template: "properties/show"` (or `"rental_agreements/show"`) so Turbo can extract the *same* section frame with errors in place. This requires every ivar the target `show` template needs, which `PropertyShowLoadable#load_property_show_data` and `AgreementShowLoadable#load_agreement_show_data` (both in `app/controllers/concerns/`) rebuild.
-- The tax report tab is lazy-loaded, not part of that ivar rebuild: `turbo_frame_tag dom_id(@property, :tax_report), src: tax_report_property_path(@property), loading: :lazy` fetches `PropertiesController#tax_report` only when the tab frame becomes visible.
-
-### Tabs
-`shared/_dashboard_layout` pages use `data-controller="tabs" data-tabs-active-tab-value="<name>"` on the wrapper, with nav links (`data: { tabs_tab: "<name>", action: "click->tabs#selectTab" }`) and matching `data-tab-section="<name>"` panels. The `tabs` Stimulus controller (`app/javascript/controllers/tabs_controller.js`) toggles panel visibility and swaps the `tab-link-active` class — no server round-trip, all tabs' content is present in the DOM at once (except the lazy tax-report frame above).
-
-### Edit pages as modal fallback / direct navigation
-`properties/edit.html.erb`, `expenses/edit.html.erb`, `payments/edit.html.erb`, `rental_agreements/edit.html.erb`, `notes/edit.html.erb` are thin wrappers: `render layout: "shared/frame_page", locals: { frame_id: "<name>_edit_frame" }` around the same `_edit_modal_content` partial used inside the modal. `shared/_frame_page` gives a centered card shell with the named turbo frame inside, so the same edit view works both loaded into a modal via Turbo Frame navigation and as a full-page direct visit.
-
-### Notes
-`notes/_notes_list.html.erb` is shared by the property tab, agreement tab, and the standalone `notes/index.html.erb` — takes `notes:` and optional `note_frame_id:` locals, renders the table (or empty state) plus a `note_edit_frame` modal. `notes/_form.html.erb` is likewise shared for new-note creation across all three call sites, taking `note:`, `noteable:` (nil for general notes), and `frame:` locals.
 
 ## Coding conventions
 - Standard Rails conventions; thin controllers, logic in models or service objects
@@ -161,7 +93,12 @@ This project runs in a devcontainer. Claude cannot install packages or system de
 Claude may run Rails commands directly (`bin/rails db:migrate`, `bin/rspec`, generators, etc.). The user runs the dev server themselves (`bin/rails s`).
 
 ## Browsing the running app with Playwright
-The Rails server runs in the devcontainer (`bin/rails s`). Use `http://localhost:3000` as the base URL for all navigation and Playwright interactions.
+The Rails server runs in the devcontainer (`bin/rails s`) on port 3000, but that's forwarded to **port 3001 on the host**. Claude cannot drive a local Playwright browser from inside the devcontainer — instead, use the Playwright MCP tools, which connect to an MCP server running on the host at `host.docker.internal:3002/mcp`. Use `http://localhost:3001` as the base URL for navigation within those tool calls (not 3000 — that's the container-internal port and is unreachable from the host-side browser).
+
+This depends on host-side state Claude cannot see or start:
+- The Playwright MCP server process must be running on the host. If tool calls fail with a connection error (including `browser_tabs`, which doesn't even touch the target URL), the MCP server itself is probably not running — ask the user to start it, don't assume the Rails server is at fault.
+- The MCP server's browser (`chrome-for-testing` channel) must be installed on the host. If a tool call errors with "Browser chrome-for-testing is not installed," ask the user to run `npx playwright install chrome` on the host (not `npx @playwright/mcp install-browser ...` — that subcommand doesn't exist in the installed version).
+- Any command needing to run on the host (checking process state, installing browsers, verifying ports) must be run by the user — Claude's Bash tool only executes inside the devcontainer and cannot diagnose or fix host-side issues directly.
 
 ## Testing
 - **RSpec unit/controller tests:** `bin/rspec`

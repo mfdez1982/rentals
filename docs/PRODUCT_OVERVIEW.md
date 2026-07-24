@@ -150,11 +150,25 @@ The constraints with real business consequences, in one place:
 
 ---
 
-## 8. Supporting details
+## 8. Plans and access levels
+
+The service is offered on **three tiers** — Free, Pro, and Premium — so a landlord pays in proportion to how much they lean on the product.
+
+- **Free** is deliberately usable, not a crippled demo: a landlord can run a single property end to end — its tenancy, the rent schedule, expenses, tenant invitations, and notes. It is capped at **one property**, and the features that turn the product from a ledger into a business tool are held back.
+- **Pro** removes the property cap and unlocks the features that save a landlord real money and time — the year-end **tax report** and **utility-bill pass-through (recollections)** in particular. This is the tier aimed at the typical active landlord.
+- **Premium** is the top tier for landlords who outgrow Pro: everything Pro has, with room for higher-end capabilities as they are added.
+
+The reasoning behind the split: most landlords in the product's audience own a single property, so a property cap alone would never prompt them to pay. The features reserved for paid tiers — the money-related ones a landlord feels the pain of doing by hand — are what make a paid plan worth it for that majority, while the property cap captures the minority who grow a larger portfolio.
+
+**How a plan is assigned today.** Each landlord is recorded on a tier, and for now that tier is set by an administrator from the back office — there is no self-service checkout yet (see section 10). A landlord's current tier is shown beside their name once signed in. The machinery that maps a tier to the features it unlocks is in place; the individual feature locks are being rolled out tier by tier.
+
+---
+
+## 9. Supporting details
 
 **Languages.** The application is fully available in English and Spanish, switchable at any time.
 
-**Email.** Tenant invitations and password resets are sent by email. *Production email delivery is not yet configured* — see section 9.
+**Email.** Tenant invitations and password resets are sent by email. *Production email delivery is not yet configured* — see section 10.
 
 **Privacy.** A cookie consent banner with granular preferences is presented on first visit. Landlords can edit their account details and delete their account outright.
 
@@ -162,12 +176,12 @@ The constraints with real business consequences, in one place:
 
 ---
 
-## 9. What the product does not do yet
+## 10. What the product does not do yet
 
 Stated plainly, so expectations are set correctly.
 
 - **No production email delivery.** Invitations and password resets are generated but not yet configured to send from a live environment. This blocks real-world use of the tenant invitation flow.
-- **No billing or subscriptions.** There is no payment mechanism for the service itself, no plans, and no trial handling — despite pricing being shown on the public landing page.
+- **No self-service billing.** The plan tiers exist and can be assigned by an administrator (see section 8), but there is no payment mechanism for the service itself, no self-service upgrade or checkout, and no trial handling — despite pricing being shown on the public landing page. The per-tier feature locks are also still being rolled out, so tier differences are not yet fully enforced.
 - **No payment processing.** Rent and repayments are *recorded* as having happened; no money moves through the application. Landlords reconcile against their own bank account.
 - **No document storage.** File uploads are technically available but unused — leases, invoices, and receipts cannot be attached. Expenses hold a link to an invoice hosted elsewhere, nothing more.
 - **No multi-unit properties.** Each property is a single rentable place. A building with several independently-let flats must be entered as several properties, and cannot be reported on as one building.
