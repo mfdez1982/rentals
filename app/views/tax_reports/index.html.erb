@@ -8,17 +8,27 @@
 
 <%= turbo_frame_tag dom_id(@property, :tax_report) do %>
   <div data-controller="modal">
+  <% tax_report_locked = !current_landlord.tax_report? %>
+  <% if tax_report_locked %>
+    <div class="alert alert-info mb-6" role="alert">
+      <%= heroicon "sparkles", variant: :outline, class: "w-6 h-6" %>
+      <span class="text-base font-medium"><%= t("tax_report.plan_limit_hint") %></span>
+    </div>
+  <% end %>
+
   <!-- Generate control -->
-  <div class="mb-8 flex items-baseline gap-3" data-controller="year-select" data-year-select-base-url-value="<%= property_tax_reports_path(@property) %>">
-    <%= form_with url: property_tax_reports_path(@property), method: :post, class: "flex items-baseline gap-3" do %>
-      <label for="tax_report_year" class="text-sm font-semibold text-base-content/70"><%= t("tax_report.select_year") %></label>
-      <select id="tax_report_year" name="year" class="select select-bordered select-sm w-32" data-year-select-target="year" data-action="change->year-select#reload">
-        <% @year_options.each do |year| %>
-          <option value="<%= year %>" <%= "selected" if year == @year %>><%= year %></option>
-        <% end %>
-      </select>
-      <button type="submit" class="btn btn-primary btn-sm"><%= t("tax_report.generate") %></button>
-    <% end %>
+  <div class="mb-8">
+    <div class="flex items-baseline gap-3" data-controller="year-select" data-year-select-base-url-value="<%= property_tax_reports_path(@property) %>">
+      <%= form_with url: property_tax_reports_path(@property), method: :post, class: "flex items-baseline gap-3" do %>
+        <label for="tax_report_year" class="text-sm font-semibold text-base-content/70"><%= t("tax_report.select_year") %></label>
+        <select id="tax_report_year" name="year" class="select select-bordered select-sm w-32" data-year-select-target="year" data-action="change->year-select#reload" <%= "disabled" if tax_report_locked %>>
+          <% @year_options.each do |year| %>
+            <option value="<%= year %>" <%= "selected" if year == @year %>><%= year %></option>
+          <% end %>
+        </select>
+        <button type="submit" class="btn btn-primary btn-sm" <%= "disabled" if tax_report_locked %>><%= t("tax_report.generate") %></button>
+      <% end %>
+    </div>
   </div>
 
   <% if @collectable_deductible_expenses.present? %>
@@ -78,18 +88,20 @@
               <td class="text-right"><%= report.active_rental_days %></td>
               <td class="text-right">
                 <div class="flex justify-end items-center gap-2">
-                  <%= link_to t("common.open"), property_tax_report_path(@property, report), class: "btn btn-primary btn-xs", data: { turbo_frame: "_top" } %>
-                  <%= link_to edit_property_tax_report_path(@property, report),
-                      class: "icon-btn",
-                      title: t("tax_report.edit_name"),
-                      data: { turbo_frame: "tax_report_edit_frame", action: "click->modal#openFrame" } do %>
-                    <%= heroicon "pencil", variant: :outline %>
-                  <% end %>
-                  <%= button_to property_tax_report_path(@property, report), method: :delete,
-                      class: "icon-btn",
-                      title: t("forms.buttons.delete"),
-                      form: { data: { turbo_confirm: t("tax_report.confirm_delete") } } do %>
-                    <%= heroicon "trash", variant: :outline %>
+                  <% unless tax_report_locked %>
+                    <%= link_to t("common.open"), property_tax_report_path(@property, report), class: "btn btn-primary btn-xs", data: { turbo_frame: "_top" } %>
+                    <%= link_to edit_property_tax_report_path(@property, report),
+                        class: "icon-btn",
+                        title: t("tax_report.edit_name"),
+                        data: { turbo_frame: "tax_report_edit_frame", action: "click->modal#openFrame" } do %>
+                      <%= heroicon "pencil", variant: :outline %>
+                    <% end %>
+                    <%= button_to property_tax_report_path(@property, report), method: :delete,
+                        class: "icon-btn",
+                        title: t("forms.buttons.delete"),
+                        form: { data: { turbo_confirm: t("tax_report.confirm_delete") } } do %>
+                      <%= heroicon "trash", variant: :outline %>
+                    <% end %>
                   <% end %>
                 </div>
               </td>

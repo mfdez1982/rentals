@@ -148,7 +148,12 @@ Flipper.enabled?(:tax_report, current_landlord)
 
 Plans are assigned from the back office — `plan` is an editable `Field::Select` on the Administrate `LandlordDashboard`.
 
-**Status:** the enum, Flipper wiring, and admin assignment are in place, and the first per-tier lock is live: the `multi_property` feature (enabled for `pro_and_up` in `config/initializers/flipper.rb`) caps free landlords at one property. `Landlord#property_limit_reached?` is the enforcement point — `PropertiesController#create` blocks a second property for a landlord where it's true, and the "Add a Property" button is disabled with an upgrade hint on the properties index for the same case. The tax-report and recollections locks are still to come. The seed creates one landlord per tier — `free@example.com`, `pro@example.com`, `premium@example.com` (password `password`) — each with its own properties, agreements, payments, expenses, and notes.
+**Status:** the enum, Flipper wiring, and admin assignment are in place. Two per-tier locks are live:
+
+- `multi_property` (`pro_and_up`) caps free landlords at one property. `Landlord#property_limit_reached?` blocks a second property in `PropertiesController#create`; the "Add a Property" button is disabled with an upgrade hint on the index for the same case. **Downgrade handling:** `Landlord#active_property` (oldest by `created_at`) stays usable; `Landlord#property_locked?(property)` is true for the rest. Locked properties still list (badge + hint, no delete icon), but `PropertiesController#show`/`#destroy` and the shared `ApplicationController#set_property` (used by every property-nested controller — agreements, payments, expenses, recollections, tax reports, invitations) redirect to the index for them.
+- `tax_report` (`pro_and_up`) gates generating, viewing, editing, and deleting reports — `TaxReportsController#{create,show,edit,update,destroy}` via `Landlord#tax_report?`. The index itself always lists saved reports; a locked landlord sees a prominent `alert-info` upgrade banner there and the Open/Edit/Delete controls per row are hidden, not just disabled.
+
+Recollections locking is still to come. The seed creates one landlord per tier — `free@example.com`, `pro@example.com`, `premium@example.com` (password `password`) — each with its own properties, agreements, payments, expenses, and notes.
 
 ---
 

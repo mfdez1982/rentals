@@ -5,7 +5,13 @@ RSpec.describe "TaxReports", type: :request do
   let(:landlord) { user.landlord }
   let(:property) { create(:property, landlord: landlord) }
 
-  before { sign_in user }
+  before do
+    Flipper.enable_group(:tax_report, :pro_and_up)
+    landlord.update!(plan: :premium)
+    sign_in user
+  end
+
+  after { Flipper.remove(:tax_report) }
 
   describe "GET /properties/:property_id/tax_reports" do
     it "lists saved reports and the generate control" do
@@ -83,6 +89,39 @@ RSpec.describe "TaxReports", type: :request do
       expect {
         delete property_tax_report_path(property, report)
       }.to change { property.tax_reports.count }.by(-1)
+      expect(response).to redirect_to(property_tax_reports_path(property))
+    end
+  end
+
+  context "when the landlord is on the free plan" do
+    before { landlord.update!(plan: :free) }
+
+    it "blocks generating a new report" do
+      expect {
+        post property_tax_reports_path(property), params: { year: 2025 }
+      }.not_to change { property.tax_reports.count }
+      expect(response).to redirect_to(property_tax_reports_path(property))
+      expect(flash[:alert]).to eq(I18n.t("tax_report.errors.plan_limit"))
+    end
+
+    it "blocks opening a saved report" do
+      report = create(:tax_report, property: property)
+      get property_tax_report_path(property, report)
+      expect(response).to redirect_to(property_tax_reports_path(property))
+    end
+
+    it "blocks renaming a saved report" do
+      report = create(:tax_report, property: property)
+      patch property_tax_report_path(property, report), params: { tax_report: { name: "My filing" } }
+      expect(response).to redirect_to(property_tax_reports_path(property))
+      expect(report.reload.name).to be_nil
+    end
+
+    it "blocks deleting a saved report" do
+      report = create(:tax_report, property: property)
+      expect {
+        delete property_tax_report_path(property, report)
+      }.not_to change { property.tax_reports.count }
       expect(response).to redirect_to(property_tax_reports_path(property))
     end
   end

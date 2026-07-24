@@ -29,3 +29,4 @@ end
 # matching actor group above — this is the one place to change what a tier
 # includes.
 Flipper.enable_group(:multi_property, :pro_and_up)
+Flipper.enable_group(:tax_report, :pro_and_up)

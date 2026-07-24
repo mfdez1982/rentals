@@ -46,6 +46,7 @@ class ApplicationController < ActionController::Base
 
   def set_property
     @property = current_landlord.properties.find(params[:property_id])
+    redirect_to properties_path, alert: t("properties.errors.locked") if current_landlord.property_locked?(@property)
   end
 
   def pending_tenant_invitations

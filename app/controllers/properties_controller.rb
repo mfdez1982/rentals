@@ -2,6 +2,7 @@ class PropertiesController < ApplicationController
   include PropertyShowLoadable
 
   before_action :set_property, only: [:show, :edit, :update, :destroy]
+  before_action :ensure_property_accessible, only: [:show, :destroy]
   before_action -> { redirect_unless_turbo_frame_request(property_path(@property)) }, only: [:edit]
 
   def index
@@ -51,6 +52,10 @@ class PropertiesController < ApplicationController
 
   def set_property
     @property = current_landlord.properties.find(params[:id])
+  end
+
+  def ensure_property_accessible
+    redirect_to properties_path, alert: t("properties.errors.locked") if current_landlord.property_locked?(@property)
   end
 
   def property_params

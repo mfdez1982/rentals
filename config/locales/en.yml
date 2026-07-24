@@ -144,6 +144,8 @@ en:
     no_properties: No properties yet.
     no_properties_hint: Add your first one above to get started.
     plan_limit_hint: Free plan is limited to one property. Upgrade to Pro or Premium to add more.
+    locked_badge: Locked
+    locked_hint: This property is locked because your plan only includes one property. Upgrade to Pro or Premium to access it again.
     form:
       name_placeholder: e.g. 123 Main St
       name_label: Name
@@ -151,6 +153,7 @@ en:
     edit_property: Edit Property
     errors:
       plan_limit: Free plan is limited to one property. Upgrade to Pro or Premium to add more.
+      locked: This property is locked because your plan only includes one property. Upgrade to Pro or Premium to access it again.
 
   # Rental Agreements
   rental_agreements:
@@ -287,6 +290,9 @@ en:
     confirm_delete: "Delete this tax report?"
     validate_expenses_warning: "These expenses are marked as tax deductible while also being recovered from tenants via Recollections, which may be a double-dip."
     validate_expenses_hint: "You can untick \"Tax deductible\" on the Expenses tab for any of these if you don't want to deduct them."
+    plan_limit_hint: Tax reports are available on Pro and Premium plans. Upgrade to enable tax reports.
+    errors:
+      plan_limit: Tax reports are available on Pro and Premium plans. Upgrade to enable tax reports.
 
   # Expenses
   expenses:

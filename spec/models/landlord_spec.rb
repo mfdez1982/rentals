@@ -70,4 +70,38 @@ RSpec.describe Landlord, type: :model do
       expect(pro.property_limit_reached?).to be(false)
     end
   end
+
+  describe "#active_property and #property_locked?" do
+    before { Flipper.enable_group(:multi_property, :pro_and_up) }
+    after { Flipper.remove(:multi_property) }
+
+    it "has no active property when there are none" do
+      expect(create(:landlord, plan: :free).active_property).to be_nil
+    end
+
+    it "picks the oldest property as active for a free landlord" do
+      free = create(:landlord, plan: :free)
+      first = create(:property, landlord: free, created_at: 2.days.ago)
+      create(:property, landlord: free, created_at: 1.day.ago)
+
+      expect(free.active_property).to eq(first)
+    end
+
+    it "locks every property except the active one for a free landlord" do
+      free = create(:landlord, plan: :free)
+      first = create(:property, landlord: free, created_at: 2.days.ago)
+      second = create(:property, landlord: free, created_at: 1.day.ago)
+
+      expect(free.property_locked?(first)).to be(false)
+      expect(free.property_locked?(second)).to be(true)
+    end
+
+    it "never locks any property for pro or premium landlords" do
+      pro = create(:landlord, plan: :pro)
+      create(:property, landlord: pro, created_at: 2.days.ago)
+      second = create(:property, landlord: pro, created_at: 1.day.ago)
+
+      expect(pro.property_locked?(second)).to be(false)
+    end
+  end
 end

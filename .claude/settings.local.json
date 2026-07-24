@@ -68,7 +68,8 @@
       "Skill(claude-in-chrome)",
       "Bash(echo \"exit $?\")",
       "Bash(bin/rails db:seed)",
-      "mcp__playwright__browser_tabs"
+      "mcp__playwright__browser_tabs",
+      "Bash(grep -i \"\\\\.rb$\")"
     ]
   },
   "enabledMcpjsonServers": [

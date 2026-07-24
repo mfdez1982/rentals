@@ -70,20 +70,26 @@ RSpec.describe "Properties Index Card Grid", type: :request do
       expect(color_class_1).to eq(color_class_2)
     end
 
-    it "generates deterministic colors from palette" do
-      properties = create_list(:property, 6, landlord: landlord) do |property, i|
-        property.name = "Property #{i}"
-      end
+    context "with more properties than the free plan allows" do
+      before { Flipper.enable_group(:multi_property, :pro_and_up) }
+      after { Flipper.remove(:multi_property) }
 
-      get properties_path
+      it "generates deterministic colors from palette" do
+        landlord.update!(plan: :premium)
+        properties = create_list(:property, 6, landlord: landlord) do |property, i|
+          property.name = "Property #{i}"
+        end
 
-      properties.each do |property|
-        doc = Nokogiri::HTML(response.body)
-        card = doc.css("[data-testid='property-card-#{property.id}']").first
-        avatar = card.css("div[class*='rounded-full']").first
-        classes = avatar.attr("class")
+        get properties_path
 
-        expect(classes).to match(/bg-(success|warning|error|info|primary|secondary)/)
+        properties.each do |property|
+          doc = Nokogiri::HTML(response.body)
+          card = doc.css("[data-testid='property-card-#{property.id}']").first
+          avatar = card.css("div[class*='rounded-full']").first
+          classes = avatar.attr("class")
+
+          expect(classes).to match(/bg-(success|warning|error|info|primary|secondary)/)
+        end
       end
     end
 

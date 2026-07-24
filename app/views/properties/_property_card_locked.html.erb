@@ -1,0 +1,16 @@
+<div class="card bg-base-100 shadow-md h-full opacity-70"
+     data-testid="property-card-<%= property.id %>">
+  <div class="card-body p-4 flex flex-col h-full">
+    <div class="flex items-start justify-between mb-3">
+      <div class="flex items-center gap-3 flex-1 min-w-0">
+        <div class="bg-base-300 w-10 h-10 rounded-full flex-shrink-0 flex items-center justify-center text-base-content/60">
+          <%= heroicon "lock-closed", variant: :outline %>
+        </div>
+        <h3 class="card-title text-lg font-bold line-clamp-2"><%= property.name %></h3>
+      </div>
+    </div>
+
+    <span class="badge badge-neutral badge-sm mb-3 w-fit"><%= t("properties.locked_badge") %></span>
+    <p class="text-sm text-base-content/60"><%= t("properties.locked_hint") %></p>
+  </div>
+</div>

@@ -85,5 +85,14 @@ RSpec.describe "Properties", type: :request do
       other = create(:property)
       expect { delete property_path(other) }.to raise_error(ActiveRecord::RecordNotFound)
     end
+
+    it "blocks deleting a locked property on the free plan" do
+      first = create(:property, landlord: landlord, created_at: 2.days.ago)
+      locked = create(:property, landlord: landlord, created_at: 1.day.ago)
+
+      expect { delete property_path(locked) }.not_to change { landlord.properties.count }
+      expect(response).to redirect_to(properties_path)
+      expect(flash[:alert]).to eq(I18n.t("properties.errors.locked"))
+    end
   end
 end

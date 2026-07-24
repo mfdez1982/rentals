@@ -1,6 +1,7 @@
 class TaxReportsController < ApplicationController
   before_action :set_property
   before_action :set_tax_report, only: [:show, :edit, :update, :destroy]
+  before_action :ensure_tax_report_allowed, only: [:create, :show, :edit, :update, :destroy]
   before_action -> { redirect_unless_turbo_frame_request(property_tax_reports_path(@property)) }, only: [:edit]
 
   def index
@@ -52,6 +53,12 @@ class TaxReportsController < ApplicationController
 
   def set_tax_report
     @tax_report = @property.tax_reports.find(params[:id])
+  end
+
+  def ensure_tax_report_allowed
+    unless current_landlord.tax_report?
+      redirect_to property_tax_reports_path(@property), alert: t("tax_report.errors.plan_limit")
+    end
   end
 
   def tax_report_params

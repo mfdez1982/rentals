@@ -20,4 +20,16 @@ class Landlord < ApplicationRecord
   def property_limit_reached?
     !multi_property? && properties.count >= 1
   end
+
+  def active_property
+    properties.order(:created_at).first
+  end
+
+  def property_locked?(property)
+    !multi_property? && property.id != active_property&.id
+  end
+
+  def tax_report?
+    Flipper.enabled?(:tax_report, self)
+  end
 end

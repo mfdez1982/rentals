@@ -16,7 +16,11 @@
       <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4" data-testid="properties-grid">
         <% @properties.each do |property| %>
           <%= turbo_frame_tag dom_id(property) do %>
-            <%= render "property_card", property: property %>
+            <% if current_landlord.property_locked?(property) %>
+              <%= render "property_card_locked", property: property %>
+            <% else %>
+              <%= render "property_card", property: property %>
+            <% end %>
           <% end %>
         <% end %>
       </div>

@@ -264,6 +264,8 @@ es:
     no_properties: No hay propiedades aún.
     no_properties_hint: Añade la primera arriba para empezar.
     plan_limit_hint: El plan gratuito está limitado a una propiedad. Mejora a Pro o Premium para añadir más.
+    locked_badge: Bloqueada
+    locked_hint: Esta propiedad está bloqueada porque tu plan solo incluye una propiedad. Mejora a Pro o Premium para volver a acceder a ella.
     form:
       name_placeholder: p. ej. 123 Calle Principal
       name_label: Nombre
@@ -271,6 +273,7 @@ es:
     edit_property: Editar Propiedad
     errors:
       plan_limit: El plan gratuito está limitado a una propiedad. Mejora a Pro o Premium para añadir más.
+      locked: Esta propiedad está bloqueada porque tu plan solo incluye una propiedad. Mejora a Pro o Premium para volver a acceder a ella.
 
   # Rental Agreements
   rental_agreements:
@@ -407,6 +410,9 @@ es:
     confirm_delete: "¿Eliminar este informe fiscal?"
     validate_expenses_warning: "Estos gastos están marcados como deducibles a la vez que se recuperan de los inquilinos mediante Recobros, lo que podría suponer un doble beneficio."
     validate_expenses_hint: "Puedes desmarcar \"Deducible\" en la pestaña de Gastos para cualquiera de estos si no quieres deducirlos."
+    plan_limit_hint: Los informes fiscales están disponibles en los planes Pro y Premium. Mejora tu plan para habilitar los informes fiscales.
+    errors:
+      plan_limit: Los informes fiscales están disponibles en los planes Pro y Premium. Mejora tu plan para habilitar los informes fiscales.
 
   # Expenses
   expenses:

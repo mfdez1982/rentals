@@ -160,7 +160,9 @@ The service is offered on **three tiers** — Free, Pro, and Premium — so a la
 
 The reasoning behind the split: most landlords in the product's audience own a single property, so a property cap alone would never prompt them to pay. The features reserved for paid tiers — the money-related ones a landlord feels the pain of doing by hand — are what make a paid plan worth it for that majority, while the property cap captures the minority who grow a larger portfolio.
 
-**How a plan is assigned today.** Each landlord is recorded on a tier, and for now that tier is set by an administrator from the back office — there is no self-service checkout yet (see section 10). A landlord's current tier is shown beside their name once signed in. The machinery that maps a tier to the features it unlocks is in place; the property cap is the first individual feature lock enforced, and the rest are being rolled out tier by tier.
+**How a plan is assigned today.** Each landlord is recorded on a tier, and for now that tier is set by an administrator from the back office — there is no self-service checkout yet (see section 10). A landlord's current tier is shown beside their name once signed in. The machinery that maps a tier to the features it unlocks is in place; the property cap and the tax report are enforced, and recollections is still being rolled out.
+
+**Downgrading.** Nothing is deleted when a landlord drops to Free with more than the plan allows. One property (the oldest) stays fully usable; the rest are still listed, but locked — no opening, editing, or deleting them until the landlord upgrades again. Saved tax reports keep listing too, but opening, renaming, or deleting one requires Pro or Premium.
 
 ---
 
@@ -181,7 +183,7 @@ The reasoning behind the split: most landlords in the product's audience own a s
 Stated plainly, so expectations are set correctly.
 
 - **No production email delivery.** Invitations and password resets are generated but not yet configured to send from a live environment. This blocks real-world use of the tenant invitation flow.
-- **No self-service billing.** The plan tiers exist and can be assigned by an administrator (see section 8), but there is no payment mechanism for the service itself, no self-service upgrade or checkout, and no trial handling — despite pricing being shown on the public landing page. The property cap is enforced; the tax-report and recollections locks are still being rolled out, so tier differences are not yet fully enforced across the board.
+- **No self-service billing.** The plan tiers exist and can be assigned by an administrator (see section 8), but there is no payment mechanism for the service itself, no self-service upgrade or checkout, and no trial handling — despite pricing being shown on the public landing page. The property cap and tax report are enforced; recollections is still being rolled out.
 - **No payment processing.** Rent and repayments are *recorded* as having happened; no money moves through the application. Landlords reconcile against their own bank account.
 - **No document storage.** File uploads are technically available but unused — leases, invoices, and receipts cannot be attached. Expenses hold a link to an invoice hosted elsewhere, nothing more.
 - **No multi-unit properties.** Each property is a single rentable place. A building with several independently-let flats must be entered as several properties, and cannot be reported on as one building.

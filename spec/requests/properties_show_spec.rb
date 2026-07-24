@@ -46,6 +46,29 @@ RSpec.describe "Properties show & tax report", type: :request do
       other = create(:property)
       expect { get property_path(other) }.to raise_error(ActiveRecord::RecordNotFound)
     end
+
+    context "when downgraded to free with multiple properties" do
+      it "still shows the oldest property but locks the rest" do
+        first = create(:property, landlord: landlord, created_at: 2.days.ago)
+        second = create(:property, landlord: landlord, created_at: 1.day.ago)
+
+        get property_path(first)
+        expect(response).to have_http_status(:ok)
+
+        get property_path(second)
+        expect(response).to redirect_to(properties_path)
+        expect(flash[:alert]).to eq(I18n.t("properties.errors.locked"))
+      end
+
+      it "blocks reaching a locked property's nested resources directly" do
+        create(:property, landlord: landlord, created_at: 2.days.ago)
+        locked = create(:property, landlord: landlord, created_at: 1.day.ago)
+        agreement = create(:rental_agreement, property: locked)
+
+        get property_rental_agreement_path(locked, agreement)
+        expect(response).to redirect_to(properties_path)
+      end
+    end
   end
 
   describe "GET /properties/:id/edit" do
