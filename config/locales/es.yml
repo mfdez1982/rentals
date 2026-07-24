@@ -191,6 +191,11 @@ es:
     sign_up: Registrarse
     language: Idioma
 
+  plans:
+    free: Gratis
+    pro: Pro
+    premium: Premium
+
   # Landing Page
   landing:
     tagline: "Gestión de propiedades, <br>sin el caos"

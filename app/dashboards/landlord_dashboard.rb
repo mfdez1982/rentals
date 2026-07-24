@@ -11,6 +11,7 @@ class LandlordDashboard < Administrate::BaseDashboard
     id: Field::Number,
     name: Field::String,
     phone: Field::String,
+    plan: Field::Select.with_options(collection: Landlord.plans.keys),
     properties: Field::HasMany,
     user: Field::BelongsTo,
     created_at: Field::DateTime,
@@ -26,6 +27,7 @@ class LandlordDashboard < Administrate::BaseDashboard
     id
     name
     phone
+    plan
     properties
   ].freeze
 
@@ -35,6 +37,7 @@ class LandlordDashboard < Administrate::BaseDashboard
     id
     name
     phone
+    plan
     properties
     user
     created_at
@@ -47,6 +50,7 @@ class LandlordDashboard < Administrate::BaseDashboard
   FORM_ATTRIBUTES = %i[
     name
     phone
+    plan
     properties
     user
   ].freeze

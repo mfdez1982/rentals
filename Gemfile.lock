@@ -130,6 +130,11 @@ GEM
     ffi (1.17.4-x86_64-darwin)
     ffi (1.17.4-x86_64-linux-gnu)
     ffi (1.17.4-x86_64-linux-musl)
+    flipper (1.4.2)
+      concurrent-ruby (< 2)
+    flipper-active_record (1.4.2)
+      activerecord (>= 4.2, < 9)
+      flipper (~> 1.4.2)
     fugit (1.12.2)
       et-orbi (~> 1.4)
       raabro (~> 1.4)
@@ -448,6 +453,8 @@ DEPENDENCIES
   debug
   devise
   factory_bot_rails
+  flipper
+  flipper-active_record
   heroicons-ruby
   image_processing (~> 1.2)
   importmap-rails

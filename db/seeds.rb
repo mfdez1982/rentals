@@ -203,4 +203,85 @@ note_12 = landlord_2.notes.find_or_create_by!(title: "adfs") do |n|
   n.completed_at = nil
   n.noteable = nil
 end
-e
+
+# --- Plan demo users (one per tier; password is "password") ---
+plan_landlords = {}
+%i[free pro premium].each do |plan|
+  email = "#{plan}@example.com"
+  user = User.find_or_create_by!(email: email) do |u|
+    u.password = "password"
+    u.password_confirmation = "password"
+    u.role = :landlord
+  end
+  landlord = user.landlord || user.create_landlord!(name: plan.to_s)
+  landlord.update!(name: plan.to_s, plan: plan)
+  plan_landlords[plan] = landlord
+end
+
+# Builds a run of monthly payments; those due on/before `paid_through` are marked
+# paid a few days later, the rest are left unpaid (overdue once the due date passes).
+build_payments = lambda do |agreement, first_due, count, rent, paid_through|
+  count.times do |i|
+    due = first_due >> i
+    agreement.payments.find_or_create_by!(due_date: due) do |p|
+      p.amount = rent
+      p.paid_date = due <= paid_through ? due + 3 : nil
+    end
+  end
+end
+
+# --- Free: one property, one active agreement ---
+free = plan_landlords[:free]
+free_studio = free.properties.find_or_create_by!(name: "Downtown Studio")
+free_agreement = free_studio.rental_agreements.find_or_create_by!(start_date: Date.new(2025, 9, 1), end_date: Date.new(2026, 8, 31)) do |ra|
+  ra.rent_amount = BigDecimal("650.0")
+end
+build_payments.call(free_agreement, Date.new(2025, 9, 1), 12, BigDecimal("650.0"), Date.new(2026, 6, 1))
+free_studio.expenses.find_or_create_by!(date: Date.new(2026, 1, 15), category: :tax) { |e| e.amount = BigDecimal("210.0"); e.description = "Council tax (IBI)" }
+free_studio.expenses.find_or_create_by!(date: Date.new(2026, 2, 1), category: :insurance) { |e| e.amount = BigDecimal("180.0"); e.description = "Home insurance" }
+free_studio.expenses.find_or_create_by!(date: Date.new(2026, 3, 1), category: :community_fees) { |e| e.amount = BigDecimal("95.0"); e.description = "HOA fees" }
+free.notes.find_or_create_by!(title: "Renew insurance") { |n| n.description = "Shop around before renewal"; n.status = :active; n.due_date = Date.new(2026, 8, 10); n.noteable = nil }
+free.notes.find_or_create_by!(title: "Fix kitchen tap") { |n| n.description = "Tenant reported a leak"; n.status = :active; n.noteable = free_studio }
+
+# --- Pro: three properties (one available), a renewal, mixed payment states ---
+pro = plan_landlords[:pro]
+pro_maple = pro.properties.find_or_create_by!(name: "Maple Apartment")
+pro_beach = pro.properties.find_or_create_by!(name: "Beach Condo")
+pro.properties.find_or_create_by!(name: "Garage Unit") # available, no agreement
+pro_maple_1 = pro_maple.rental_agreements.find_or_create_by!(start_date: Date.new(2025, 6, 1), end_date: Date.new(2026, 5, 31)) { |ra| ra.rent_amount = BigDecimal("900.0") }
+pro_maple_2 = pro_maple.rental_agreements.find_or_create_by!(start_date: Date.new(2026, 6, 1), end_date: Date.new(2027, 5, 31)) { |ra| ra.rent_amount = BigDecimal("950.0") }
+pro_beach_1 = pro_beach.rental_agreements.find_or_create_by!(start_date: Date.new(2026, 1, 1), end_date: Date.new(2026, 12, 31)) { |ra| ra.rent_amount = BigDecimal("1200.0") }
+build_payments.call(pro_maple_1, Date.new(2025, 6, 1), 12, BigDecimal("900.0"), Date.new(2026, 5, 1))
+build_payments.call(pro_maple_2, Date.new(2026, 6, 1), 12, BigDecimal("950.0"), Date.new(2026, 6, 1))
+build_payments.call(pro_beach_1, Date.new(2026, 1, 1), 12, BigDecimal("1200.0"), Date.new(2026, 5, 1))
+pro_maple.expenses.find_or_create_by!(date: Date.new(2026, 1, 10), category: :tax) { |e| e.amount = BigDecimal("320.0"); e.description = "IBI" }
+pro_maple.expenses.find_or_create_by!(date: Date.new(2026, 4, 3), category: :repairs_maintenance) { |e| e.amount = BigDecimal("250.0"); e.description = "Boiler service" }
+pro_beach.expenses.find_or_create_by!(date: Date.new(2026, 2, 20), category: :community_fees) { |e| e.amount = BigDecimal("140.0"); e.description = "Community fees" }
+pro_beach.expenses.find_or_create_by!(date: Date.new(2026, 3, 5), category: :insurance) { |e| e.amount = BigDecimal("220.0"); e.description = "Landlord insurance" }
+pro.notes.find_or_create_by!(title: "Quarterly inspection") { |n| n.description = "Schedule for all units"; n.status = :active; n.due_date = Date.new(2026, 9, 1); n.noteable = nil }
+pro.notes.find_or_create_by!(title: "Beach Condo AC") { |n| n.description = "Service AC before summer"; n.status = :completed; n.completed_at = Time.zone.parse("2026-06-15T10:00:00"); n.noteable = pro_beach }
+
+# --- Premium: four properties (one available), a collectable expense for Recollections ---
+premium = plan_landlords[:premium]
+prem_loft = premium.properties.find_or_create_by!(name: "City Loft")
+prem_house = premium.properties.find_or_create_by!(name: "Suburban House")
+premium.properties.find_or_create_by!(name: "Lakeside Cabin") # available, no agreement
+prem_office = premium.properties.find_or_create_by!(name: "Office Space")
+prem_loft_1 = prem_loft.rental_agreements.find_or_create_by!(start_date: Date.new(2025, 10, 1), end_date: Date.new(2026, 9, 30)) { |ra| ra.rent_amount = BigDecimal("1400.0") }
+prem_house_1 = prem_house.rental_agreements.find_or_create_by!(start_date: Date.new(2026, 3, 1), end_date: Date.new(2027, 2, 28)) { |ra| ra.rent_amount = BigDecimal("1650.0") }
+prem_office_1 = prem_office.rental_agreements.find_or_create_by!(start_date: Date.new(2025, 1, 1), end_date: Date.new(2026, 12, 31)) { |ra| ra.rent_amount = BigDecimal("2000.0") }
+build_payments.call(prem_loft_1, Date.new(2025, 10, 1), 12, BigDecimal("1400.0"), Date.new(2026, 6, 1))
+build_payments.call(prem_house_1, Date.new(2026, 3, 1), 12, BigDecimal("1650.0"), Date.new(2026, 7, 1))
+build_payments.call(prem_office_1, Date.new(2025, 1, 1), 24, BigDecimal("2000.0"), Date.new(2026, 7, 1))
+prem_loft.expenses.find_or_create_by!(date: Date.new(2026, 1, 20), category: :tax) { |e| e.amount = BigDecimal("520.0"); e.description = "IBI" }
+prem_loft.expenses.find_or_create_by!(date: Date.new(2026, 7, 1), category: :utilities) do |e|
+  e.amount = BigDecimal("300.0")
+  e.description = "Water bill Q2"
+  e.collectable = true
+  e.period_start = Date.new(2026, 4, 1)
+  e.period_end = Date.new(2026, 6, 30)
+end
+prem_house.expenses.find_or_create_by!(date: Date.new(2026, 5, 12), category: :repairs_maintenance) { |e| e.amount = BigDecimal("480.0"); e.description = "Roof repair" }
+prem_office.expenses.find_or_create_by!(date: Date.new(2026, 2, 2), category: :management_legal) { |e| e.amount = BigDecimal("600.0"); e.description = "Legal fees" }
+premium.notes.find_or_create_by!(title: "Portfolio review") { |n| n.description = "Annual review with accountant"; n.status = :active; n.due_date = Date.new(2026, 11, 30); n.noteable = nil }
+premium.notes.find_or_create_by!(title: "Recollect Q2 water") { |n| n.description = "Pass water bill to tenants"; n.status = :active; n.due_date = Date.new(2026, 8, 1); n.noteable = prem_loft }

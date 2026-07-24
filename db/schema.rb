@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_07_23_152205) do
+ActiveRecord::Schema[8.1].define(version: 2026_07_24_084008) do
   create_table "agreement_tenants", force: :cascade do |t|
     t.datetime "created_at", null: false
     t.string "invitation_token", null: false
@@ -45,10 +45,27 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_23_152205) do
     t.index ["property_id"], name: "index_expenses_on_property_id"
   end
 
+  create_table "flipper_features", force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.string "key", null: false
+    t.datetime "updated_at", null: false
+    t.index ["key"], name: "index_flipper_features_on_key", unique: true
+  end
+
+  create_table "flipper_gates", force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.string "feature_key", null: false
+    t.string "key", null: false
+    t.datetime "updated_at", null: false
+    t.text "value"
+    t.index ["feature_key", "key", "value"], name: "index_flipper_gates_on_feature_key_and_key_and_value", unique: true
+  end
+
   create_table "landlords", force: :cascade do |t|
     t.datetime "created_at", null: false
     t.string "name", null: false
     t.string "phone"
+    t.integer "plan", default: 0, null: false
     t.datetime "updated_at", null: false
     t.bigint "user_id", null: false
     t.index ["user_id"], name: "index_landlords_on_user_id"

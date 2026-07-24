@@ -71,6 +71,11 @@ en:
     sign_up: Sign up
     language: Language
 
+  plans:
+    free: Free
+    pro: Pro
+    premium: Premium
+
   # Landing Page
   landing:
     tagline: "Property management, <br>minus the chaos"
