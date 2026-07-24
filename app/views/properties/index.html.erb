@@ -1,9 +1,15 @@
 <%= render "shared/dashboard_layout" do %>
+  <% at_property_limit = current_landlord.property_limit_reached? %>
   <div data-controller="modal">
     <div class="flex items-center justify-between mb-6">
-      <button type="button" class="btn btn-primary btn-sm" data-action="modal#open">
-        <%= t("properties.add_property") %>
-      </button>
+      <div>
+        <button type="button" class="btn btn-primary btn-sm" data-action="modal#open" <%= "disabled" if at_property_limit %>>
+          <%= t("properties.add_property") %>
+        </button>
+        <% if at_property_limit %>
+          <p class="text-sm text-base-content/60 mt-1"><%= t("properties.plan_limit_hint") %></p>
+        <% end %>
+      </div>
     </div>
 
     <% if @properties.any? %>

@@ -15,7 +15,11 @@ class PropertiesController < ApplicationController
 
   def create
     @new_property = current_landlord.properties.build(property_params)
-    if @new_property.save
+    if current_landlord.property_limit_reached?
+      @new_property.errors.add(:base, t("properties.errors.plan_limit"))
+      @properties = current_landlord.properties.reload
+      render :index, status: :unprocessable_entity
+    elsif @new_property.save
       redirect_to properties_path
     else
       @properties = current_landlord.properties.reload

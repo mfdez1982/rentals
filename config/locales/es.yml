@@ -263,11 +263,14 @@ es:
       other: "%{count} días de retraso"
     no_properties: No hay propiedades aún.
     no_properties_hint: Añade la primera arriba para empezar.
+    plan_limit_hint: El plan gratuito está limitado a una propiedad. Mejora a Pro o Premium para añadir más.
     form:
       name_placeholder: p. ej. 123 Calle Principal
       name_label: Nombre
     delete_confirm: "¿Eliminar \"%{name}\"? Esta acción no se puede deshacer."
     edit_property: Editar Propiedad
+    errors:
+      plan_limit: El plan gratuito está limitado a una propiedad. Mejora a Pro o Premium para añadir más.
 
   # Rental Agreements
   rental_agreements:

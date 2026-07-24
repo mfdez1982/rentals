@@ -24,3 +24,8 @@ end
 Flipper.register(:premium_only) do |actor, _context|
   actor.respond_to?(:plan) && actor.plan == "premium"
 end
+
+# Feature gates. Each line grants a feature to a tier by enabling it for the
+# matching actor group above — this is the one place to change what a tier
+# includes.
+Flipper.enable_group(:multi_property, :pro_and_up)

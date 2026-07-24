@@ -143,11 +143,14 @@ en:
       other: "%{count} days overdue"
     no_properties: No properties yet.
     no_properties_hint: Add your first one above to get started.
+    plan_limit_hint: Free plan is limited to one property. Upgrade to Pro or Premium to add more.
     form:
       name_placeholder: e.g. 123 Main St
       name_label: Name
     delete_confirm: "Delete \"%{name}\"? This cannot be undone."
     edit_property: Edit Property
+    errors:
+      plan_limit: Free plan is limited to one property. Upgrade to Pro or Premium to add more.
 
   # Rental Agreements
   rental_agreements:

@@ -12,4 +12,12 @@ class Landlord < ApplicationRecord
   def flipper_id
     "Landlord;#{id}"
   end
+
+  def multi_property?
+    Flipper.enabled?(:multi_property, self)
+  end
+
+  def property_limit_reached?
+    !multi_property? && properties.count >= 1
+  end
 end

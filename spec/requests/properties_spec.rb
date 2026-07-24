@@ -27,6 +27,34 @@ RSpec.describe "Properties", type: :request do
       post properties_path, params: { property: { name: "" } }
       expect(response).to have_http_status(:unprocessable_entity)
     end
+
+    context "free plan property limit" do
+      before do
+        Flipper.enable_group(:multi_property, :pro_and_up)
+        create(:property, landlord: landlord)
+      end
+      after { Flipper.remove(:multi_property) }
+
+      it "blocks a second property for a free landlord" do
+        post properties_path, params: { property: { name: "Second Place" } }
+        expect(response).to have_http_status(:unprocessable_entity)
+        expect(landlord.properties.count).to eq(1)
+      end
+
+      it "allows a second property for a pro landlord" do
+        landlord.update!(plan: :pro)
+        post properties_path, params: { property: { name: "Second Place" } }
+        expect(response).to redirect_to(properties_path)
+        expect(landlord.properties.count).to eq(2)
+      end
+
+      it "allows a second property for a premium landlord" do
+        landlord.update!(plan: :premium)
+        post properties_path, params: { property: { name: "Second Place" } }
+        expect(response).to redirect_to(properties_path)
+        expect(landlord.properties.count).to eq(2)
+      end
+    end
   end
 
   describe "PATCH /properties/:id" do
