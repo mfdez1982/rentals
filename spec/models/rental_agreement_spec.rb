@@ -84,6 +84,58 @@ RSpec.describe RentalAgreement, type: :model do
     end
   end
 
+  describe ".overlapping" do
+    let!(:mid) do
+      create(:rental_agreement, property: property,
+             start_date: Date.new(2025, 3, 1), end_date: Date.new(2025, 6, 30))
+    end
+
+    it "matches an agreement whose window overlaps the given range" do
+      expect(property.rental_agreements.overlapping(Date.new(2025, 6, 1), Date.new(2025, 12, 31)))
+        .to contain_exactly(mid)
+    end
+
+    it "excludes an agreement whose window does not overlap" do
+      expect(property.rental_agreements.overlapping(Date.new(2025, 7, 1), Date.new(2025, 12, 31)))
+        .to be_empty
+    end
+
+    it "includes an agreement that only touches the range at a boundary day" do
+      expect(property.rental_agreements.overlapping(Date.new(2025, 6, 30), Date.new(2025, 12, 31)))
+        .to contain_exactly(mid)
+      expect(property.rental_agreements.overlapping(Date.new(2025, 1, 1), Date.new(2025, 3, 1)))
+        .to contain_exactly(mid)
+    end
+  end
+
+  describe "#clamped_range and #days_within" do
+    let(:contract) { agreement(Date.new(2025, 3, 1), Date.new(2025, 6, 30)) }
+
+    it "returns the full agreement range when fully contained in the window" do
+      range = contract.clamped_range(Date.new(2025, 1, 1), Date.new(2025, 12, 31))
+      expect(range).to eq(Date.new(2025, 3, 1)..Date.new(2025, 6, 30))
+      expect(contract.days_within(Date.new(2025, 1, 1), Date.new(2025, 12, 31))).to eq(122)
+    end
+
+    it "clamps the start when the window begins after the agreement starts" do
+      range = contract.clamped_range(Date.new(2025, 4, 1), Date.new(2025, 12, 31))
+      expect(range).to eq(Date.new(2025, 4, 1)..Date.new(2025, 6, 30))
+      expect(contract.days_within(Date.new(2025, 4, 1), Date.new(2025, 12, 31))).to eq(91)
+    end
+
+    it "clamps the end when the window ends before the agreement ends" do
+      range = contract.clamped_range(Date.new(2025, 1, 1), Date.new(2025, 5, 15))
+      expect(range).to eq(Date.new(2025, 3, 1)..Date.new(2025, 5, 15))
+      expect(contract.days_within(Date.new(2025, 1, 1), Date.new(2025, 5, 15))).to eq(76)
+    end
+
+    it "returns nil / 0 when the window does not overlap the agreement at all" do
+      range = contract.clamped_range(Date.new(2025, 7, 1), Date.new(2025, 12, 31))
+      expect(range).to be_nil
+      expect(contract.days_within(Date.new(2025, 7, 1), Date.new(2025, 12, 31))).to eq(0)
+    end
+  end
+
   describe "#has_overdue_payments?" do
     let(:contract) { create(:rental_agreement, property: property, start_date: 1.year.ago.to_date, end_date: 1.year.from_now.to_date) }
 

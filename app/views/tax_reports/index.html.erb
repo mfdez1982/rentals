@@ -10,10 +10,7 @@
   <div data-controller="modal">
   <% tax_report_locked = !current_landlord.tax_report_allowed? %>
   <% if tax_report_locked %>
-    <div class="alert alert-info mb-6" role="alert">
-      <%= heroicon "sparkles", variant: :outline, class: "w-6 h-6" %>
-      <span class="text-base font-medium"><%= t("tax_report.plan_limit_hint") %></span>
-    </div>
+    <%= render "shared/upgrade_banner", message: t("tax_report.plan_limit_hint") %>
   <% end %>
 
   <!-- Generate control -->

@@ -104,7 +104,7 @@ class RecollectionGenerator
   end
 
   def overlapping_agreements(scope)
-    scope.where("start_date <= ? AND end_date >= ?", expense.period_end, expense.period_start)
+    scope.overlapping(expense.period_start, expense.period_end)
   end
 
   def agreements_without_existing_recollections(scope)
@@ -116,8 +116,9 @@ class RecollectionGenerator
   end
 
   def build_slice(agreement)
-    period_start = [ expense.period_start, agreement.start_date ].max
-    period_end = [ expense.period_end, agreement.end_date ].min
+    range = agreement.clamped_range(expense.period_start, expense.period_end)
+    period_start = range.begin
+    period_end   = range.end
     overlap_days = (period_end - period_start).to_i + 1
     amount = (expense.amount * overlap_days / expense.period_days).round(2)
 

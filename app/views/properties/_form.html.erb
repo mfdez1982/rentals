@@ -4,15 +4,7 @@
       <input type="hidden" name="inline" value="true">
     <% end %>
 
-    <% if property.errors.any? %>
-      <div role="alert" class="alert alert-error">
-        <ul class="list-disc list-inside text-sm">
-          <% property.errors.full_messages.each do |msg| %>
-            <li><%= msg %></li>
-          <% end %>
-        </ul>
-      </div>
-    <% end %>
+    <%= render "shared/form_errors", model: property %>
 
     <div>
       <%= f.label :name, t("properties.form.name_label"), class: "label mb-1" %>
@@ -20,9 +12,6 @@
             placeholder: t("properties.form.name_placeholder"), required: true %>
     </div>
 
-    <div class="flex gap-2 pt-2">
-      <%= f.submit t("forms.buttons.submit"), class: "btn btn-primary" %>
-      <button type="button" class="btn btn-ghost" data-action="modal#close"><%= t("forms.buttons.cancel") %></button>
-    </div>
+    <%= render "shared/form_actions", form: f %>
   </div>
 <% end %>

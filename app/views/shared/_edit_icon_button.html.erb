@@ -1,0 +1,4 @@
+<%= link_to path, class: "icon-btn", title: t("forms.buttons.edit"),
+    data: { turbo_frame: frame, action: "click->modal#openFrame" } do %>
+  <%= heroicon "pencil", variant: :outline %>
+<% end %>

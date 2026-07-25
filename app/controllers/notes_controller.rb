@@ -55,9 +55,12 @@ class NotesController < ApplicationController
   end
 
   def ensure_notes_allowed
-    unless current_landlord.notes_allowed?
-      redirect_back_or_to notes_path, alert: t("notes.errors.plan_limit")
-    end
+    require_landlord_feature(
+      allowed: current_landlord.notes_allowed?,
+      fallback: notes_path,
+      message_key: "notes.errors.plan_limit",
+      back: true
+    )
   end
 
 

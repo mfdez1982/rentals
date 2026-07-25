@@ -1,0 +1,4 @@
+<%= button_to path, method: :delete, class: "icon-btn", title: t("forms.buttons.delete"),
+    form: { data: { turbo_confirm: confirm, turbo_frame: frame } } do %>
+  <%= heroicon "trash", variant: :outline %>
+<% end %>

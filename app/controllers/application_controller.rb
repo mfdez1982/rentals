@@ -46,7 +46,24 @@ class ApplicationController < ActionController::Base
 
   def set_property
     @property = current_landlord.properties.find(params[:property_id])
+    redirect_if_property_locked
+  end
+
+  def redirect_if_property_locked
     redirect_to properties_path, alert: t("properties.errors.locked") if current_landlord.property_locked?(@property)
+  end
+
+  def require_landlord_feature(allowed:, fallback:, message_key:, back: false)
+    return if allowed
+    if back
+      redirect_back_or_to fallback, alert: t(message_key)
+    else
+      redirect_to fallback, alert: t(message_key)
+    end
+  end
+
+  def set_agreement
+    @agreement = @property.rental_agreements.find(params[:rental_agreement_id])
   end
 
   def pending_tenant_invitations

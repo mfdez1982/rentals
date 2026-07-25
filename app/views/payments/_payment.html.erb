@@ -12,22 +12,8 @@
   <td><%= number_to_currency(payment.amount) %></td>
   <td class="text-right">
     <div class="inline-flex items-center gap-2">
-      <%= link_to edit_property_rental_agreement_payment_path(property, agreement, payment),
-          class: "icon-btn",
-          title: t("forms.buttons.edit"),
-          data: { turbo_frame: "payment_edit_frame", action: "click->modal#openFrame" } do %>
-        <%= heroicon "pencil", variant: :outline %>
-      <% end %>
-      <%= button_to property_rental_agreement_payment_path(property, agreement, payment),
-          method: :delete,
-          class: "icon-btn",
-          title: t("forms.buttons.delete"),
-          form: { data: {
-            turbo_confirm: t("payments.delete_confirm"),
-            turbo_frame: dom_id(agreement, :payments)
-          } } do %>
-        <%= heroicon "trash", variant: :outline %>
-      <% end %>
+      <%= render "shared/edit_icon_button", path: edit_property_rental_agreement_payment_path(property, agreement, payment), frame: "payment_edit_frame" %>
+      <%= render "shared/delete_icon_button", path: property_rental_agreement_payment_path(property, agreement, payment), confirm: t("payments.delete_confirm"), frame: dom_id(agreement, :payments) %>
     </div>
   </td>
 </tr>

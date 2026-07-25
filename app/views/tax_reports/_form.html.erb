@@ -1,14 +1,6 @@
 <%= form_with model: [property, tax_report], data: { turbo_frame: dom_id(property, :tax_report) } do |f| %>
   <div class="space-y-4 max-w-md">
-    <% if tax_report.errors.any? %>
-      <div role="alert" class="alert alert-error">
-        <ul class="list-disc list-inside text-sm">
-          <% tax_report.errors.full_messages.each do |msg| %>
-            <li><%= msg %></li>
-          <% end %>
-        </ul>
-      </div>
-    <% end %>
+    <%= render "shared/form_errors", model: tax_report %>
 
     <div>
       <%= f.label :name, t("tax_report.name"), class: "label mb-1" %>
@@ -16,9 +8,6 @@
             placeholder: t("tax_report.name_placeholder") %>
     </div>
 
-    <div class="flex gap-2 pt-2">
-      <%= f.submit t("forms.buttons.submit"), class: "btn btn-primary" %>
-      <button type="button" class="btn btn-ghost" data-action="modal#close"><%= t("forms.buttons.cancel") %></button>
-    </div>
+    <%= render "shared/form_actions", form: f %>
   </div>
 <% end %>

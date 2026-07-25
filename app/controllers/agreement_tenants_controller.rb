@@ -44,10 +44,6 @@ class AgreementTenantsController < ApplicationController
 
   private
 
-  def set_agreement
-    @agreement = @property.rental_agreements.find(params[:rental_agreement_id])
-  end
-
   def set_agreement_tenant
     @agreement_tenant = @agreement.agreement_tenants.find(params[:id])
   end

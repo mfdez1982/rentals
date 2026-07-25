@@ -45,14 +45,11 @@ class TaxReportGenerator
   def overlapping_agreements_in_year
     # RentalAgreement validates presence of start_date/end_date, so every row
     # has both; a plain range overlap query is safe.
-    @property.rental_agreements
-             .where("start_date <= ? AND end_date >= ?", year_end_date, year_start_date)
+    @property.rental_agreements.overlapping(year_start_date, year_end_date)
   end
 
   def active_days_for_agreement(agreement)
-    agreement_start = [agreement.start_date, year_start_date].max
-    agreement_end = [agreement.end_date, year_end_date].min
-    (agreement_end - agreement_start).to_i + 1
+    agreement.days_within(year_start_date, year_end_date)
   end
 
   def calculate_active_rental_days
