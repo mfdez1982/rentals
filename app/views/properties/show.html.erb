@@ -1,18 +1,29 @@
+<% read_only = property_read_only?(@property) %>
+
 <!-- Global Navigation & Header (Always Visible) -->
 <div class="mb-6">
   <%= link_to t("common.my_properties_link"), properties_path, class: "btn btn-ghost btn-sm" %>
 </div>
 
+<% if read_only %>
+  <div class="alert alert-info mb-6" role="alert">
+    <%= heroicon "lock-closed", variant: :outline, class: "w-6 h-6" %>
+    <span class="text-base font-medium"><%= t("properties.read_only_banner") %></span>
+  </div>
+<% end %>
+
 <%= turbo_frame_tag dom_id(@property, :header) do %>
   <div class="flex items-center justify-start mb-6" data-controller="modal">
     <div class="flex items-center gap-3">
       <h1 class="text-2xl font-bold"><%= @property.name %></h1>
-      <%= link_to edit_property_path(@property, inline: true),
-          class: "icon-btn",
-          title: t("forms.buttons.edit"),
-          "aria-label": t("forms.buttons.edit"),
-          data: { turbo_frame: "property_edit_frame", action: "click->modal#openFrame" } do %>
-        <%= heroicon "pencil", variant: :outline %>
+      <% unless read_only %>
+        <%= link_to edit_property_path(@property, inline: true),
+            class: "icon-btn",
+            title: t("forms.buttons.edit"),
+            "aria-label": t("forms.buttons.edit"),
+            data: { turbo_frame: "property_edit_frame", action: "click->modal#openFrame" } do %>
+          <%= heroicon "pencil", variant: :outline %>
+        <% end %>
       <% end %>
     </div>
 
@@ -51,9 +62,11 @@
         <!-- Toolbar -->
         <div class="flex items-center justify-between mb-6">
           <h2 class="card-title text-base"><%= t("rental_agreements.title") %></h2>
-          <button type="button" class="btn btn-primary btn-sm" data-action="modal#open">
-            <%= t("rental_agreements.new_rental_agreement") %>
-          </button>
+          <% unless read_only %>
+            <button type="button" class="btn btn-primary btn-sm" data-action="modal#open">
+              <%= t("rental_agreements.new_rental_agreement") %>
+            </button>
+          <% end %>
         </div>
 
     <%= turbo_frame_tag dom_id(@property, :agreements) do %>
@@ -100,9 +113,11 @@
     <!-- Toolbar -->
     <div class="flex items-center justify-between mb-6">
       <h2 class="card-title text-base"><%= t("tax_report.deductible_expenses") %></h2>
-      <button type="button" class="btn btn-primary btn-sm" data-action="modal#open">
-        <%= t("expenses.add_expense") %>
-      </button>
+      <% unless read_only %>
+        <button type="button" class="btn btn-primary btn-sm" data-action="modal#open">
+          <%= t("expenses.add_expense") %>
+        </button>
+      <% end %>
     </div>
 
     <%= turbo_frame_tag dom_id(@property, :expenses) do %>

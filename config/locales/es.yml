@@ -264,8 +264,9 @@ es:
     no_properties: No hay propiedades aún.
     no_properties_hint: Añade la primera arriba para empezar.
     plan_limit_hint: El plan gratuito está limitado a una propiedad. Mejora a Pro o Premium para añadir más.
-    locked_badge: Bloqueada
-    locked_hint: Esta propiedad está bloqueada porque tu plan solo incluye una propiedad. Mejora a Pro o Premium para volver a acceder a ella.
+    locked_badge: Solo lectura
+    locked_hint: Esta propiedad es de solo lectura porque tu plan solo incluye una propiedad. Aún puedes consultar sus datos. Mejora a Pro o Premium para volver a editarla.
+    read_only_banner: Esta propiedad es de solo lectura. Tu plan solo incluye una propiedad, así que puedes consultar sus datos pero no modificarlos. Mejora a Pro o Premium para volver a editarla.
     form:
       name_placeholder: p. ej. 123 Calle Principal
       name_label: Nombre
@@ -275,7 +276,7 @@ es:
     edit_property: Editar Propiedad
     errors:
       plan_limit: El plan gratuito está limitado a una propiedad. Mejora a Pro o Premium para añadir más.
-      locked: Esta propiedad está bloqueada porque tu plan solo incluye una propiedad. Mejora a Pro o Premium para volver a acceder a ella.
+      read_only: Esta propiedad es de solo lectura en tu plan actual. Mejora a Pro o Premium para hacer cambios.
 
   # Rental Agreements
   rental_agreements:

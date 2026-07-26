@@ -20,11 +20,13 @@
     </div>
   </td>
   <td class="text-right">
-    <div class="inline-flex items-center gap-2">
-      <%= render "shared/delete_icon_button", path: property_rental_agreement_path(property, agreement), confirm: t("rental_agreements.delete_confirm"), frame: dom_id(property, :agreements) %>
-      <%= link_to t("rental_agreements.renew"), new_property_rental_agreement_path(property, source_id: agreement.id),
-          class: "btn btn-ghost btn-xs",
-          data: { turbo_frame: dom_id(property, :agreements) } %>
-    </div>
+    <% unless property_read_only?(property) %>
+      <div class="inline-flex items-center gap-2">
+        <%= render "shared/delete_icon_button", path: property_rental_agreement_path(property, agreement), confirm: t("rental_agreements.delete_confirm"), frame: dom_id(property, :agreements) %>
+        <%= link_to t("rental_agreements.renew"), new_property_rental_agreement_path(property, source_id: agreement.id),
+            class: "btn btn-ghost btn-xs",
+            data: { turbo_frame: dom_id(property, :agreements) } %>
+      </div>
+    <% end %>
   </td>
 </tr>

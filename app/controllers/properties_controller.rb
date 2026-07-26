@@ -2,7 +2,7 @@ class PropertiesController < ApplicationController
   include PropertyShowLoadable
 
   before_action :set_property, only: [:show, :edit, :update, :destroy]
-  before_action :redirect_if_property_locked, only: [:show, :destroy]
+  before_action :ensure_property_writable, only: [:update, :destroy]
   before_action -> { redirect_unless_turbo_frame_request(property_path(@property)) }, only: [:edit]
 
   def index

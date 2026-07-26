@@ -13,14 +13,16 @@
   </td>
   <td class="text-right">
     <div class="inline-flex items-center gap-2">
-      <% if expense.collectable? %>
-        <%= link_to t("recollections.recollect"),
-            new_property_expense_recollection_path(property, expense),
-            class: "btn btn-primary btn-xs",
-            data: { turbo_frame: "_top" } %>
+      <% unless property_read_only?(property) %>
+        <% if expense.collectable? %>
+          <%= link_to t("recollections.recollect"),
+              new_property_expense_recollection_path(property, expense),
+              class: "btn btn-primary btn-xs",
+              data: { turbo_frame: "_top" } %>
+        <% end %>
+        <%= render "shared/edit_icon_button", path: edit_property_expense_path(property, expense), frame: "expense_edit_frame" %>
+        <%= render "shared/delete_icon_button", path: property_expense_path(property, expense), confirm: t("expenses.delete_confirm"), frame: dom_id(property, :expenses) %>
       <% end %>
-      <%= render "shared/edit_icon_button", path: edit_property_expense_path(property, expense), frame: "expense_edit_frame" %>
-      <%= render "shared/delete_icon_button", path: property_expense_path(property, expense), confirm: t("expenses.delete_confirm"), frame: dom_id(property, :expenses) %>
       <% if expense.invoice_url.present? %>
         <a href="<%= expense.invoice_url %>" class="icon-btn" title="<%= t('expenses.view_invoice') %>"
            target="_blank" rel="noopener">

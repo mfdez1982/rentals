@@ -91,8 +91,8 @@ RSpec.describe "Properties", type: :request do
       locked = create(:property, landlord: landlord, created_at: 1.day.ago)
 
       expect { delete property_path(locked) }.not_to change { landlord.properties.count }
-      expect(response).to redirect_to(properties_path)
-      expect(flash[:alert]).to eq(I18n.t("properties.errors.locked"))
+      expect(response).to redirect_to(property_path(locked))
+      expect(flash[:alert]).to eq(I18n.t("properties.errors.read_only"))
     end
   end
 end

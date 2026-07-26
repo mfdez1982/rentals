@@ -1,6 +1,15 @@
+<% read_only = property_read_only?(@property) %>
+
 <div class="mb-6">
   <%= link_to "← #{@property.name}", property_path(@property), class: "btn btn-ghost btn-sm" %>
 </div>
+
+<% if read_only %>
+  <div class="alert alert-info mb-6" role="alert">
+    <%= heroicon "lock-closed", variant: :outline, class: "w-6 h-6" %>
+    <span class="text-base font-medium"><%= t("properties.read_only_banner") %></span>
+  </div>
+<% end %>
 
 <%= turbo_frame_tag dom_id(@agreement, :header) do %>
   <div class="mb-6" data-controller="modal">
@@ -11,12 +20,14 @@
     </div>
     <div class="flex flex-wrap items-center gap-3 mt-2">
       <span class="text-base-content/70"><%= number_to_currency(@agreement.rent_amount) %><%= t('rental_agreements.monthly_suffix') %></span>
-      <%= link_to edit_property_rental_agreement_path(@property, @agreement, inline: true),
-          class: "icon-btn",
-          title: t("forms.buttons.edit"),
-          "aria-label": t("forms.buttons.edit"),
-          data: { turbo_frame: "agreement_edit_frame", action: "click->modal#openFrame" } do %>
-        <%= heroicon "pencil", variant: :outline %>
+      <% unless read_only %>
+        <%= link_to edit_property_rental_agreement_path(@property, @agreement, inline: true),
+            class: "icon-btn",
+            title: t("forms.buttons.edit"),
+            "aria-label": t("forms.buttons.edit"),
+            data: { turbo_frame: "agreement_edit_frame", action: "click->modal#openFrame" } do %>
+          <%= heroicon "pencil", variant: :outline %>
+        <% end %>
       <% end %>
       <span class="badge badge-sm <%= agreement_status_badge_class(@agreement) %>"><%= agreement_status(@agreement) %></span>
     </div>
@@ -54,9 +65,11 @@
         <!-- Toolbar -->
         <div class="flex items-center justify-between mb-6">
           <h2 class="card-title text-base"><%= t("payments.payments") %></h2>
-          <button type="button" class="btn btn-primary btn-sm" data-action="modal#open">
-            <%= t("payments.add_payments") %>
-          </button>
+          <% unless read_only %>
+            <button type="button" class="btn btn-primary btn-sm" data-action="modal#open">
+              <%= t("payments.add_payments") %>
+            </button>
+          <% end %>
         </div>
 
         <%= turbo_frame_tag dom_id(@agreement, :payments) do %>
@@ -158,7 +171,7 @@
                   <tr>
                     <th><%= t("agreement_tenants.table_headers.email") %></th>
                     <th><%= t("agreement_tenants.table_headers.status") %></th>
-                    <th></th>
+                    <% unless read_only %><th></th><% end %>
                   </tr>
                 </thead>
                 <tbody>
@@ -170,6 +183,7 @@
                           <%= t("agreement_tenants.status.#{agreement_tenant.status}") %>
                         </span>
                       </td>
+                      <% unless read_only %>
                       <td>
                         <div class="flex items-center gap-2">
                           <% if agreement_tenant.pending? %>
@@ -192,6 +206,7 @@
                           <% end %>
                         </div>
                       </td>
+                      <% end %>
                     </tr>
                   <% end %>
                 </tbody>
@@ -203,15 +218,17 @@
             </div>
           <% end %>
 
-          <%= form_with url: property_rental_agreement_agreement_tenants_path(@property, @agreement), method: :post, scope: :agreement_tenant, class: "max-w-md" do |f| %>
-            <div class="form-control mb-3">
-              <label for="agreement_tenant_invited_email" class="label"><%= t("agreement_tenants.form.email_label") %></label>
-              <%= f.email_field :invited_email, id: "agreement_tenant_invited_email",
-                  class: "input input-bordered w-full", placeholder: t("agreement_tenants.form.email_placeholder") %>
-            </div>
-            <div>
-              <%= f.submit t("agreement_tenants.form.submit"), class: "btn btn-primary" %>
-            </div>
+          <% unless read_only %>
+            <%= form_with url: property_rental_agreement_agreement_tenants_path(@property, @agreement), method: :post, scope: :agreement_tenant, class: "max-w-md" do |f| %>
+              <div class="form-control mb-3">
+                <label for="agreement_tenant_invited_email" class="label"><%= t("agreement_tenants.form.email_label") %></label>
+                <%= f.email_field :invited_email, id: "agreement_tenant_invited_email",
+                    class: "input input-bordered w-full", placeholder: t("agreement_tenants.form.email_placeholder") %>
+              </div>
+              <div>
+                <%= f.submit t("agreement_tenants.form.submit"), class: "btn btn-primary" %>
+              </div>
+            <% end %>
           <% end %>
         <% end %>
       </div>
@@ -222,7 +239,7 @@
   <div data-tab-section="lease">
     <div class="card bg-base-100 shadow-sm">
       <div class="card-body">
-        <% allowed = current_landlord.lease_document_allowed? %>
+        <% allowed = current_landlord.lease_document_allowed? && !read_only %>
         <h2 class="card-title text-base mb-4"><%= t("rental_agreements.lease_document.section_title") %></h2>
 
         <% unless allowed %>

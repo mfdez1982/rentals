@@ -144,8 +144,9 @@ en:
     no_properties: No properties yet.
     no_properties_hint: Add your first one above to get started.
     plan_limit_hint: Free plan is limited to one property. Upgrade to Pro or Premium to add more.
-    locked_badge: Locked
-    locked_hint: This property is locked because your plan only includes one property. Upgrade to Pro or Premium to access it again.
+    locked_badge: View only
+    locked_hint: This property is view-only because your plan only includes one property. You can still browse its data. Upgrade to Pro or Premium to edit it again.
+    read_only_banner: This property is view-only. Your plan only includes one property, so you can browse its data but cannot make changes. Upgrade to Pro or Premium to edit it again.
     form:
       name_placeholder: e.g. 123 Main St
       name_label: Name
@@ -155,7 +156,7 @@ en:
     edit_property: Edit Property
     errors:
       plan_limit: Free plan is limited to one property. Upgrade to Pro or Premium to add more.
-      locked: This property is locked because your plan only includes one property. Upgrade to Pro or Premium to access it again.
+      read_only: This property is view-only on your current plan. Upgrade to Pro or Premium to make changes.
 
   # Rental Agreements
   rental_agreements:

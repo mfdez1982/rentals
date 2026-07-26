@@ -11,9 +11,11 @@
   </td>
   <td><%= number_to_currency(payment.amount) %></td>
   <td class="text-right">
-    <div class="inline-flex items-center gap-2">
-      <%= render "shared/edit_icon_button", path: edit_property_rental_agreement_payment_path(property, agreement, payment), frame: "payment_edit_frame" %>
-      <%= render "shared/delete_icon_button", path: property_rental_agreement_payment_path(property, agreement, payment), confirm: t("payments.delete_confirm"), frame: dom_id(agreement, :payments) %>
-    </div>
+    <% unless property_read_only?(property) %>
+      <div class="inline-flex items-center gap-2">
+        <%= render "shared/edit_icon_button", path: edit_property_rental_agreement_payment_path(property, agreement, payment), frame: "payment_edit_frame" %>
+        <%= render "shared/delete_icon_button", path: property_rental_agreement_payment_path(property, agreement, payment), confirm: t("payments.delete_confirm"), frame: dom_id(agreement, :payments) %>
+      </div>
+    <% end %>
   </td>
 </tr>

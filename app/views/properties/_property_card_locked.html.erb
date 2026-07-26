@@ -1,5 +1,5 @@
-<div class="card bg-base-100 shadow-md h-full opacity-70"
-     data-testid="property-card-<%= property.id %>">
+<%= link_to property_path(property), class: "card bg-base-100 shadow-md hover:shadow-lg transition-shadow h-full opacity-70 block",
+    data: { turbo_frame: "_top", testid: "property-card-#{property.id}" } do %>
   <div class="card-body p-4 flex flex-col h-full">
     <div class="flex items-start justify-between mb-3">
       <div class="flex items-center gap-3 flex-1 min-w-0">
@@ -13,4 +13,4 @@
     <span class="badge badge-neutral badge-sm mb-3 w-fit"><%= t("properties.locked_badge") %></span>
     <p class="text-sm text-base-content/60"><%= t("properties.locked_hint") %></p>
   </div>
-</div>
+<% end %>

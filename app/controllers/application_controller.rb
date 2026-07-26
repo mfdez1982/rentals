@@ -46,11 +46,17 @@ class ApplicationController < ActionController::Base
 
   def set_property
     @property = current_landlord.properties.find(params[:property_id])
-    redirect_if_property_locked
+    ensure_property_writable
   end
 
-  def redirect_if_property_locked
-    redirect_to properties_path, alert: t("properties.errors.locked") if current_landlord.property_locked?(@property)
+  # A downgraded landlord keeps read-only access to over-limit properties, but
+  # may not modify them. Reads (GET) pass through so the whole property is still
+  # browsable; any write is bounced back to the read-only page with a notice.
+  def ensure_property_writable
+    return if request.get?
+    return unless current_landlord.property_locked?(@property)
+
+    redirect_to property_path(@property), alert: t("properties.errors.read_only")
   end
 
   def require_landlord_feature(allowed:, fallback:, message_key:, back: false)

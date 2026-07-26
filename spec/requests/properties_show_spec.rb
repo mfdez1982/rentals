@@ -48,25 +48,52 @@ RSpec.describe "Properties show & tax report", type: :request do
     end
 
     context "when downgraded to free with multiple properties" do
-      it "still shows the oldest property but locks the rest" do
-        first = create(:property, landlord: landlord, created_at: 2.days.ago)
-        second = create(:property, landlord: landlord, created_at: 1.day.ago)
+      it "shows a locked property read-only, with a banner and no edit affordances" do
+        create(:property, landlord: landlord, created_at: 2.days.ago)
+        locked = create(:property, landlord: landlord, created_at: 1.day.ago)
 
-        get property_path(first)
+        get property_path(locked)
+
         expect(response).to have_http_status(:ok)
-
-        get property_path(second)
-        expect(response).to redirect_to(properties_path)
-        expect(flash[:alert]).to eq(I18n.t("properties.errors.locked"))
+        expect(response.body).to include(locked.name)
+        expect(response.body).to include(I18n.t("properties.read_only_banner"))
+        expect(response.body).not_to include(edit_property_path(locked, inline: true))
       end
 
-      it "blocks reaching a locked property's nested resources directly" do
+      it "lets a locked property's nested resources be viewed read-only" do
         create(:property, landlord: landlord, created_at: 2.days.ago)
         locked = create(:property, landlord: landlord, created_at: 1.day.ago)
         agreement = create(:rental_agreement, property: locked)
 
         get property_rental_agreement_path(locked, agreement)
-        expect(response).to redirect_to(properties_path)
+
+        expect(response).to have_http_status(:ok)
+        expect(response.body).to include(I18n.t("properties.read_only_banner"))
+      end
+
+      it "blocks writes to a locked property's nested resources" do
+        create(:property, landlord: landlord, created_at: 2.days.ago)
+        locked = create(:property, landlord: landlord, created_at: 1.day.ago)
+
+        expect {
+          post property_expenses_path(locked), params: {
+            expense: { date: Date.today, category: "utilities", amount: 50 }
+          }
+        }.not_to change(Expense, :count)
+
+        expect(response).to redirect_to(property_path(locked))
+        expect(flash[:alert]).to eq(I18n.t("properties.errors.read_only"))
+      end
+
+      it "blocks updating a locked property itself" do
+        create(:property, landlord: landlord, created_at: 2.days.ago)
+        locked = create(:property, landlord: landlord, created_at: 1.day.ago)
+
+        patch property_path(locked), params: { inline: "true", property: { name: "Renamed" } }
+
+        expect(response).to redirect_to(property_path(locked))
+        expect(flash[:alert]).to eq(I18n.t("properties.errors.read_only"))
+        expect(locked.reload.name).not_to eq("Renamed")
       end
     end
   end

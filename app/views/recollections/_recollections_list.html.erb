@@ -1,3 +1,4 @@
+<% read_only = property_read_only?(property) %>
 <div class="mt-8">
   <h3 class="font-semibold text-base mb-3"><%= t("recollections.title") %></h3>
 
@@ -12,7 +13,7 @@
             <th><%= t("recollections.table_headers.amount") %></th>
             <th><%= t("recollections.table_headers.due_date") %></th>
             <th><%= t("recollections.table_headers.status") %></th>
-            <th></th>
+            <% unless read_only %><th></th><% end %>
           </tr>
         </thead>
         <tbody>
@@ -37,6 +38,7 @@
                   <span class="badge badge-sm badge-warning"><%= t("recollections.status.pending") %></span>
                 <% end %>
               </td>
+              <% unless read_only %>
               <td class="text-right">
                 <div class="inline-flex items-center gap-2">
                   <% if recollection.pending? %>
@@ -70,6 +72,7 @@
                   <% end %>
                 </div>
               </td>
+              <% end %>
             </tr>
           <% end %>
         </tbody>
