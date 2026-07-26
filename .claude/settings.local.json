@@ -69,7 +69,12 @@
       "Bash(echo \"exit $?\")",
       "Bash(bin/rails db:seed)",
       "mcp__playwright__browser_tabs",
-      "Bash(grep -i \"\\\\.rb$\")"
+      "Bash(grep -i \"\\\\.rb$\")",
+      "Bash(bin/rails solid_queue:install)",
+      "Bash(bin/rails db:test:prepare)",
+      "Bash(grep -n \"^[a-z].*:$\\\\|^  [a-z_]*:$\" config/locales/en.yml)",
+      "Bash(sed -n '/create_table \"payments\"/,/end/p' db/schema.rb)",
+      "Bash(sed -n '/create_table \"properties\"/,/end/p' db/schema.rb)"
     ]
   },
   "enabledMcpjsonServers": [

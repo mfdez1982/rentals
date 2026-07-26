@@ -36,4 +36,28 @@ RSpec.describe Payment, type: :model do
       expect(build(:payment, due_date: Date.tomorrow, paid_date: nil)).not_to be_overdue
     end
   end
+
+  describe "#reminder_due?" do
+    let(:interval) { 7.days }
+
+    it "is due when overdue and never reminded" do
+      payment = build(:payment, due_date: Date.yesterday, last_reminded_at: nil)
+      expect(payment.reminder_due?(interval: interval)).to be(true)
+    end
+
+    it "is not due when not overdue, even if never reminded" do
+      payment = build(:payment, due_date: Date.tomorrow, last_reminded_at: nil)
+      expect(payment.reminder_due?(interval: interval)).to be(false)
+    end
+
+    it "is not due when reminded within the interval" do
+      payment = build(:payment, due_date: 30.days.ago, last_reminded_at: 2.days.ago)
+      expect(payment.reminder_due?(interval: interval)).to be(false)
+    end
+
+    it "is due again once the last reminder is older than the interval" do
+      payment = build(:payment, due_date: 30.days.ago, last_reminded_at: 8.days.ago)
+      expect(payment.reminder_due?(interval: interval)).to be(true)
+    end
+  end
 end

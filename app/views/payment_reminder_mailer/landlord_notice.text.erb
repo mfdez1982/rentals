@@ -1,0 +1,6 @@
+<%= t("payment_reminder_mailer.landlord_notice.greeting") %>
+
+<%= t("payment_reminder_mailer.landlord_notice.body_text",
+      property_name: @property.name,
+      amount: number_to_currency(@payment.amount),
+      due_date: format_date(@payment.due_date)) %>

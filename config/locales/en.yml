@@ -149,6 +149,8 @@ en:
     form:
       name_placeholder: e.g. 123 Main St
       name_label: Name
+      reminders_enabled_label: Email me overdue payment reminders for this property
+      reminders_enabled_hint: Tenants are always reminded; this only controls your own copy.
     delete_confirm: "Delete \"%{name}\"? This cannot be undone."
     edit_property: Edit Property
     errors:
@@ -492,3 +494,15 @@ en:
       greeting: Hello,
       body_html: "You have been removed as a tenant for <strong>%{property_name}</strong>, for the rental period from %{start_date} to %{end_date}."
       body_text: "You have been removed as a tenant for %{property_name}, for the rental period from %{start_date} to %{end_date}."
+
+  payment_reminder_mailer:
+    tenant_notice:
+      subject: "Reminder: overdue rent payment for %{property_name}"
+      greeting: Hello,
+      body_html: "This is a reminder that a rent payment of <strong>%{amount}</strong> for %{property_name}, due on %{due_date}, is overdue. Please arrange payment as soon as possible."
+      body_text: "This is a reminder that a rent payment of %{amount} for %{property_name}, due on %{due_date}, is overdue. Please arrange payment as soon as possible."
+    landlord_notice:
+      subject: "Overdue rent payment for %{property_name}"
+      greeting: Hello,
+      body_html: "A rent payment of <strong>%{amount}</strong> for %{property_name}, due on %{due_date}, is overdue. The tenant has also been reminded."
+      body_text: "A rent payment of %{amount} for %{property_name}, due on %{due_date}, is overdue. The tenant has also been reminded."

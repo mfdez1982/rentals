@@ -12,6 +12,16 @@
             placeholder: t("properties.form.name_placeholder"), required: true %>
     </div>
 
+    <% if property.persisted? && current_landlord&.payment_reminders_allowed? %>
+      <div class="form-control">
+        <label class="label cursor-pointer justify-start gap-3">
+          <%= f.check_box :reminders_enabled, class: "checkbox" %>
+          <span class="label-text"><%= t("properties.form.reminders_enabled_label") %></span>
+        </label>
+        <p class="text-sm text-base-content/60 mt-1"><%= t("properties.form.reminders_enabled_hint") %></p>
+      </div>
+    <% end %>
+
     <%= render "shared/form_actions", form: f %>
   </div>
 <% end %>

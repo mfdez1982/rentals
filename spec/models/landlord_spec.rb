@@ -104,4 +104,15 @@ RSpec.describe Landlord, type: :model do
       expect(pro.property_locked?(second)).to be(false)
     end
   end
+
+  describe "#payment_reminders_allowed?" do
+    before { Flipper.enable_group(:payment_reminders, :pro_and_up) }
+    after { Flipper.remove(:payment_reminders) }
+
+    it "is granted to pro and premium, not free" do
+      expect(create(:landlord, plan: :free).payment_reminders_allowed?).to be(false)
+      expect(create(:landlord, plan: :pro).payment_reminders_allowed?).to be(true)
+      expect(create(:landlord, plan: :premium).payment_reminders_allowed?).to be(true)
+    end
+  end
 end

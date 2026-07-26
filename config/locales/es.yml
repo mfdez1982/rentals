@@ -269,6 +269,8 @@ es:
     form:
       name_placeholder: p. ej. 123 Calle Principal
       name_label: Nombre
+      reminders_enabled_label: Enviarme recordatorios de pagos vencidos de esta propiedad
+      reminders_enabled_hint: Los inquilinos siempre reciben el recordatorio; esto solo controla tu copia.
     delete_confirm: "¿Eliminar \"%{name}\"? Esta acción no se puede deshacer."
     edit_property: Editar Propiedad
     errors:
@@ -612,3 +614,15 @@ es:
       greeting: Hola,
       body_html: "Has sido eliminado como inquilino de <strong>%{property_name}</strong>, para el período de alquiler del %{start_date} al %{end_date}."
       body_text: "Has sido eliminado como inquilino de %{property_name}, para el período de alquiler del %{start_date} al %{end_date}."
+
+  payment_reminder_mailer:
+    tenant_notice:
+      subject: "Recordatorio: pago de alquiler vencido de %{property_name}"
+      greeting: Hola,
+      body_html: "Te recordamos que un pago de alquiler de <strong>%{amount}</strong> de %{property_name}, con vencimiento el %{due_date}, está vencido. Por favor, realiza el pago lo antes posible."
+      body_text: "Te recordamos que un pago de alquiler de %{amount} de %{property_name}, con vencimiento el %{due_date}, está vencido. Por favor, realiza el pago lo antes posible."
+    landlord_notice:
+      subject: "Pago de alquiler vencido de %{property_name}"
+      greeting: Hola,
+      body_html: "Un pago de alquiler de <strong>%{amount}</strong> de %{property_name}, con vencimiento el %{due_date}, está vencido. También se ha avisado al inquilino."
+      body_text: "Un pago de alquiler de %{amount} de %{property_name}, con vencimiento el %{due_date}, está vencido. También se ha avisado al inquilino."

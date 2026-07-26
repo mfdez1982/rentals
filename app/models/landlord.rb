@@ -36,4 +36,8 @@ class Landlord < ApplicationRecord
   def notes_allowed?
     Flipper.enabled?(:notes, self)
   end
+
+  def payment_reminders_allowed?
+    Flipper.enabled?(:payment_reminders, self)
+  end
 end

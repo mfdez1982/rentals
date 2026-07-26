@@ -55,6 +55,6 @@ class PropertiesController < ApplicationController
   end
 
   def property_params
-    params.require(:property).permit(:name)
+    params.require(:property).permit(:name, :reminders_enabled)
   end
 end

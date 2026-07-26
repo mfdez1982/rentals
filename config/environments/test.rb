@@ -46,4 +46,7 @@ Rails.application.configure do
   # ActionMailer configuration
   config.action_mailer.delivery_method = :test
   config.action_mailer.default_url_options = { host: "localhost", port: 3000 }
+
+  # Let specs control job execution (assert enqueued jobs / perform explicitly).
+  config.active_job.queue_adapter = :test
 end
