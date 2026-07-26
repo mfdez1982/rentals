@@ -40,4 +40,8 @@ class Landlord < ApplicationRecord
   def payment_reminders_allowed?
     Flipper.enabled?(:payment_reminders, self)
   end
+
+  def lease_document_allowed?
+    Flipper.enabled?(:lease_document, self)
+  end
 end

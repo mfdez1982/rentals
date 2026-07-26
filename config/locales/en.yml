@@ -173,6 +173,23 @@ en:
     status_expired: Expired
     monthly_suffix: "/mo"
     edit_agreement: Edit Rental Agreement
+    lease_document:
+      tab_label: Lease
+      section_title: Lease Document
+      upload_label: Lease document
+      pdf_hint: "(PDF, max 10 MB)"
+      submit: Upload
+      none_yet: No lease document uploaded yet.
+      delete_confirm: "Delete this lease document? This cannot be undone."
+      uploaded: Lease document uploaded.
+      deleted: Lease document deleted.
+      plan_limit_hint: Upgrade to Pro to attach lease documents to your agreements.
+      errors:
+        not_pdf: must be a PDF
+        too_large: "is too large (max %{limit} MB)"
+        missing: No lease document to download.
+        already_present: Delete the current lease document before uploading a new one.
+        plan_limit: Attaching lease documents requires a Pro plan.
     errors:
       end_date_after_start: must be after start date
       overlapping: overlaps with an existing agreement for this property

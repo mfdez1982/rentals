@@ -6,10 +6,18 @@ class RentalAgreement < ApplicationRecord
   has_many :tenants, -> { where(agreement_tenants: { status: :accepted }) }, through: :agreement_tenants, source: :user
   has_many :recollections, dependent: :restrict_with_error
 
+  # A single signed lease PDF. Replacing it swaps the attachment; the file is
+  # purged automatically when the agreement is destroyed.
+  has_one_attached :lease_document
+
+  LEASE_DOCUMENT_MAX_BYTES = 10.megabytes
+  LEASE_DOCUMENT_CONTENT_TYPE = "application/pdf".freeze
+
   validates :start_date, :end_date, :rent_amount, presence: true
   validates :rent_amount, numericality: { greater_than: 0 }, allow_nil: true
   validate :end_date_after_start_date
   validate :no_overlapping_agreements
+  validate :acceptable_lease_document
 
   scope :active,   -> { where("start_date <= ? AND end_date >= ?", Date.today, Date.today) }
   scope :upcoming, -> { where("start_date > ?", Date.today) }
@@ -66,5 +74,18 @@ class RentalAgreement < ApplicationRecord
     scope = property.rental_agreements.overlapping(start_date, end_date)
     scope = scope.where.not(id: id) if persisted?
     errors.add(:base, I18n.t("rental_agreements.errors.overlapping")) if scope.exists?
+  end
+
+  def acceptable_lease_document
+    return unless lease_document.attached?
+
+    unless lease_document.content_type == LEASE_DOCUMENT_CONTENT_TYPE
+      errors.add(:lease_document, I18n.t("rental_agreements.lease_document.errors.not_pdf"))
+    end
+
+    if lease_document.byte_size > LEASE_DOCUMENT_MAX_BYTES
+      errors.add(:lease_document, I18n.t("rental_agreements.lease_document.errors.too_large",
+                                         limit: LEASE_DOCUMENT_MAX_BYTES / 1.megabyte))
+    end
   end
 end

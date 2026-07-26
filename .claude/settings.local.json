@@ -74,7 +74,9 @@
       "Bash(bin/rails db:test:prepare)",
       "Bash(grep -n \"^[a-z].*:$\\\\|^  [a-z_]*:$\" config/locales/en.yml)",
       "Bash(sed -n '/create_table \"payments\"/,/end/p' db/schema.rb)",
-      "Bash(sed -n '/create_table \"properties\"/,/end/p' db/schema.rb)"
+      "Bash(sed -n '/create_table \"properties\"/,/end/p' db/schema.rb)",
+      "Bash(grep *)",
+      "Bash(awk '/id=\"pricing\"/,0' /workspace/app/views/pages/landing.html.erb)"
     ]
   },
   "enabledMcpjsonServers": [

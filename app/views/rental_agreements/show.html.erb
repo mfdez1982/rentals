@@ -42,6 +42,9 @@
 
     <%= link_to t("agreement_tenants.tab_label"), "#",
         data: { tabs_tab: "tenants", action: "click->tabs#selectTab" } %>
+
+    <%= link_to t("rental_agreements.lease_document.tab_label"), "#",
+        data: { tabs_tab: "lease", action: "click->tabs#selectTab" } %>
   </nav>
 
   <!-- Payments Section -->
@@ -209,6 +212,65 @@
             <div>
               <%= f.submit t("agreement_tenants.form.submit"), class: "btn btn-primary" %>
             </div>
+          <% end %>
+        <% end %>
+      </div>
+    </div>
+  </div>
+
+  <!-- Lease Document Section -->
+  <div data-tab-section="lease">
+    <div class="card bg-base-100 shadow-sm">
+      <div class="card-body">
+        <% allowed = current_landlord.lease_document_allowed? %>
+        <h2 class="card-title text-base mb-4"><%= t("rental_agreements.lease_document.section_title") %></h2>
+
+        <% unless allowed %>
+          <div class="alert alert-info mb-6" role="alert">
+            <%= heroicon "sparkles", variant: :outline, class: "w-6 h-6" %>
+            <span class="text-base font-medium"><%= t("rental_agreements.lease_document.plan_limit_hint") %></span>
+          </div>
+        <% end %>
+
+        <%= turbo_frame_tag dom_id(@agreement, :lease_document) do %>
+          <% if @agreement.errors[:lease_document].any? %>
+            <div class="alert alert-error mb-6" role="alert">
+              <span><%= @agreement.errors[:lease_document].to_sentence %></span>
+            </div>
+          <% end %>
+
+          <% if @agreement.lease_document.attached? %>
+            <div class="flex items-center gap-3">
+              <%= heroicon "document-text", variant: :outline, class: "w-6 h-6 text-base-content/70" %>
+              <%= link_to @agreement.lease_document.filename.to_s,
+                  property_rental_agreement_lease_document_path(@property, @agreement),
+                  class: "link", data: { turbo_frame: "_top" } %>
+              <% if allowed %>
+                <%= button_to property_rental_agreement_lease_document_path(@property, @agreement),
+                    method: :delete, class: "icon-btn",
+                    title: t("forms.buttons.delete"),
+                    form: { data: { turbo_confirm: t("rental_agreements.lease_document.delete_confirm"),
+                                    turbo_frame: dom_id(@agreement, :lease_document) } } do %>
+                  <%= heroicon "trash", variant: :outline %>
+                <% end %>
+              <% end %>
+            </div>
+          <% elsif allowed %>
+            <p class="text-sm text-base-content/50 mb-6"><%= t("rental_agreements.lease_document.none_yet") %></p>
+            <%= form_with url: property_rental_agreement_lease_document_path(@property, @agreement),
+                method: :post, scope: :rental_agreement, class: "max-w-md" do |f| %>
+              <div class="form-control mb-3">
+                <label for="rental_agreement_lease_document" class="label mb-1">
+                  <%= t("rental_agreements.lease_document.upload_label") %>
+                  <span class="text-base-content/60"><%= t("rental_agreements.lease_document.pdf_hint") %></span>
+                </label>
+                <%= f.file_field :lease_document, id: "rental_agreement_lease_document",
+                    accept: "application/pdf", class: "file-input file-input-bordered w-full" %>
+              </div>
+              <div>
+                <%= f.submit t("rental_agreements.lease_document.submit"), class: "btn btn-primary" %>
+              </div>
+            <% end %>
           <% end %>
         <% end %>
       </div>

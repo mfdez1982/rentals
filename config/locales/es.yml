@@ -293,6 +293,23 @@ es:
     status_expired: Vencido
     monthly_suffix: "/mes"
     edit_agreement: Editar Contrato de Alquiler
+    lease_document:
+      tab_label: Contrato
+      section_title: Documento del Contrato
+      upload_label: Documento del contrato
+      pdf_hint: "(PDF, máx. 10 MB)"
+      submit: Subir
+      none_yet: Aún no se ha subido ningún documento.
+      delete_confirm: "¿Eliminar este documento? Esta acción no se puede deshacer."
+      uploaded: Documento del contrato subido.
+      deleted: Documento del contrato eliminado.
+      plan_limit_hint: Actualiza a Pro para adjuntar documentos a tus contratos.
+      errors:
+        not_pdf: debe ser un PDF
+        too_large: "es demasiado grande (máx. %{limit} MB)"
+        missing: No hay ningún documento para descargar.
+        already_present: Elimina el documento actual antes de subir uno nuevo.
+        plan_limit: Adjuntar documentos requiere un plan Pro.
     errors:
       end_date_after_start: debe ser después de la fecha de inicio
       overlapping: se superpone con un contrato existente para esta propiedad

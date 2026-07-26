@@ -150,4 +150,35 @@ RSpec.describe RentalAgreement, type: :model do
       expect(contract.has_overdue_payments?).to be false
     end
   end
+
+  describe "lease document" do
+    let(:agreement) { build(:rental_agreement, property: property) }
+
+    def attach(name, type)
+      agreement.lease_document.attach(io: file_fixture(name).open, filename: name, content_type: type)
+    end
+
+    it "is valid without a lease document" do
+      expect(agreement).to be_valid
+    end
+
+    it "accepts a PDF" do
+      attach("lease.pdf", "application/pdf")
+      expect(agreement).to be_valid
+    end
+
+    it "rejects a non-PDF file" do
+      attach("not_a_pdf.txt", "text/plain")
+      expect(agreement).not_to be_valid
+      expect(agreement.errors[:lease_document]).to be_present
+    end
+
+    it "rejects a file over the size limit" do
+      attach("lease.pdf", "application/pdf")
+      allow(agreement.lease_document).to receive(:byte_size)
+        .and_return(RentalAgreement::LEASE_DOCUMENT_MAX_BYTES + 1)
+      expect(agreement).not_to be_valid
+      expect(agreement.errors[:lease_document]).to be_present
+    end
+  end
 end

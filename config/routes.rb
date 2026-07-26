@@ -39,6 +39,7 @@ Rails.application.routes.draw do
       end
     end
     resources :rental_agreements, only: [:new, :create, :show, :edit, :update, :destroy] do
+      resource :lease_document, only: [:show, :create, :destroy]
       resources :payments, only: [:edit, :update, :destroy] do
         collection do
           post :create_recurring
