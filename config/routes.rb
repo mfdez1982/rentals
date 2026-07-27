@@ -30,6 +30,9 @@ Rails.application.routes.draw do
   resources :properties do
     resources :tax_reports, only: [:index, :create, :show, :edit, :update, :destroy]
     resources :expenses, only: [:create, :edit, :update, :destroy] do
+      member do
+        get :document
+      end
       resources :recollections, only: [:new, :create]
     end
     resources :recollections, only: [:destroy] do

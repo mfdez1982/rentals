@@ -130,29 +130,19 @@ end
 # --- Expenses ---
 expense_2 = property_10.expenses.find_or_create_by!(date: Date.parse("2025-01-01"), category: :tax) do |e|
   e.amount = BigDecimal("82.63")
-  e.description = "IBI"
-  e.invoice_url = ""
-end
+  e.description = "IBI"end
 expense_3 = property_10.expenses.find_or_create_by!(date: Date.parse("2026-01-01"), category: :tax) do |e|
   e.amount = BigDecimal("82.63")
-  e.description = "IBI"
-  e.invoice_url = ""
-end
+  e.description = "IBI"end
 expense_4 = property_10.expenses.find_or_create_by!(date: Date.parse("2025-01-01"), category: :community_fees) do |e|
   e.amount = BigDecimal("384.0")
-  e.description = "Comunidad"
-  e.invoice_url = ""
-end
+  e.description = "Comunidad"end
 expense_49 = property_10.expenses.find_or_create_by!(date: Date.parse("2026-07-09"), category: :financing) do |e|
   e.amount = BigDecimal("1000.0")
-  e.description = ""
-  e.invoice_url = ""
-end
+  e.description = ""end
 expense_50 = property_10.expenses.find_or_create_by!(date: Date.parse("2026-07-09"), category: :utilities) do |e|
   e.amount = BigDecimal("1000.0")
-  e.description = "oche"
-  e.invoice_url = ""
-end
+  e.description = "oche"end
 # --- Notes ---
 note_1 = landlord_2.notes.find_or_create_by!(title: "General Note ") do |n|
   n.description = "A general note"

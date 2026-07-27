@@ -22,22 +22,36 @@ RSpec.describe Expense, type: :model do
       expect(build(:expense, amount: -1)).not_to be_valid
     end
 
-    describe "invoice_url format" do
-      it "allows blank" do
-        expect(build(:expense, invoice_url: "")).to be_valid
-        expect(build(:expense, invoice_url: nil)).to be_valid
+    describe "invoice_document" do
+      let(:expense) { build(:expense) }
+
+      it "accepts an attached PDF" do
+        expense.invoice_document.attach(
+          io: File.open(Rails.root.join("spec/fixtures/files/lease.pdf")),
+          filename: "invoice.pdf", content_type: "application/pdf"
+        )
+        expect(expense).to be_valid
       end
 
-      it "allows http and https URLs" do
-        expect(build(:expense, invoice_url: "https://example.com/invoice.pdf")).to be_valid
-        expect(build(:expense, invoice_url: "http://example.com/x")).to be_valid
+      it "rejects a non-PDF document" do
+        expense.invoice_document.attach(
+          io: File.open(Rails.root.join("spec/fixtures/files/not_a_pdf.txt")),
+          filename: "invoice.txt", content_type: "text/plain"
+        )
+        expect(expense).not_to be_valid
+        expect(expense.errors[:invoice_document]).to be_present
       end
 
-      it "rejects non-http URLs and plain text" do
-        expect(build(:expense, invoice_url: "ftp://example.com/x")).not_to be_valid
-        expect(build(:expense, invoice_url: "not a url")).not_to be_valid
+      it "rejects a document over the size limit" do
+        expense.invoice_document.attach(
+          io: StringIO.new("x" * (Expense::INVOICE_DOCUMENT_MAX_BYTES + 1)),
+          filename: "big.pdf", content_type: "application/pdf"
+        )
+        expect(expense).not_to be_valid
+        expect(expense.errors[:invoice_document]).to be_present
       end
     end
+
   end
 
   describe "scopes" do

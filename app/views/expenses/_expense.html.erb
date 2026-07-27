@@ -23,11 +23,11 @@
         <%= render "shared/edit_icon_button", path: edit_property_expense_path(property, expense), frame: "expense_edit_frame" %>
         <%= render "shared/delete_icon_button", path: property_expense_path(property, expense), confirm: t("expenses.delete_confirm"), frame: dom_id(property, :expenses) %>
       <% end %>
-      <% if expense.invoice_url.present? %>
-        <a href="<%= expense.invoice_url %>" class="icon-btn" title="<%= t('expenses.view_invoice') %>"
-           target="_blank" rel="noopener">
-          <%= heroicon "document-text", variant: :outline %>
-        </a>
+      <% if expense.invoice_document.attached? %>
+        <%= link_to document_property_expense_path(property, expense), class: "icon-btn",
+            title: t("expenses.invoice_document.view"), data: { turbo_frame: "_top" } do %>
+          <%= heroicon "paper-clip", variant: :outline %>
+        <% end %>
       <% end %>
     </div>
   </td>

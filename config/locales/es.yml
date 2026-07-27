@@ -48,11 +48,6 @@ es:
         restrict_dependent_destroy:
           has_one: "No se puede eliminar el registro porque existe un %{record} dependiente"
           has_many: "No se puede eliminar el registro porque existen %{record} dependientes"
-      models:
-        expense:
-          attributes:
-            invoice_url:
-              invalid_url: "debe ser una URL válida"
     attributes:
       user:
         email: Correo electrónico
@@ -447,11 +442,16 @@ es:
     description: Descripción
     description_hint: "(opcional)"
     description_placeholder: p. ej. Renovación de seguro anual del hogar
-    invoice_url: URL de Factura
-    invoice_url_hint: "(opcional)"
-    invoice_url_placeholder: "https://..."
     delete_confirm: "¿Eliminar este gasto? Esta acción no se puede deshacer."
-    view_invoice: Ver factura
+    invoice_document:
+      label: Documento de factura
+      pdf_hint: "(PDF, máx. 10 MB)"
+      view: Descargar documento de factura
+      remove: Eliminar el documento actual
+      errors:
+        not_pdf: debe ser un PDF
+        too_large: "es demasiado grande (máx. %{limit} MB)"
+        missing: No hay documento de factura para descargar.
     collectable: Recobrar de los inquilinos
     collectable_hint: "(prorratear este gasto entre los contratos de alquiler solapados)"
     collectable_badge: Recobrable

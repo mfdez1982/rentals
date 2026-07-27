@@ -13,7 +13,6 @@ class ExpenseDashboard < Administrate::BaseDashboard
     category: Field::Select.with_options(searchable: false, collection: ->(field) { field.resource.class.send(field.attribute.to_s.pluralize).keys }),
     date: Field::Date,
     description: Field::String,
-    invoice_url: Field::String,
     property: Field::BelongsTo,
     created_at: Field::DateTime,
     updated_at: Field::DateTime,
@@ -39,7 +38,6 @@ class ExpenseDashboard < Administrate::BaseDashboard
     category
     date
     description
-    invoice_url
     property
     created_at
     updated_at
@@ -53,7 +51,6 @@ class ExpenseDashboard < Administrate::BaseDashboard
     category
     date
     description
-    invoice_url
     property
   ].freeze
 

@@ -44,4 +44,8 @@ class Landlord < ApplicationRecord
   def lease_document_allowed?
     Flipper.enabled?(:lease_document, self)
   end
+
+  def expense_document_allowed?
+    Flipper.enabled?(:expense_document, self)
+  end
 end

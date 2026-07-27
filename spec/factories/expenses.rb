@@ -5,7 +5,6 @@ FactoryBot.define do
     amount { 250.00 }
     category { :insurance }
     description { "Annual home insurance" }
-    invoice_url { nil }
 
     trait :collectable do
       collectable { true }

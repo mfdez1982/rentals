@@ -1,14 +1,6 @@
 en:
   app_name: Rentals
 
-  activerecord:
-    errors:
-      models:
-        expense:
-          attributes:
-            invoice_url:
-              invalid_url: "must be a valid URL"
-
   date:
     formats:
       default: "%Y-%m-%d"
@@ -327,11 +319,16 @@ en:
     description: Description
     description_hint: "(optional)"
     description_placeholder: e.g. Annual home insurance renewal
-    invoice_url: Invoice URL
-    invoice_url_hint: "(optional)"
-    invoice_url_placeholder: "https://..."
     delete_confirm: "Delete this expense? This cannot be undone."
-    view_invoice: View invoice
+    invoice_document:
+      label: Invoice document
+      pdf_hint: "(PDF, max 10 MB)"
+      view: Download invoice document
+      remove: Remove the current document
+      errors:
+        not_pdf: must be a PDF
+        too_large: "is too large (max %{limit} MB)"
+        missing: No invoice document to download.
     collectable: Recollect from tenants
     collectable_hint: "(prorate this expense across overlapping rental agreements)"
     collectable_badge: Collectable
